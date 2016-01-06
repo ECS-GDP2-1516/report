@@ -7,8 +7,12 @@
 \usepackage{array}
 \usepackage{pdflscape}
 \usepackage{enumitem}       % For making numbered indent lists
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+
 \hypersetup{colorlinks=true}   % Set to false for black/white printing
 %\input{Definitions}            % Include your abbreviations
+\newcommand{\namedsection}[2]{\section{#1 \hfill {\small \color{gray} #2}}} % Use this to create sections with authorship: \namedsection{Section Name}{Your name}
 %% ----------------------------------------------------------------
 \begin{document}
 	\frontmatter
