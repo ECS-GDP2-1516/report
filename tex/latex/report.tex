@@ -8,8 +8,12 @@
 \usepackage{pdflscape}
 \usepackage{pgfgantt}
 \usepackage{enumitem}       % For making numbered indent lists
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+
 \hypersetup{colorlinks=true}   % Set to false for black/white printing
 %\input{Definitions}            % Include your abbreviations
+\newcommand{\namedsection}[2]{\section[#1]{#1 \hfill {\small \color{gray} #2}}} % Use this to create sections with authorship: \namedsection{Section Name}{Your name}
 %% ----------------------------------------------------------------
 \begin{document}
 	\frontmatter
@@ -40,14 +44,35 @@
 	%% ----------------------------------------------------------------
 	% Introduction chapter
 	\input{intro/intro}
-
-	% Project Management Chapter
-	\input{project/project}
 	
 	% Software chapter
 	\input{software/software}
 	\input{software/exercise-detection}
 	\input{software/machine-learning}
+
+	% Hardware chapter
+	\input{hardware/hardware}
+	\input{hardware/cortex}
+	\input{hardware/research}
+	\input{hardware/fpga}
+	\input{hardware/mbed}
+
+	% User study chapter
+	\input{study/study}
+
+	% Project management chapter
+	\input{management/management}
+	\input{management/planning}
+	\input{management/division}
+	\input{management/gantt}
+	\input{management/client}
+
+	% Results chapter
+	\input{results/results}
+
+	% Conclusion chapter
+	\input{conclusion/conclusion}
+
 	\appendix
 	\input{appendices/risks}
 	%
