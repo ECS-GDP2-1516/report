@@ -4,11 +4,11 @@ The project''s risk assessment is shown opposite, with a red/amber/gree
 
 \begin{landscape}
 \begin{center}
-\begin{tabular}{ | m{2cm} | m{4cm} | m{1cm} | m{1cm} | m{1cm} | m{5cm} | } 
+\begin{tabular}{ | m{2cm} | m{7cm} | m{2cm} | m{1.5cm} | m{1.5cm} | m{7cm} | } 
   \hline
   Risk & Description & Likelihood & Impact & Priority & Mitigation \\
- 
   \hline
+
   Not able to recognise exercises &
   The possibility that no algorithm can be discovered or created to distinguish exercise from non-exercise &
   0.3 & 0.9 & 0.27 &
@@ -33,13 +33,19 @@ The project''s risk assessment is shown opposite, with a red/amber/gree
   0.08 &
   Use ARM's provided compiler, which is well supported and relies on common libraries. \\
   \hline
-  
+\end{tabular}
+
+\begin{tabular}{ | m{2cm} | m{7cm} | m{2cm} | m{1.5cm} | m{1.5cm} | m{7cm} | } 
+  \hline
+  Risk & Description & Likelihood & Impact & Priority & Mitigation \\
+  \hline
+
   Code does not fit on device &
   When compiling the code, its size may exceed the maximum of 8KB meaning it will not fit onto the device. This may happen because too many libraries are required or the algorithm itself is too large &
   0.4 & 0.8 & 0.32 &
   Use this constraint when deciding an optimum algorithm: where possible, choose lower sampling frequencies as these require less weights \\
   \hline
-  
+
   Developer Health &
   Ongoing health issues with one team member may disrupt their ability to work &
   0.8 & 0.6 & 0.48 &
