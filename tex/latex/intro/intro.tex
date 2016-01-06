@@ -1,1 +1,42 @@
 \chapter{Introduction}
+
+\section{Brief}
+
+\section{Requirements}
+
+\begin{enumerate}
+  \item The algorithm must be capable of detecting and monitoring exercises designed to combat deep vein thrombosis
+  \begin{enumerate}[label*=\arabic*.]
+    \item These are exercises which can be performed in a plane, particularly in long haul flights and include:
+    \begin{enumerate}[label*=\arabic*.]
+      \item Foot rotations
+      \item Pointing feet up and down
+      \item Shoulder rolling
+    \end{enumerate}
+    \item Other activities such as walking should be distinguished as not being exercise
+  \end{enumerate}
+  \item The algorithm must be suitable to execute on an ultra-low-power subthreshold ARM Cortex-M0+
+  \begin{enumerate}[label*=\arabic*.]
+    \item This device has a limited processor clocked from 100 kHz to a maximum of 3 MHz
+    \item There is also only 8 kB of available memory
+    \item Therefore, the algorithm should be highly optimised to use as little memory and require as little processing power as possible
+  \end{enumerate}
+  \item The Cortex-M0+ must be emulated in a test platform as working with an actual M0+ is not feasible
+  \begin{enumerate}[label*=\arabic*.]
+    \item The test platform should be capable of being clocked at frequencies ranging from a 100s of kHz to a few MHz
+    \item The test platform should have at least 32 kB of memory to aid with testing and to act as a fall back if 8 kB cannot be achieved
+    \item There must be an accelerometer sensor on the platform that readings can be taken from
+  \end{enumerate}
+  \item Research into various potential algorithms must take place
+  \begin{enumerate}[label*=\arabic*.]
+    \item Machine learning approaches should be focussed on
+    \item Algorithms which are used on unconstrained systems should be considered first
+    \item The feasibility of constraining those algorithms should then be investigated
+  \end{enumerate}
+  \item Participant studies should be performed to gather movement data to train the algorithm
+  \begin{enumerate}[label*=\arabic*.]
+    \item Ethics approval will need to be obtained
+  \end{enumerate}
+  \item The developed algorithm must be deployed to the test platform
+  \item The final system must then be evaluated in terms of its accuracy at detecting exercises
+\end{enumerate}
