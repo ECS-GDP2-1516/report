@@ -1,6 +1,8 @@
 \chapter{Risk Assessment}
 
-The project's risk assessment is shown opposite, with a red/amber/green traffic light scheme supporting the impact scores for ease of reference.
+The project's risk assessment is shown on the following two pages, ordered from highest priority to lowest. The
+first two risks did materialise for this team, however the
+planned mitigation was appropriate so there was no significant issues caused by these.
 
 \begin{landscape}
 \begin{center}
@@ -9,35 +11,22 @@ The project's risk assessment is shown opposite, with a red/amber/green traffic 
   Risk & Description & Likelihood & Impact & Priority & Mitigation \\
   \hline
 
-  Not able to recognise exercises &
-  The possibility that no algorithm can be discovered or created to distinguish exercise from non-exercise &
-  0.3 & 0.9 & 0.27 &
-  Use Weka, a well known and well tested, tool designed to bulk test multiple existing machine learning algorithms \\
+  Developer Health &
+  Ongoing health issues with one team member may disrupt their ability to work &
+  0.8 & 0.6 & 0.48 &
+  . \\
+  \hline
+
+  Ethical Approval Delays &
+  Issues receiving ethical approval may delay the date at which initial collection can be done, which would in turn delay the development schedule. &
+  0.6 & 0.6 & 0.36 &
+  Plan to complete the ethical approval request early in the project. Ensure the development schedule does not rely on the movement data from the very beginning. \\
   \hline
  
   Unable to scale algorithm &
   The system we have been given does not allow division or floating point. It may not be possible to reduce an algorithm to this constraints without prohibitively low running time &
   0.5 & 0.7 & 0.35 &
   Use this constraint when deciding an optimum algorithm: where possible, choose methods which require less computation and, specifically, fewer operations relying on complex mathematical operations which require accurate floating point or division. \\
-  \hline
- 
-  Loss of work &
-  Technical, physical or human issues may lead to loss of work or data, which will delay progress
-  & 0.3 & 0.9 & 0.27 &
-  All code kept under Git version control, where this is not under licence it will be backed up to GitHub. Repositories which include non-publishable code will be backed up to a personal git server of one of the team members. All documents written using LaTeX, which will also be kept under version control, or Google Documents. \\
-  \hline
-  
-  Code cannot be compiled &
-  Issues with library compatibilities or compiler limitations may cause problems when compiling our code for the device &
-  0.1 & 0.8 &
-  0.08 &
-  Use ARM's provided compiler, which is well supported and relies on common libraries. \\
-  \hline
-\end{tabular}
-
-\begin{tabular}{ | m{2cm} | m{7cm} | m{2cm} | m{1.5cm} | m{1.5cm} | m{7cm} | } 
-  \hline
-  Risk & Description & Likelihood & Impact & Priority & Mitigation \\
   \hline
 
   Code does not fit on device &
@@ -46,16 +35,28 @@ The project's risk assessment is shown opposite, with a red/amber/green traffic 
   Use this constraint when deciding an optimum algorithm: where possible, choose lower sampling frequencies as these require less weights \\
   \hline
 
-  Developer Health &
-  Ongoing health issues with one team member may disrupt their ability to work &
-  0.8 & 0.6 & 0.48 &
-  . \\
+  Not able to recognise exercises &
+  The possibility that no algorithm can be discovered or created to distinguish exercise from non-exercise &
+  0.3 & 0.9 & 0.27 &
+  Use Weka, a well known and well tested, tool designed to bulk test multiple existing machine learning algorithms \\
   \hline
-  
-  mBed clock speed &
-  The mBed's specification states that it may have an error on its clock speed, making measurements difficult &
-  0.1 & 0.1 & 0.01 &
-  Test clock speeds under various conditions to see the impact. Also develop on the FPGA which does not have this issue. \\
+\end{tabular}
+
+\begin{tabular}{ | m{2cm} | m{7cm} | m{2cm} | m{1.5cm} | m{1.5cm} | m{7cm} | } 
+  \hline
+  Risk & Description & Likelihood & Impact & Priority & Mitigation \\
+  \hline
+
+  Loss of work &
+  Technical, physical or human issues may lead to loss of work or data, which will delay progress
+  & 0.3 & 0.9 & 0.27 &
+  All code kept under Git version control, where this is not under licence it will be backed up to GitHub. Repositories which include non-publishable code will be backed up to a personal git server of one of the team members. All documents written using LaTeX, which will also be kept under version control, or Google Documents. \\
+  \hline
+
+  Unable to perform second participant study  &
+  There may not be enough time to test the prototype on a large selection of participants to measure its effectiveness  &
+  0.8 & 0.2 & 0.16 &
+  We can perform the tests on ourselves which should give sufficient indication on how well the prototype performs. \\
   \hline
   
   FPGA &
@@ -63,11 +64,17 @@ The project's risk assessment is shown opposite, with a red/amber/green traffic 
   0.3 & 0.5 & 0.15 &
   Ask ARM for the required documentation and maintain contact in case of issues. \\
   \hline
-  
-  Ethical Approval Delays &
-  Issues receiving ethical approval may delay the date at which initial collection can be done, which would in turn delay the development schedule. &
-  0.6 & 0.6 & 0.36 &
-  Plan to complete the ethical approval request early in the project. Ensure the development schedule does not rely on the movement data from the very beginning. \\
+
+  mBed clock speed &
+  The mBed's specification states that it may have an error on its clock speed, making measurements difficult &
+  0.1 & 0.1 & 0.01 &
+  Test clock speeds under various conditions to see the impact. Also develop on the FPGA which does not have this issue. \\
+  \hline
+
+  Code cannot be compiled &
+  Issues with library compatibilities or compiler limitations may cause problems when compiling our code for the device &
+  0.1 & 0.8 & 0.08 &
+  Use ARM's provided compiler, which is well supported and relies on common libraries. \\
   \hline
  
 \end{tabular}
