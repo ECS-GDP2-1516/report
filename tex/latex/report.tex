@@ -9,10 +9,15 @@
 \usepackage{pgfgantt}
 \usepackage{enumitem}       % For making numbered indent lists
 \usepackage{color}
+\usepackage{todonotes}
 
 \hypersetup{colorlinks=true}   % Set to false for black/white printing
 %\input{Definitions}            % Include your abbreviations
 \newcommand{\namedsection}[2]{\section[#1]{#1 \hfill {\small \color{gray} #2}}} % Use this to create sections with authorship: \namedsection{Section Name}{Your name}
+
+\newcommand{\note}[1]{\todo[inline]{#1}}
+
+
 %% ----------------------------------------------------------------
 \begin{document}
 	\frontmatter
