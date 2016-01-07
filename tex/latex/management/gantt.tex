@@ -25,7 +25,18 @@
     \ganttbar{Design hardware schematic}{2015-10-05}{2015-10-15} \\
     \ganttbar{Buy required components}{2015-10-12}{2015-10-24} \\
     \ganttlinkedbar{Build hardware}{2015-10-15}{2015-11-01} \\
-    \ganttbar{Sensor Code}{2015-10-19}{2015-10-30} \ganttnewline[ultra thick, red]
+    \ganttbar{Sensor Code}{2015-10-19}{2015-10-30}
+\end{ganttchart}
+
+
+\begin{ganttchart}[
+        hgrid,
+        vgrid,
+        x unit=4mm,
+        y unit chart=.7cm,
+        time slot format=isodate
+    ]{2015-09-28}{2015-11-15}
+    \gantttitlecalendar{month=shortname, week, day} \\
 
     \ganttgroup{Movement Data Study}{2015-10-05}{2015-10-30} \\
     \ganttbar{Search for Volunteers}{2015-10-12}{2015-10-23} \\
