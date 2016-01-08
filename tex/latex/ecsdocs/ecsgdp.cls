@@ -155,12 +155,12 @@
 \GROUP       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
                 {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
                 {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
-\faculty     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
-                {Faculty of Engineering, Science and Mathematics}}
-                {Faculty of Engineering, Science and Mathematics}}
+\faculty     {\texorpdfstring{\href{http://www.fpse.soton.ac.uk/}
+                {Faculty of Physical Sciences and Engineering}}
+                {Faculty of Physical Sciences and Engineering}}
 \FACULTY     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
-                {FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
-                {FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
+                {FACULTY OF PHYSICAL SCIENCES AND ENGINEERING}}
+                {FACULTY OF PHYSICAL SCIENCES AND ENGINEERING}}
 \addresses   {}
 \subject     {}
 \keywords    {}
