@@ -1,0 +1,48 @@
+\namedsection{Developing for Limited Environment}{Shepherd}
+% This section talks about the C development
+
+As we have seen in section \ref{ml}, we opted to use a Multilayer Perceptron, which is a good fit for our device as it does not require a great deal of complex mathematical computation. Unfortuneately, however, it does require the use of decimal numbers and uses the sigmoid function, which requires devision and power operations. This section discusses some of the design decisions and sacrifices that were made in order to implement an MLP on the subthreshold Cortex M0+.
+
+\subsection{Sigmoid Function}
+The sigmoid function's graph and equation is shown below in \ref{fig:sigmoid}. Clearly, this equation causes two issues for the proposed device: firstly, it requires devision, and secondly it requires the use of the constant e, which is a non-integer; using this in an operation involving powers could potentially prove expensive.
+
+The first area of note in this graph is that the value of f(t) quickly starts to tend towards 0 in the negative direction, and 1 in the positive direction. It is not uncommon, therefore, to approximate the value of the function at these extremes - \ref{fig:sigmoid_ends} shows this approximation in use for t values outside of the range between 5 and -5.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel = $t$,
+    ylabel = {$f(t)$}
+]
+\addplot[color=red, domain=-5:5]{1 / (1 + exp(-x))};
+\addlegendentry{$1/(1+exp(-t))$}
+\addplot[color=blue, domain=5:8]{1};
+\addplot[color=blue, domain=-8:-5]{0};
+\end{axis}
+\end{tikzpicture}
+\label{fig:sigmoid}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel = $t$,
+    ylabel = {$f(t)$}
+]
+\addplot[color=red]{1 / (1 + exp(-x))};
+\addlegendentry{$1/(1+exp(-t))$}
+\end{axis}
+\end{tikzpicture}
+\label{fig:sigmoid_ends}
+\end{figure}
+
+
+\note{No division - have to scale ints or use floating point lib?}
+
+\note{Hilarious lack of space - recompile stuff}
+
+\note{Use of expensive code to calculate Sigmoid or approximate?}
+
+\note{Java Harness?}
