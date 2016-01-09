@@ -1,6 +1,24 @@
 \chapter{Introduction}
 
 \section{Brief}
+The ARM Cortex-M0+ is a processor which is extremely low powered. Processors such as these open up many exciting opportunities in areas such as the Internet of Things where devices are required to run for months or even years off a single battery. However, such processors would clearly be highly constraining in terms of the amount of processing power available. Memory also has to be kept to a minimum as the more memory used the higher the energy requirements and the whole point of a device like this would be to use as little power as possible. These constraints add to the challenge of implementing a system which is more capable than some of the most basic tasks.
+
+This project aims to research and develop an algorithm which is capable of running on the subthreshold Cortex-M0+ while being able to compute a complex task. The whole purpose of this is to investigate the feasibility of solving more complex problems on these highly constrained devices, which is something the projects customer, ARM, is very interested about as it would help to demonstrate what their energy efficient processors are able to do.
+
+The particular problem we have been tasked to solve is a way to identify and monitor exercises performed by a human wearer. These are specifically exercises which can be done on aeroplanes to reduce the risk of suffering Deep Vein Thrombosis. DVT is a condition where a blood clot can form in one of the deep veins in the body, most commonly the legs. This can lead to further complications such as pulmonary embolism which is when part of the blood clot moves and blocks a blood vessel in the lungs <citation>. Long-haul flights can increase the risk of getting DVT because of the long periods of time sitting down and not moving which reduces circulation in the legs.
+
+Fig <number> shows some of the inflight exercises which can be performed. We have focussed on a few of them including the revolver, the ballerina and the shrug. These involve rotating the feet in circles, pointing the feet up and down and rolling the shoulders backwards and forwards. These are all designed to help keep the circulation going in the limbs.
+
+Possible uses of the algorithm would be to incorporate it into a device which could be given to passengers to strap to their legs. It would then monitor how much exercise each person was doing. This could help inform the passengers whether or not they are doing enough exercise to stay risk free. The device itself could make use of energy efficient technologies (for example the Cortex-M0+) so that its battery could easily last the entire duration of a long-haul flight.
+
+The project requires us to emulate the Cortex-M0+ by creating a test platform that can mimic its processor speed. This is partially because the M0+ is not readily available for us to use, but also because a test platform would allow us to experiment with different clock speeds when testing the algorithm. The hardware section of this report covers what this involved.
+
+The other substantial aspect of this project is the development of the algorithm itself. Multiple approaches are investigated with a particular focus on machine learning techniques. On top of this, the methods of optimising these techniques to reduce processing and memory demands is also heavily looked at. The trade-offs between resource optimisation and accuracy of the algorithm is also examined.  This part of the project is covered in the software section of the report.
+
+Other parts of the project include a user study to collect movement data of the exercises we are trying to detect. This data is needed in order to develop the algorithm and a user study is an ideal way to collect a range of data from a selection of different people because each individual is likely to perform the exercises with slight variations.
+
+This report concludes by evaluating the final developed algorithm in terms of its accuracy in detecting exercises and its power and resource requirements. This is then used as a basis for determining the suitableness of using constrained subthreshold devices to compute complex problems.
+
 
 \section{Requirements}
 
@@ -18,7 +36,7 @@
   \item The algorithm must be suitable to execute on an ultra-low-power subthreshold ARM Cortex-M0+
   \begin{enumerate}[label*=\arabic*.]
     \item This device has a limited processor clocked from 100 kHz to a maximum of 3 MHz
-    \item There is also only 8 kB of available memory
+    \item Memory usage should be kept to a minimum with a target of no more than 8 kB
     \item Therefore, the algorithm should be highly optimised to use as little memory and require as little processing power as possible
   \end{enumerate}
   \item The Cortex-M0+ must be emulated in a test platform as working with an actual M0+ is not feasible
