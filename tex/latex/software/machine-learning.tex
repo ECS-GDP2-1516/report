@@ -1,16 +1,65 @@
 \label{ml}
 \namedsection{Machine Learning}{Playle}
 
+\note{What even is machine learning?}
+
 \note{How exactly does the machine learning algorithm work? Reference papers that describe these methods.}
+	
 
 \note{What experiments were conducted in order to determine machine learning feasibility?}
 
 \note{Why did we use 3 classes rather than just 2?}
+The number of classes to classify was considered, as a variable parameter for the classifier. A classifier with the 2 classes \textit{exercise} \todo{Maybe s/exercise/activity/} and \textit{not exercise}, would only allow for binary classification. Depending on the classifier behaviour and the nature of the exercise in question, it may be the case that when the window of classification lies between 2 exercises, the window could be classified as either class. This unpredictable behaviour would prevent further analysis of the subject's exercise beyond how much time exercise has been detected for. \todo{Add figure}. However, by splitting the \textit{exercise} class into 2 distinct classes, such that every exercise performed will always be composed of these parts, it allows 3 classes to be used with the classifier. Such a change would allow counting of distinct exercises, by ensuring that one type of \textit{exercise} class is followed by the other type of \textit{exercise} class. This would allow the number of exercises to be counted, as well as the amount of time exercised. Further to this, the additional information may allow for heuristics to increase accuracy should the classifier ``bounce''. \todo{More on this in heuristics...} Other numbers of classes were also considered, such as some number of classes for the exercise, along with a class for each likely type of non-exercise activity. \todo{and this idea was rejected because...}
 
 \note{What classification algorithms were trialled? What kind of results were achieved with these. Explain and discuss the workings of each algorithm / type of algorithm.}
 
-\note{What issues were faced as a result of implementing a machine learning algorithm on a constrained system? How were these problems overcome?}
+\subsection{Multilayer Perceptrons}
+A Multilayer Perceptron (MLP) is a type of classifier based off 
+
+
+\note{Finish/tidy this and wrap in figure}
+\begin{tikzpicture}[shorten >=1pt,node distance=1.3cm and 3cm,on grid,auto,initial text={}] 
+\node[state,initial] (i1) {$i_1$};
+\node[state,initial] (i2) [below=of i1] {$i_2$}; 
+\node[state,initial] (in) [below=of i2] {$i_n$}; 
+
+\node[state] (h11) [right=of i1] {$h_{1,1}$};
+\node[state] (h12) [below=of h11] {$h_{1,2}$}; 
+\node[state] (h1a) [below=of h12] {$h_{1,a}$}; 
+
+\node[state] (hb1) [right=of h11] {$h_{b,1}$};
+\node[state] (hb2) [below=of hb1] {$h_{b,2}$}; 
+\node[state] (hba) [below=of hb2] {$h_{b,a}$}; 
+
+\node[state] (o) [right=of hb2] {$o$};
+\path[->] 
+(i1) edge node {} (h11) (i2) edge node {} (h11)
+(i1) edge node {} (h12) (i2) edge node {} (h12)
+(i1) edge node {} (h1a) (i2) edge node {} (h1a)
+(in) edge node {} (h11) (h11) edge node {} (hb1)
+(in) edge node {} (h12) (h11) edge node {} (hb2)
+(in) edge node {} (h1a) (h11) edge node {} (hba)
+(h12) edge node {} (hb1) (h1a) edge node {} (hb1)
+(h12) edge node {} (hb2) (h1a) edge node {} (hb2)
+(h12) edge node {} (hba) (h1a) edge node {} (hba)
+
+(hb1) edge node {} (o)
+(hb2) edge node {} (o)
+(hba) edge node {} (o)
+;
+\end{tikzpicture}
+
+\subsection{Radial Basis Function Networks}
+\subsection{Lazy Learning Methods}
+
+\note{What issues were faced as a result of implementing a machine learning algorithm on a constrained system? How were these problems overcome? \cite{anguita2012human}}
+Each machine learning algorithm comes with its own memory-processing-accuracy trade-off, 
 
 \note{What tools were used in order to assist with the machine learning?}
+Machine learning was assisted with Weka... \todo{}
 
 \note{As a result of the user study, how did the results change? Note observed results due to the user study.}
+
+\note{What metrics were used to measure machine learning classifier performance?}
+
+\note{What parameters are there and how did they affect the accuracy of the system?}
