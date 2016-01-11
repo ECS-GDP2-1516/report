@@ -5,9 +5,16 @@ The ARM Cortex-M0+ is a processor which is extremely low powered. Processors suc
 
 This project aims to research and develop an algorithm which is capable of running on the subthreshold Cortex-M0+ while being able to compute a complex task. The whole purpose of this is to investigate the feasibility of solving more complex problems on these highly constrained devices, which is something the projects customer, ARM, is very interested about as it would help to demonstrate what their energy efficient processors are able to do.
 
-The particular problem we have been tasked to solve is a way to identify and monitor exercises performed by a human wearer. These are specifically exercises which can be done on aeroplanes to reduce the risk of suffering Deep Vein Thrombosis. DVT is a condition where a blood clot can form in one of the deep veins in the body, most commonly the legs. This can lead to further complications such as pulmonary embolism which is when part of the blood clot moves and blocks a blood vessel in the lungs <citation>. Long-haul flights can increase the risk of getting DVT because of the long periods of time sitting down and not moving which reduces circulation in the legs.
+The particular problem we have been tasked to solve is a way to identify and monitor exercises performed by a human wearer. These are specifically exercises which can be done on aeroplanes to reduce the risk of suffering Deep Vein Thrombosis. DVT is a condition where a blood clot can form in one of the deep veins in the body, most commonly the legs. This can lead to further complications such as pulmonary embolism which is when part of the blood clot moves and blocks a blood vessel in the lungs \cite{NHS2014DVT}. Long-haul flights can increase the risk of getting DVT because of the long periods of time sitting down and not moving which reduces circulation in the legs.
 
-Fig <number> shows some of the inflight exercises which can be performed. We have focussed on a few of them including the revolver, the ballerina and the shrug. These involve rotating the feet in circles, pointing the feet up and down and rolling the shoulders backwards and forwards. These are all designed to help keep the circulation going in the limbs.
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=1.0\textwidth]{intro/exercises}
+  \caption{Inflight exercises \cite{virgin2015exercises}}
+  \label{fig:exercises}
+\end{figure}
+
+Figure ~\ref{fig:exercises} shows some of the inflight exercises which can be performed. We have focussed on a few of them including the revolver, the ballerina and the shrug. These involve rotating the feet in circles, pointing the feet up and down and rolling the shoulders backwards and forwards. These are all designed to help keep the circulation going in the limbs.
 
 Possible uses of the algorithm would be to incorporate it into a device which could be given to passengers to strap to their legs. It would then monitor how much exercise each person was doing. This could help inform the passengers whether or not they are doing enough exercise to stay risk free. The device itself could make use of energy efficient technologies (for example the Cortex-M0+) so that its battery could easily last the entire duration of a long-haul flight.
 
