@@ -81,8 +81,23 @@ For the remaining range, between 5 and -5, the sigmoid function is does not tend
 linear equation has proved satisfactory and has only lead to an observed drop in accuracy by 1\% \todo{Again, totally made up}. This is shown in this section's final figure: \ref{fig:sigmoid_hard}.
 
 \subsection{Floating point}
-The lack of floating point support in the proposed device provided the team with a large challenge, as the neural network is entirely based upon
-a series of non-integer values, and the ability for each node to produce non integer values. 
+The lack of floating point support in the proposed device provided the team with a large challenge, as the neural network is entirely based upon a series of non-integer input weights, and the ability for each node to produce non integer output values. In order to get around this problem, the team opted for a fixed-point implementation: the weights of each node are multiplied by a scale factor and the resulting integer part is taken as the value.
+
+This form is convienient as it makes the multiplication and addition of such scaled values straight forward: for addition of values using the same scale factor, it is sufficient to simply add the integers as though they were normal. The equation below illustrates this:
+
+$$x*S+y*S=(x+y)*S$$
+
+For the case of multiplation, the scale factors of each number must be added, meaning that when two numbers with a scale factor of $S$ are multiplied, the resulting number's scale factor is $S^2$:
+
+$$(x*S)(y*S)=(x*y)*S^2$$
+
+This can be easily rectified by simplying dividing the result by $S$ again to return to the original scale factor:
+
+$$\frac{(x*y)*S^2}{S}=(x*y)*S$$
+
+As division is not supported on our system, we have defined our scale factor $S$ as a power of 2: $S=2^B$. We are then able to approximate divisions of powers of 2, by simply performing a bitshift:
+
+$$X/2^B\approx X \gg B$$
 
 \note{No division - have to scale ints or use floating point lib?}
 
