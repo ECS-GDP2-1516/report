@@ -1,4 +1,4 @@
-\namedsection{Developing for Limited Environment}{Shepherd}
+\namedsection{Developing for a Limited Environment}{Shepherd}
 % This section talks about the C development
 
 As we have seen in section \ref{ml}, we opted to use a Multilayer Perceptron, which is a good fit for our device as it does not require a great deal of complex mathematical computation. Unfortuneately, however, it does require the use of decimal numbers and uses the sigmoid function, which requires devision and power operations. This section discusses some of the design decisions and sacrifices that were made in order to implement an MLP on the subthreshold Cortex M0+.
@@ -80,11 +80,12 @@ The first area of note in this graph is that the value of f(t) quickly starts to
 For the remaining range, between 5 and -5, the sigmoid function is does not tend to any fixed value, so a different approximation must be used. Fortuneately, the sigmoid's ``S''-like shape lends itself to being easily split into a series of smaller lines, as shown in figure \ref{fig:sigmoid_soft}. This provides a suitable level of accuracy with far lower computing overhead. However, as beneficial as the approximation in figure \ref{fig:sigmoid_soft} is, it is possible to approximate this further. We have found that approximating the sigmoid function with a single
 linear equation has proved satisfactory and has only lead to an observed drop in accuracy by 1\% \todo{Again, totally made up}. This is shown in this section's final figure: \ref{fig:sigmoid_hard}.
 
+\subsection{Floating point}
+The lack of floating point support in the proposed device provided the team with a large challenge, as the neural network is entirely based upon
+a series of non-integer values, and the ability for each node to produce non integer values. 
 
 \note{No division - have to scale ints or use floating point lib?}
 
 \note{Hilarious lack of space - recompile stuff}
-
-\note{Use of expensive code to calculate Sigmoid or approximate?}
 
 \note{Java Harness?}
