@@ -99,8 +99,24 @@ As division is not supported on our system, we have defined our scale factor $S$
 
 $$X/2^B\approx X \gg B$$
 
-\note{No division - have to scale ints or use floating point lib?}
+\subsection{Space Restrictions}
 
-\note{Hilarious lack of space - recompile stuff}
+As described in \ref{section}, the device we are aiming to develop for has a very low memory space availiable to us: 8KB for both program code and data. When we first compiled our code with mBed's precompiled libraries, the total size of the binary was 12KB. Our first step to solve this was to obtain the source code for the mBed libraries to try compiling these directly along with our program, which allowed us to get down to 8KB. This was a substancial improvement, however it was clear that we would need to decrease this further as it left no space for heap or stack space within our program.
 
-\note{Java Harness?}
+While the GNU compiler is very good at optimising code when it compiles C and C++ code, the linker is not able to do so many of the same optimisations across compilation units. It was a logical first step, therefore, to identify the functions and classes that our program code called within the mBed's api. In many cases, specific API calls were only made once from our code, such as the call to \verb|ic2_init()| which gets the I2C ready to communicate with the processor.
+
+It is logical to ensure such a function remains an atomic referenceable item within a library, as it is feasible for a device to use more than one I2C devices and as such the call may need to be made multiple times and with varying parameters. However, as it was only called once within our code, we were able to move this into the same compilation unit as it was originally called, replacing the call with the code itself inline. As a result, the compiler is no longer required to produce assembly instructions to copy in arguments and push a new frame onto the stack saving not only space, but optimising the performance of the code too.
+
+The mBed API's functions also often came with guards on their arguments; for example, the function \verb|gpio_init()| which was called to initialise the LED pins, accepted a pin as an arguement. Before initialising the given pin, it checks that it was not passed the pseudo-pin ``Not Connected''.
+
+\begin{lstlisting}
+void gpio_init(gpio_t *obj, PinName pin)
+{
+    if (pin == (PinName)NC) // NC = Not Connected
+        return;
+
+    // gpio_init code...
+}
+\end{lstlisting}
+
+Again, such a check is appropriate for an API as incorrectly passing a null pin would cause an error if the code attempts to initialise it. However, in our program we can see which pins we are passing to this function, namely the LED pins, so we can be confident that we are not passing in the null \verb|NC| pin and as such we can delete the check, reducing the number of instructions required.
