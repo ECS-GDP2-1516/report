@@ -180,26 +180,21 @@
     \vskip 60\p@
     \begin{center}
       \setlength{\parskip}{0pt}
-      {\large\textbf{\UNIVNAME}\par}
-      {\large \facname \par}
+      {\Large\textbf{\deptname} \par}
+      {\Large\textbf{\facname} \par}
+      {\Large\textbf{\univname}\par}
       \vfill
-      {\large A group design project report submitted for}
-      {\large the award of \par \degreename \par}
+      {\LARGE \bf \@title \par}
       \vfill
-      {\normalsize Supervisor: \supname \par}
+      {\large by \authornames \par}
+      \vfill
+      {\normalsize \@date \par}
+      \vfill
+      {\normalsize Supervisors: \supname \par}
       {\normalsize Examiner: \examname \par}
       \vfill
-      \hspace{6mm}\parbox[t][51mm][s]{89mm}{
-        \center
-        \vfill
-        {\large \bf \@title \par}
-        \vfill
-        {\normalsize by \authornames \par}
-        \vfill
-        {\normalsize \@date \par}
-        \vfill
-      }
-      \parbox[t][95mm][s]{89mm}{}
+      {\normalsize A group design project report submitted for}
+      {\normalsize the award of \par \degreename \par}
     \end{center}
     \par
     \@thanks
