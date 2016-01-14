@@ -109,7 +109,7 @@ It is logical to ensure such a function remains an atomic referenceable item wit
 
 The mBed API's functions also often came with guards on their arguments; for example, the function \verb|gpio_init()| which was called to initialise the LED pins, accepted a pin as an arguement. Before initialising the given pin, it checks that it was not passed the pseudo-pin ``Not Connected''.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Argument Guards of gpio init}]
 void gpio_init(gpio_t *obj, PinName pin)
 {
     if (pin == (PinName)NC) // NC = Not Connected
