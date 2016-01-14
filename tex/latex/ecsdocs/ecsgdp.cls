@@ -184,17 +184,20 @@
       {\Large\textbf{\facname} \par}
       {\Large\textbf{\univname}\par}
       \vfill
-      {\LARGE \bf \@title \par}
       \vfill
-      {\large by \authornames \par}
       \vfill
-      {\normalsize \@date \par}
       \vfill
-      {\normalsize Supervisors: \supname \par}
-      {\normalsize Examiner: \examname \par}
+      {\huge \bf \@title \par}
+      \bigskip
+      {\Large by \authornames \par}
       \vfill
-      {\normalsize A group design project report submitted for}
-      {\normalsize the award of \par \degreename \par}
+      {\Large \@date \par}
+      \vfill
+      {\Large Supervisors: \supname \par}
+      {\Large Examiner: \examname \par}
+      \vfill
+      {\Large A group design project report submitted for}
+      {\Large the award of \par \degreename \par}
     \end{center}
     \par
     \@thanks
