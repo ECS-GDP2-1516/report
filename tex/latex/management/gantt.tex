@@ -1,7 +1,10 @@
 \section{Gantt Charts}
 
+The following 4 pages show our planned Gantt charts.
+
 \begin{landscape}
 
+\begin{table}
 \begin{ganttchart}[
         hgrid,
         vgrid,
@@ -17,6 +20,29 @@
     \ganttbar{Seminar Preparation}{2015-10-19}{2015-10-25} \\
     \ganttlinkedmilestone{Progress Seminar 1}{2015-10-26} \ganttnewline[ultra thick, red]
 
+    \ganttgroup{Movement Data Study}{2015-10-05}{2015-10-30} \\
+    \ganttbar{Search for Volunteers}{2015-10-12}{2015-10-23} \\
+    \ganttbar{Apply for Ethics Approval}{2015-10-05}{2015-10-23} \ganttnewline[ultra thick, red]
+
+    \ganttgroup{Algorithm Work}{2015-10-05}{2015-11-15} \\
+    \ganttbar{Background Research}{2015-10-05}{2015-10-25} \\
+    \ganttbar{Algorithm Design}{2015-10-19}{2015-11-15} \\
+    \ganttbar{Algorithm Implementation}{2015-11-02}{2015-11-15}
+\end{ganttchart}
+\caption{Gantt Chart: Initial Half of Term 1}
+\label{table:gantt:term11}
+\end{table}
+
+\begin{table}
+\begin{ganttchart}[
+        hgrid,
+        vgrid,
+        x unit=4mm,
+        y unit chart=.7cm,
+        time slot format=isodate
+    ]{2015-09-28}{2015-11-15}
+    \gantttitlecalendar{month=shortname, week, day} \\
+
     \ganttgroup{Hardware Work}{2015-10-02}{2015-11-01} \\
     \ganttbar{Acquire Lab Desk}{2015-10-02}{2015-10-09} \\
     \ganttbar{Acquire FPGA Board}{2015-10-05}{2015-10-10} \\
@@ -27,32 +53,11 @@
     \ganttlinkedbar{Build hardware}{2015-10-15}{2015-11-01} \\
     \ganttbar{Sensor Code}{2015-10-19}{2015-10-30}
 \end{ganttchart}
+\caption{Gantt Chart: Hardware Development Work}
+\label{table:gantt:hardware}
+\end{table}
 
-
-\begin{ganttchart}[
-        hgrid,
-        vgrid,
-        x unit=4mm,
-        y unit chart=.7cm,
-        time slot format=isodate
-    ]{2015-09-28}{2015-11-15}
-    \gantttitlecalendar{month=shortname, week, day} \\
-
-    \ganttgroup{Movement Data Study}{2015-10-05}{2015-10-30} \\
-    \ganttbar{Search for Volunteers}{2015-10-12}{2015-10-23} \\
-    \ganttbar{Apply for Ethics Approval}{2015-10-05}{2015-10-23} \\
-    \ganttlinkedbar{Collect Movement Data}{2015-10-26}{2015-10-30} \ganttnewline[ultra thick, red]
-
-    \ganttgroup{Algorithm Work}{2015-10-05}{2015-11-15} \\
-    \ganttbar{Background Research}{2015-10-05}{2015-10-25} \\
-    \ganttbar{Algorithm Design}{2015-10-19}{2015-11-15} \\
-    \ganttbar{Algorithm Implementation}{2015-11-02}{2015-11-15}
-
-    
-\end{ganttchart}
-
-\begin{flushright}
-
+\begin{table}
 \begin{ganttchart}[
         hgrid,
         vgrid,
@@ -69,18 +74,23 @@
         bar/.append style={fill=red, draw=red},
         bar label font=\color{yellow}
     ]{Christmas Holidays}{2015-12-12}{2016-01-03} \\
+    
+    \ganttgroup{Algorithm Work}{2015-11-16}{2015-12-09} \\
+    \ganttbar{Algorithm Implementation}{2015-11-16}{2015-11-29} \\
+    \ganttbar{Testing and Evaluation}{2015-11-16}{2015-12-09} \\
+    \ganttmilestone{Target Completion}{2015-12-09} \ganttnewline[ultra thick, red]
 
     \ganttbar{Seminar Preparation}{2015-11-16}{2015-11-22} \\
     \ganttlinkedmilestone{Progress Seminar 2}{2015-11-23} \\
 
     \ganttbar{Report Writing}{2015-12-14}{2015-12-20}
-    \ganttbar{}{2015-12-28}{2015-12-30} \ganttnewline[ultra thick, red]
-    
-    \ganttbar{Algorithm Implementation}{2015-11-16}{2015-11-29} \\
-    \ganttbar{Testing and Evaluation}{2015-11-16}{2015-12-09} \\
-    \ganttmilestone{Target Completion}{2015-12-09}
 \end{ganttchart}
+\caption{Gantt Chart: Second half of Term 1}
+\label{table:gantt:term12}
+\end{table}
 
+
+\begin{table}[h!]
 \begin{ganttchart}[
         hgrid,
         vgrid,
@@ -110,7 +120,8 @@
     \ganttbar{Presentation Preparation}{2016-02-08}{2016-02-19} \\
     \ganttlinkedmilestone{Final Presentation}{2016-02-20}
 \end{ganttchart}
-
-\end{flushright}
+\caption{Gantt Chart: After Christmas}
+\label{table:gantt:report}
+\end{table}
 
 \end{landscape}
