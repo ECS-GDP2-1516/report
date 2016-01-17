@@ -2,6 +2,16 @@
 \namedsection{Machine Learning}{Playle}
 
 \note{What even is machine learning?}
+Machine learning is a technique that takes some observations about a system in addition to a value of interest \todo{Maybe s/value of interest/output/}, builds a model around these parameters and uses this model to create predictions about the value of interest for the system. There are typically three categories of machine learning algorithm: classification, where the value of interest is in a finite set of classes; regression, where the value of interest is continuous...... \todo{}
+
+In order to detect exercise, a classifying machine learning algorithm will be most suitable, with the classes being types of activity observed.
+
+\note{What issues are there in Machine Learning?}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% CURSE OF DIMENSIONALITY %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+One of the frequently encountered problems is the curse of dimensionality \cite{bellman1957dynamic}. Having a high number of dimensions, often as a result of having a large number of inputs into a machine learning algorithm, can create the problem whereby the amount of instances required to sufficiently train the model increases as the amount of training of the model must have instances such that the input feature space must be explored sufficiently. \cite{oommen2008objective}. Further to this effect, the time and space complexity of many machine learning algorithms are functions of the feature space's dimensionality.
 
 \note{How exactly does the machine learning algorithm work? Reference papers that describe these methods.}
 	
@@ -14,8 +24,14 @@ The number of classes to classify was considered, as a variable parameter for th
 \note{What classification algorithms were trialled? What kind of results were achieved with these. Explain and discuss the workings of each algorithm / type of algorithm.}
 
 \subsection{Multilayer Perceptrons}
-A Multilayer Perceptron (MLP) is a type of classifier based off 
+A Multilayer Perceptron (MLP) is a type Neural Network, where the nodes, or perceptrons, are organised in layers. Each node accepts some number of inputs with some weight. These summation of these weighted inputs are computed and applied to some activation function, the result of which is the output of the node (equation \ref{eq:perceptron}).
 
+\begin{equation}
+\label{eq:perceptron}
+\text{Output } o = activation\bigg(\sum_{i=1}^{d}{x_iw_i}\bigg) 
+\end{equation}
+
+Each perceptron affectively defines a plane in $d$-dimensional space. Instances on either side of this plane can then be classed, allowing a single perceptron to act as a simple classifier. By combining multiple perceptrons in a layer, it is possible to build up these planes in order to create more complex classifier made of these linear classifiers. The addition of layers, using previous layers are inputs allows a more complex classifier still by allowing the importance of these sub-classifiers to vary with the inputs. MLPs with enough inputs and layers can therefore replicate any function \cite{baum1988capabilities}.
 
 \note{Finish/tidy this and wrap in figure}
 \begin{tikzpicture}[shorten >=1pt,node distance=1.3cm and 3cm,on grid,auto,initial text={}] 
@@ -50,7 +66,15 @@ A Multilayer Perceptron (MLP) is a type of classifier based off
 \end{tikzpicture}
 
 \subsection{Radial Basis Function Networks}
-\subsection{Lazy Learning Methods}
+
+\subsection{Instance-Based Learning}
+Instance-based learning is a type of machine learning algorithm that postpones model creation until an output for a problem instance is required. Some number of labelled instances are stored in memory, and these are used to label problem instances.
+
+Instance-based learning is advantageous over other machine learning methods in that adapting the model with new instances is trivial. This makes it attractive for simple systems where some adaptation of the model is required.
+
+As a number of labelled instanced must be kept in memory in order to compute the model, instance-based learning methods can require large amounts of memory to classify. Additionally, any problem instances must be compared against each labelled instanced that is to be used for the model, meaning that time complexity for classification of any problem instance is linear in the number of labelled instances. This can present significant challenges when the size of the training data set become large with respect to the underlying device.
+
+An example of instance-based learning is the k-nearest neighbours algorithm where any problem instance is compared to the k-nearest labelled instances. The class that the problem instance is most similar to is then given this classification. \todo{Reword}
 
 \note{What issues were faced as a result of implementing a machine learning algorithm on a constrained system? How were these problems overcome? \cite{anguita2012human}}
 Each machine learning algorithm comes with its own memory-processing-accuracy trade-off, 
