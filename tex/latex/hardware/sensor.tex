@@ -2,6 +2,8 @@
 
 \subsection{Libraries}
 
+\todo{EXPAND}
+
 The library available for the Xadow MPU6050 contains two separate classes, one was an interface to the chips I2C class called I2Cdev and the other called MPU6050 was a class containing functions for configuring and using the sensor communicating via the I2Cdev class. 
 
 The libraries initially were written to be used with an Arduino which uses the Atmel chipset and hence interfaces with the Atmel libraries for I2C communication. Thus, the library was incompatible for an ARM processor. 
@@ -9,4 +11,6 @@ The libraries initially were written to be used with an Arduino which uses the A
 To remedy this, the I2Cdev class was completely re-written to interface with the ARM I2C library instead of the Atmel. 
 
 \note{Talk about the issue with i2c\_stop() and i2c\_start()}
-
+\note{Talk about scaling the raw sensor values}
+\note{Talk about the different sensor register configurations to configure the different stuff}
+\note{REMEMBER ABOUT GYRO STUFF}
