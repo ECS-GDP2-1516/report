@@ -85,19 +85,31 @@ The lack of floating point support in the proposed device provided the team with
 
 This form is convienient as it makes the multiplication and addition of such scaled values straight forward: for addition of values using the same scale factor, it is sufficient to simply add the integers as though they were normal. The equation below illustrates this:
 
-$$x*S+y*S=(x+y)*S$$
+\begin{equation}
+\label{eq:bits:addition}
+x*S+y*S=(x+y)*S
+\end{equation}
 
 For the case of multiplation, the scale factors of each number must be added, meaning that when two numbers with a scale factor of $S$ are multiplied, the resulting number's scale factor is $S^2$:
 
-$$(x*S)(y*S)=(x*y)*S^2$$
+\begin{equation}
+\label{eq:bits:multiplication}
+(x*S)(y*S)=(x*y)*S^2
+\end{equation}
 
 This can be easily rectified by simplying dividing the result by $S$ again to return to the original scale factor:
 
-$$\frac{(x*y)*S^2}{S}=(x*y)*S$$
+\begin{equation}
+\label{eq:bits:rescale}
+\frac{(x*y)*S^2}{S}=(x*y)*S
+\end{equation}
 
 As division is not supported on our system, we have defined our scale factor $S$ as a power of 2: $S=2^B$. We are then able to approximate divisions of powers of 2, by simply performing a bitshift:
 
-$$X/2^B\approx X \gg B$$
+\begin{equation}
+\label{eq:bits:div_approx}
+X/2^B\approx X \gg B
+\end{equation}
 
 \subsection{Space Restrictions}
 
@@ -183,5 +195,43 @@ main:
 
 Unfortuneately, a similar technique is not used for the Pin Mappings. Instead, these are stored within an array within a C file, which is specific to each target and are worked upon in two seperate files - one common across all devices, and one common to the device's family. The reason this is done is that the pin mappings, and the way in which their modes are updated is more complex and as such is harder to achieve through the use of defined macros. However, as the result of this is that the pin mappings and pin functions are not contained within a single compilation unit, the linker is not able to perform the same optimisations as the compiler is.
 
-This not only results in wasted space, as the pins and their functions must be stored as part of the program code, but it also wastes valueable clock cycles, calculating values for pin addresses which could in theory be precalculated. In order to avoid this, we worked through the pin functions from the point at which they were called and manually calculated the registers that would be used. We then replaced these with the hard coded register values.
+This not only results in wasted space, as the pins and their functions must be stored as part of the program code, but it also wastes valueable clock cycles, calculating values for pin addresses which could in theory be precalculated. In order to avoid this, we worked through the pin functions manually from the point at which they were called and manually calculated the registers that would be used. We then replaced these with the hard coded register values.
 
+\subsubsection{Size Outcome}
+
+As a result of the optimisations the total size of the binary comes to 3168 bytes, or 3.09KB. Table \ref{tab:prog-size} shows the break down of these values.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        Section & Size \\
+        \hline
+        Code & 2412 \\
+        Constant Weights & 524 \\
+        Variable Initialisations for the Heap & 108 \\
+        LibC Values & 16 \\
+        \hline
+    \end{tabular}
+    \caption{Binary File Size \label{tab:prog-size}}
+\end{table}
+
+During the initialisation phase, a further 168 bytes are loaded onto the heap, for the following data as detailed in table \ref{tab:heap-size}. The heap, after initialisation does not grow any further, remaining at 276 bytes. As such, support for on-the-fly heap assignments (\verb|malloc|) was removed from the mbed library to save space within the binary.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        Section & Size \\
+        \hline
+        No Operation Instruction & 4 \\
+        Variable Initialisations from binary (as above) & 108 \\
+        The last twenty classifications & 20 \\
+        The last twenty X, Y, Z readings & 140 \\
+        Object data structure used by LibC & 24 \\
+        \hline
+    \end{tabular}
+    \caption{Heap Size \label{tab:heap-size}}
+\end{table}
+
+The stack does not grow above 60 bytes. As such, the total memory requirement for the application can be summerised as the summation of the binary size, the size of the heap and the maximum stack size. This comes to 3396 bytes leaving a theoretical remainder of 4796 bytes availiable for enhancements or storage of excersises performed over the course of a flight.
