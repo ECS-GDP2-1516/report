@@ -1,1 +1,35 @@
 \chapter{User Study}
+As seen from the software section, it was decided that a machine learning approach would be most appropriate for developing the algorithm to detect exercises. In particular, a Multilayer Perceptron was the chosen type of machine learning algorithm. 
+
+Apart from performing the actual optimisations on the algorithm, another important step was to gather training data which could be used to generate a model for the algorithm to use. The model plays a vital role because it is used to make classifications of new data based on the data it has been trained on.
+
+The data which is involved are the readings from sensors which are attached to the body of a person when they are performing the exercises. As it is the intention for the system to be used by many different people who travel in planes, it was decided to gather the training data using a user study. This is because each individual has slight variations in the way they perform exercises so in order to improve the robustness of the system we collected movement data from 20 different people. This movement data could then be combined as the training data to form a model capable of correctly classifying exercises for most people.
+
+\section{Study Preparation}
+Before performing studies involving participants who are not actually members of the project it is required to gain ethical approval. This is a requirement put in place from the University of Southampton and also covers the legal requirement of data protection when dealing with participant’s personal data. Faculty ethics committees review applications for ethical approval and once they are approved insurance and legal cover is provided. Therefore, it is highly important to follow the approval process as it helps to make sure there is enough detail and planning in the study to help keep participants safe.
+
+To get advice with the application process, contact was made with the University of Southampton Safety and Occupational Health department <ref>. In a meeting between the groups user study lead and members of SOH it was decided that the study should take place in a private room where there would not be any interruptions and assistance was provided with booking a lab room in the Phycology department for this purpose. Further assistance was also given for finding the contact details of first aiders.
+
+\section{Ethical Approval Process}
+Throughout the application process, heavy reference was made to the instructions and guideline documents provided by the Ethics and Research Governance Online website <ref>. One of the key things that are used to classify studies are study characteristics which are a list of areas where potential risks could be introduced ranging from low to high likelihood. As our study involved wearable technology, this counted as being intrusive which in turn meant there was a risk of harm and these are two medium risk study characteristics.
+
+This meant that the user study had to provide consent forms so that participants could provide their consent for taking part in writing. However, this also meant that personal data was collected in the study which caused another study characteristic to be matched.
+
+Overall, this required several documents to be submitted as part of the ethics application. These included the consent form as already mentioned and participant information which clearly stated to the participants what will be required of them in the study. On top of this, a data protection act plan which outlined how participant’s personal data will be kept safe was also submitted along with a risk management plan which had to identify possible ways a participant might get injured and how these risks would be reduced. A debrief plan which stated how participants could be told of the results of the study was also included as were contact information and technical details documents to provide even further details about the study.
+
+In this project, there were two areas where user studies could have been required. One was to collect movement data to train the algorithm by generating a model as already mentioned. The other area was to perform a user study to test the final system and measure its accuracy. As applying for ethics approval is a very time consuming process, it was decided to incorporate both areas into a single study. This was possible because both areas involve the participants performing exactly the same actions, it was only what was being recorded that changed. This was made clear throughout the ethics application which eventually led to it being approved.
+
+\section{During the Study}
+In the end, only the first area of the user study was performed for collecting movement data to train the algorithm. Specifically, accelerometer and gyroscope sensor data was required to be collected so that the effectiveness of the two at training the algorithm and accurately classifying exercises could be compared.
+
+At this stage in the project, the prototype device was not yet ready to be used to record the movement data so a mobile phone with inbuilt accelerometer and gyroscope sensor was used instead. The Physics Toolbox Suite Version 1.4.4 app <ref> was used to record data directly from the phones sensors by allowing us to choose which sensors to use.
+
+For each participant, the phone was strapped to various parts of their body using Velcro. These positions included the top of the right foot, and the outer side of their upper right arm. It was also made sure that these positions and the orientation of the phone were the same for each participant in order to make sure the data was consistent. This was vital as the data from each participant was combined to form the overall training data.
+
+When the phone was attached to the foot, each participant was sat down and performed the foot rotation exercises where they stretched out their legs and slowly rotated their feet in both clockwise and anticlockwise directions about 10 times each. Also while sitting down, each participant performed the ballerina exercise where they placed their feet on the ground and raised their heels, followed by raising their toes and rolling back their heels to the ground. This was also repeated about 10 times. Walking movement data was also collected while the phone was on the foot. The purpose of collecting this was to use it to train the algorithm to not classify walking as exercise.
+
+When the phone was attached to the arm, the participants were told to do the shoulder rolling exercise where the shoulders were rolled forwards approximately 10 times.
+
+Each of these exercises was repeated twice. One time for the accelerometer data and one for the gyroscope data. At the end of each exercise, the results were emailed to a member of the group who made them available on a Git repository.
+
+\section{Classification of Results}
