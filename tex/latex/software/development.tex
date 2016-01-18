@@ -120,3 +120,68 @@ void gpio_init(gpio_t *obj, PinName pin)
 \end{lstlisting}
 
 Again, such a check is appropriate for an API as incorrectly passing a null pin would cause an error if the code attempts to initialise it. However, in our program we can see which pins we are passing to this function, namely the LED pins, so we can be confident that we are not passing in the null \verb|NC| pin and as such we can delete the check, reducing the number of instructions required.
+
+\subsubsection{Pinmap Functions}
+
+The mBed library is designed to be general purpose across multiple platforms, as such the library contains a layer of abstraction to help it interface with the pins and memory addresses for a specific device. For memory addresses, this abstraction is achieved using macros in device-specific header files, which allows optimisation to can happen at compile time:
+
+\begin{lstlisting}[caption={Memory spaces mapped in LPC11Uxx.h}]
+typedef struct {                 /*!< GPIO_GROUP_INT0 Structure */
+    __IO uint32_t CTRL;          /*!< GPIO grouped interrupt control register */
+    __I  uint32_t RESERVED0[7];
+    __IO uint32_t PORT_POL[2];   /*!< Interrupt port 0 polarity register */
+    __I  uint32_t RESERVED1[6];
+    __IO uint32_t PORT_ENA[2];   /*!< Interrupt port 0/1 enable register */
+} LPC_GPIO_GROUP_INTx_Type;
+
+// ---------------------------------------
+// -----    Peripheral memory map    -----
+// ---------------------------------------
+
+#define LPC_GPIO_PIN_INT_BASE     (0x4004C000)
+#define LPC_GPIO_GROUP_INT0_BASE  (0x4005C000)
+#define LPC_GPIO_GROUP_INT1_BASE  (0x40060000)
+
+// ----------------------------------------
+// -----    Peripheral declaration    -----
+// ----------------------------------------
+
+#define LPC_GPIO_GROUP_INT0 ((LPC_GPIO_GROUP_INTx_Type*) LPC_GPIO_GROUP_INT0_BASE)
+#define LPC_GPIO_GROUP_INT1 ((LPC_GPIO_GROUP_INTx_Type*) LPC_GPIO_GROUP_INT1_BASE)
+\end{lstlisting}
+
+The above specifices the structure of the GPIO INT memory space, then defines the memory spaces and creates references to these. This allows the developer, and the libraries to use the constant pointers, as illustrated:
+
+\begin{lstlisting}[caption={LPC GPIO GROUP INT0 being used}]
+#include ``LPC11Uxx.h'';
+
+void main()
+{
+    LPC_GPIO_GROUP_INT0_BASE->CTRL = 48;
+}
+\end{lstlisting}
+
+The use of these definitions allows the compiler to optimise these to constant values, as shown with the assembly below:
+
+\begin{lstlisting}[caption={LPC GPIO GROUP INT0 converted to ASM}]
+main:
+    str fp, [sp, #-4]! @ Stack Init
+    add fp, sp, #0     @ Stack Init
+    ldr r3, .L2        @ Value of memory space
+    mov r2, #48        @ Using 48
+    str r2, [r3]       @ Saving 48 to the memory space
+    mov r0, r3
+    sub sp, fp, #0
+    @ sp needed
+    ldr fp, [sp], #4
+    bx  lr
+.L3:
+    .align  2
+.L2:
+    .word   1074118656 @ This is 0x4005C000
+\end{lstlisting}
+
+Unfortuneately, a similar technique is not used for the Pin Mappings. Instead, these are stored within an array within a C file, which is specific to each target and are worked upon in two seperate files - one common across all devices, and one common to the device's family. The reason this is done is that the pin mappings, and the way in which their modes are updated is more complex and as such is harder to achieve through the use of defined macros. However, as the result of this is that the pin mappings and pin functions are not contained within a single compilation unit, the linker is not able to perform the same optimisations as the compiler is.
+
+This not only results in wasted space, as the pins and their functions must be stored as part of the program code, but it also wastes valueable clock cycles, calculating values for pin addresses which could in theory be precalculated. In order to avoid this, we worked through the pin functions from the point at which they were called and manually calculated the registers that would be used. We then replaced these with the hard coded register values.
+
