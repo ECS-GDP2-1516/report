@@ -6,17 +6,55 @@ Machine learning is a technique that takes some observations about a system in a
 
 In order to detect exercise, a classifying machine learning algorithm will be most suitable, with the classes being types of activity observed.
 
-\note{What issues are there in Machine Learning?}
+\subsection{Considered Issues}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CURSE OF DIMENSIONALITY %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-One of the frequently encountered problems is the curse of dimensionality \cite{bellman1957dynamic}. Having a high number of dimensions, often as a result of having a large number of inputs into a machine learning algorithm, can create the problem whereby the amount of instances required to sufficiently train the model increases as the amount of training of the model must have instances such that the input feature space must be explored sufficiently. \cite{oommen2008objective}. Further to this effect, the time and space complexity of many machine learning algorithms are functions of the feature space's dimensionality.
+One of the frequently encountered problems is the curse of dimensionality \cite{bellman1957dynamic}. Having a high number of dimensions, often as a result of having a large number of inputs into a machine learning algorithm, can create the problem whereby the amount of instances required to sufficiently train the model increases as the amount of training of the model must have instances such that the input feature space must be explored sufficiently. \cite{oommen2008objective}. Further to this effect, the time and space complexity of many machine learning algorithms are functions of the feature space's dimensionality. However, existing work has demonstrated that the curse of dimensionality is not necessarily applicable to time-series data as the nature of such data explores the feature space on the condition that the signal-to-noise ratio is sufficiently high \cite{bernecker2011quality}.
 
 \note{How exactly does the machine learning algorithm work? Reference papers that describe these methods.}
-	
 
 \note{What experiments were conducted in order to determine machine learning feasibility?}
+\subsection{Initial Feasibility Assessment}
+In order to initially determine the feasibility of applying machine learning for detecting exercise, a simple experiment was conducted with a single subject. The intent of the experiment was to implement a similar machine learning algorithm as is described in \cite{kwapisz2011activity} to ensure understanding of the problem at hand.
+
+The collection device used came in the form of a Sony Z3 mobile phone, providing kinematic sensors, of which the gyroscope, measuring the angular velocity, was used. The subject had the collection device attached to their foot while they performed activities including a foot rotation exercise; walking on a flat surface; and walking up and down stairs. Additionally, noise was collected by moving the collection device in random directions. The collection device sampled data at 200Hz on each axis, so for the purpose of assessing feasibility, this value was carried through into machine learning, using a window size of 200 samples for a classification over 1 second intervals.
+
+Data for each activity was collected separately to ensure classification could be performed without having to note exact timings of activities. Some examples of the data collected in these activities are shown in figure \ref{fig:first-data}, where the periodic nature of all the activities (with the exception of noise), can be seen clearly. \todo{Discuss this data more?}
+
+This data was run through a series of tools to build a model, as described in section \ref{sec:tools-produced}. Initial evaluation of the performance was conducted using 10-fold cross-validation. The confusion matrix for a simple naive Bayes classifier is shown in table \ref{tab:first-confusion}.
+
+The results for this initial experiment were promising, clearly indicating that the model was able to distinguish between the activities.
+
+\begin{table}[]
+	\centering
+	\caption{Feasibility Assessment Confusion Matrix \label{tab:first-confusion}}
+	\begin{tabular}{|cccc|ll|}
+		\hline
+		\multicolumn{4}{|c|}{Classified As}   &          &                        \\
+		Exercise & Noise & Stairs & Walking &          &                        \\
+		\hline
+		62       & 0     & 0      & 0       & Exercise & \multirow{4}{*}{Class} \\
+		2        & 15    & 1      & 0       & Noise    &                        \\
+		3        & 0     & 10     & 3       & Stairs   &                        \\
+		1        & 0     & 1      & 7       & Walking  &                       \\
+		\hline
+	\end{tabular}
+\end{table}
+
+
+\begin{figure}
+	\centering
+	\subfigure[Exercise]{\label{fig:first-exercise}\includegraphics[width=70mm]{software/plots/first-exercise.pdf}}
+	\subfigure[Noise]{\label{fig:first-noise}\includegraphics[width=70mm]{software/plots/first-noise.pdf}}
+	\subfigure[Stairs]{\label{fig:first-stairs}\includegraphics[width=70mm]{software/plots/first-stairs.pdf}}
+	\subfigure[Walking]{\label{fig:first-walking}\includegraphics[width=70mm]{software/plots/first-walking.pdf}}
+	\caption{Feasibility Assessment Data \label{fig:first-data}}
+\end{figure}
+
+\subsection{Tools Produced \label{sec:tools-produced}}
+\note{Tools produced}
 
 \note{Why did we use 3 classes rather than just 2?}
 The number of classes to classify was considered, as a variable parameter for the classifier. A classifier with the 2 classes \textit{exercise} \todo{Maybe s/exercise/activity/} and \textit{not exercise}, would only allow for binary classification. Depending on the classifier behaviour and the nature of the exercise in question, it may be the case that when the window of classification lies between 2 exercises, the window could be classified as either class. This unpredictable behaviour would prevent further analysis of the subject's exercise beyond how much time exercise has been detected for. \todo{Add figure}. However, by splitting the \textit{exercise} class into 2 distinct classes, such that every exercise performed will always be composed of these parts, it allows 3 classes to be used with the classifier. Such a change would allow counting of distinct exercises, by ensuring that one type of \textit{exercise} class is followed by the other type of \textit{exercise} class. This would allow the number of exercises to be counted, as well as the amount of time exercised. Further to this, the additional information may allow for heuristics to increase accuracy should the classifier ``bounce''. \todo{More on this in heuristics...} Other numbers of classes were also considered, such as some number of classes for the exercise, along with a class for each likely type of non-exercise activity. \todo{and this idea was rejected because...}
