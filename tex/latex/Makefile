@@ -17,7 +17,12 @@ wordcount:
 	@../../texcount.pl -inc -total report.tex
 
 %.pdf: %.tex 
-	cd software/plots/ && pdflatex $(shell basename $<)
+	if test -e $@ ; then \
+		touch $@ ; \
+	else \
+		cd software/plots/ ; \
+		pdflatex $(shell basename $<) ; \
+	fi
 
 clean:
 	rm -f report.aux report.lof report.log report.lol report.lot report.out report.toc $(PLOT_TARGETS:.pdf=.aux) $(PLOT_TARGETS:.pdf=.log)
