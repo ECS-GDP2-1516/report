@@ -1,0 +1,25 @@
+% This file is only used to generate the figure to be included
+% This does not need to be compiled each time
+% Do not attempt to include this in the main document, it will break LaTeX!
+
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = $t$,
+            ylabel = {$f(t)$},
+            legend pos = south east
+        ]
+            \addplot[color=red, domain=-5:5]{x / 10 + 1 / 2};
+            \addlegendentry{$x/10 + 1/2$}
+            \addplot[color=blue, domain=5:8]{1};
+            \addplot[color=blue, domain=-8:-5]{0};
+            \addlegendentry{$0, 1$}
+        \end{axis}
+    \end{tikzpicture}
+\end{document}

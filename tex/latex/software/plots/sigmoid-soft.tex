@@ -1,0 +1,21 @@
+% This file is only used to generate the figure to be included
+% This does not need to be compiled each time
+% Do not attempt to include this in the main document, it will break LaTeX!
+
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = $t$,
+            ylabel = {$f(t)$},
+            legend pos = south east
+        ]
+            \addplot[color=red, domain=-8:8, samples=8]{1 / (1 + exp(-x))};
+        \end{axis}
+    \end{tikzpicture}
+\end{document}

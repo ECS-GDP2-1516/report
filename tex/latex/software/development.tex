@@ -8,73 +8,13 @@ The sigmoid function's graph and equation is shown below in figure \ref{fig:sigm
 
 The first area of note in this graph is that the value of f(t) quickly starts to tend towards 0 in the negative direction, and 1 in the positive direction. It is not uncommon, therefore, to approximate the value of the function at these extremes. Figure \ref{fig:sigmoid_ends} shows this approximation highlighted in blue for t values outside of the range between 5 and -5; it is plain to see that the difference between figures \ref{fig:sigmoid} and \ref{fig:sigmoid_ends} is difficult to see. On average, we have found that approximately 42\% \todo{REF needed} of nodes produce values in outside this range meaning they can be approximated to 0 or 1 without the sigmoid function.
 
-\begin{figure}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    xlabel = $t$,
-    ylabel = {$f(t)$},
-    legend pos = south east
-]
-\addplot[color=red, domain=-8:8]{1 / (1 + exp(-x))};
-\addlegendentry{$1/(1+exp(-t))$}
-\end{axis}
-\end{tikzpicture}
-\caption{The Sigmoid Function}
-\label{fig:sigmoid}
-\end{figure}
-
-\begin{figure}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    xlabel = $t$,
-    ylabel = {$f(t)$},
-    legend pos = south east
-]
-\addplot[color=red, domain=-5:5]{1 / (1 + exp(-x))};
-\addlegendentry{$1/(1+exp(-t))$}
-\addplot[color=blue, domain=5:8]{1};
-\addplot[color=blue, domain=-8:-5]{0};
-\addlegendentry{$0, 1$}
-\end{axis}
-\end{tikzpicture}
-\caption{The Sigmoid Function with approximated ends}
-\label{fig:sigmoid_ends}
-\end{figure}
-
-\begin{figure}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    xlabel = $t$,
-    ylabel = {$f(t)$},
-    legend pos = south east
-]
-\addplot[color=red, domain=-8:8, samples=8]{1 / (1 + exp(-x))};
-\end{axis}
-\end{tikzpicture}
-\caption{The Sigmoid Function appoximated with lines}
-\label{fig:sigmoid_soft}
-\end{figure}
-
-\begin{figure}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    xlabel = $t$,
-    ylabel = {$f(t)$},
-    legend pos = south east
-]
-\addplot[color=red, domain=-5:5]{x / 10 + 1 / 2};
-\addlegendentry{$x/10 + 1/2$}
-\addplot[color=blue, domain=5:8]{1};
-\addplot[color=blue, domain=-8:-5]{0};
-\addlegendentry{$0, 1$}
-\end{axis}
-\end{tikzpicture}
-\caption{The Sigmoid Function approximated as a single line}
-\label{fig:sigmoid_hard}
+\begin{figure}[!htbp]
+    \centering
+    \caption{Sigmoid Functions \label{fig:sigmoid-options}}
+    \subfigure[Normal Sigmoid Function]{\label{fig:sigmoid}\includegraphics[width=70mm]{software/plots/sigmoid.pdf}}
+    \subfigure[Approximated Ends]{\label{fig:sigmoid-ends}\includegraphics[width=70mm]{software/plots/sigmoid-ends.pdf}}
+    \subfigure[Approximated With Lines]{\label{fig:sigmoid-soft}\includegraphics[width=70mm]{software/plots/sigmoid-soft.pdf}}
+    \subfigure[Approximated With Linear Equation]{\label{fig:sigmoid-hard}\includegraphics[width=70mm]{software/plots/sigmoid-hard.pdf}}
 \end{figure}
 
 For the remaining range, between 5 and -5, the sigmoid function is does not tend to any fixed value, so a different approximation must be used. Fortuneately, the sigmoid's ``S''-like shape lends itself to being easily split into a series of smaller lines, as shown in figure \ref{fig:sigmoid_soft}. This provides a suitable level of accuracy with far lower computing overhead. However, as beneficial as the approximation in figure \ref{fig:sigmoid_soft} is, it is possible to approximate this further. We have found that approximating the sigmoid function with a single
@@ -201,7 +141,7 @@ This not only results in wasted space, as the pins and their functions must be s
 
 As a result of the optimisations the total size of the binary comes to 3168 bytes, or 3.09KB. Table \ref{tab:prog-size} shows the break down of these values.
 
-\begin{table}[]
+\begin{table}[h]
     \centering
     \begin{tabular}{|l|c|}
         \hline
@@ -218,7 +158,7 @@ As a result of the optimisations the total size of the binary comes to 3168 byte
 
 During the initialisation phase, a further 168 bytes are loaded onto the heap, for the following data as detailed in table \ref{tab:heap-size}. The heap, after initialisation does not grow any further, remaining at 276 bytes. As such, support for on-the-fly heap assignments (\verb|malloc|) was removed from the mbed library to save space within the binary.
 
-\begin{table}[]
+\begin{table}[h]
     \centering
     \begin{tabular}{|l|c|}
         \hline
