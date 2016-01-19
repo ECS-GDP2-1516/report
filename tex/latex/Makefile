@@ -9,20 +9,15 @@ PLOT_TARGETS := $(PLOTS:.tex=.pdf)
 all: report.pdf wordcount
 
 report.pdf: report.tex $(FILES) ecsdocs/ecsgdp.cls $(PLOT_TARGETS)
-	pdflatex report
-	pdflatex report
+	lualatex report
+	lualatex report
 	@echo ""
 
 wordcount:
 	@../../texcount.pl -inc -total report.tex
 
 %.pdf: %.tex 
-	if test -e $@ ; then \
-		touch $@ ; \
-	else \
-		cd software/plots/ ; \
-		pdflatex $(shell basename $<) ; \
-	fi
+	cd software/plots/ && lualatex $(shell basename $<)
 
 clean:
 	rm -f report.aux report.lof report.log report.lol report.lot report.out report.toc $(PLOT_TARGETS:.pdf=.aux) $(PLOT_TARGETS:.pdf=.log)
