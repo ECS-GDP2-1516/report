@@ -1,0 +1,30 @@
+% This file is only used to generate the figure to be included
+% This does not need to be compiled each time
+% Do not attempt to include this in the main document, it will break LaTeX!
+
+\documentclass{standalone}
+
+\usepackage{pgfgantt}
+
+
+\begin{document}
+    \begin{ganttchart}[
+            hgrid,
+            vgrid,
+            x unit=4mm,
+            y unit chart=.7cm,
+            time slot format=isodate
+        ]{2015-09-28}{2015-11-15}
+        \gantttitlecalendar{month=shortname, week, day} \\
+
+        \ganttgroup{Hardware Work}{2015-10-02}{2015-11-01} \\
+        \ganttbar{Acquire Lab Desk}{2015-10-02}{2015-10-09} \\
+        \ganttbar{Acquire FPGA Board}{2015-10-05}{2015-10-10} \\
+        \ganttbar{Obtain Cortex M0 verilog}{2015-10-05}{2015-10-10} \\
+        \ganttlinkedbar{Cortex M0 on FPGA}{2015-10-11}{2015-10-17} \\
+        \ganttbar{Design hardware schematic}{2015-10-05}{2015-10-15} \\
+        \ganttbar{Buy required components}{2015-10-12}{2015-10-24} \\
+        \ganttlinkedbar{Build hardware}{2015-10-15}{2015-11-01} \\
+        \ganttbar{Sensor Code}{2015-10-19}{2015-10-30}
+    \end{ganttchart}
+\end{document}

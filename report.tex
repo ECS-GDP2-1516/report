@@ -1,0 +1,117 @@
+%% ----------------------------------------------------------------
+%% GDP.tex
+%% ---------------------------------------------------------------- 
+\documentclass{.style/ecsgdp}         % Use the GDP Report Style
+\graphicspath{{./Figures/}}   % Location of your graphics files
+\usepackage{array}
+\usepackage{listings}
+\usepackage{pdflscape}
+\usepackage{pgfgantt}
+\usepackage{pgfplots}
+\usepackage{enumitem}       % For making numbered indent lists
+\usepackage{color}
+\usepackage{graphicx,subfigure}
+\usepackage{multirow}
+\usepackage{todonotes}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+\lstset{language=C}
+
+\hypersetup{colorlinks=true}   % Set to false for black/white printing
+%\input{Definitions}            % Include your abbreviations
+\newcommand{\namedsection}[2]{\section[#1]{#1 \hfill {\small \color{gray} #2}}} % Use this to create sections with authorship: \namedsection{Section Name}{Your name}
+\newcommand{\namedsubsection}[2]{\subsection[#1]{#1 \hfill {\small \color{gray} #2}}} % Use this to create subsections with authorship: \namedsubsection{Section Name}{Your name}
+
+\newcommand{\note}[1]{\todo[inline]{#1}}
+
+
+%% ----------------------------------------------------------------
+\begin{document}
+	\frontmatter
+	\title{Ultra-Low-Power Exercise Monitoring Applications for Sub-Threshold Micro-Controllers}
+	\authors    {\\ \texorpdfstring
+		{\href{mailto:djap1g11@ecs.soton.ac.uk}{Daniel Playle}}
+		{Daniel J. A. Playle}
+		\\
+		\texorpdfstring
+		{\href{mailto:ams2g11@ecs.soton.ac.uk}{Emily Shepherd}}
+		{Emily Shepherd}
+		\\
+		\texorpdfstring
+		{\href{mailto:mg8g12@ecs.soton.ac.uk}{Mohit Gupta}}
+		{Mohit Gupta}
+		\\
+		\texorpdfstring
+		{\href{mailto:tlf1g12@ecs.soton.ac.uk}{Toby Finch}}
+		{Toby Finch}
+		\\
+		\texorpdfstring
+		{\href{mailto:cp10g12@ecs.soton.ac.uk}{Calin Pasat}}
+		{Calin Pasat}
+	}
+	\addresses  {\groupname\\\deptname\\\univname}
+	\date       {\today}
+	\subject    {}
+	\keywords   {}
+	\supervisor{Dr. Geoff Merrett \\ Dr. Alex Weddell}
+	\examiner{Dr. Klaus-Peter Zauner}
+	\degree     {Master of Engineering}
+	\maketitle
+	\begin{abstract}
+		This work is all about \dots
+	\end{abstract}
+	\tableofcontents
+	\listoffigures
+	\listoftables
+	\lstlistoflistings
+	\listofsymbols{ll}
+	{
+		$w$ & The weight vector \\
+		$S$ & The scale factor of a fixed-point number \\
+		$B$ & The number of bits to shift a fixed-point number \\
+	}
+	%\acknowledgements{Thanks to no one.}
+	%\dedicatory{To \dots}
+	\mainmatter
+	%% ----------------------------------------------------------------
+	% Introduction chapter
+	\input{intro/intro}
+	
+	% Software chapter
+	\input{software/software}
+	\input{software/exercise-detection}
+	\input{software/machine-learning}
+	\input{software/development}
+
+	% Hardware chapter
+	\input{hardware/hardware}
+	\input{hardware/cortex}
+	\input{hardware/research}
+	\input{hardware/fpga}
+	\input{hardware/mbed}
+	\input{hardware/sensor}
+
+	% User study chapter
+	\input{study/study}
+
+	% Project management chapter
+	\input{management/management}
+	\input{management/planning}
+	\input{management/division}
+	\input{management/gantt}
+	\input{management/client}
+
+	% Results chapter
+	\input{results/results}
+
+	% Conclusion chapter
+	\input{conclusion/conclusion}
+
+	\appendix
+	\input{appendices/risks}
+	%
+	\backmatter
+	\bibliographystyle{.style/IEEEtran}
+	\bibliography{ECS}
+\end{document}
+%% ----------------------------------------------------------------

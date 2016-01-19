@@ -1,0 +1,38 @@
+% This file is only used to generate the figure to be included
+% This does not need to be compiled each time
+% Do not attempt to include this in the main document, it will break LaTeX!
+
+\documentclass{standalone}
+
+\usepackage{pgfgantt}
+
+
+\begin{document}
+    \begin{ganttchart}[
+            hgrid,
+            vgrid,
+            x unit=4mm,
+            y unit chart=.7cm,
+            time slot format=isodate
+        ]{2015-11-16}{2016-01-03}
+        \gantttitlecalendar{month=shortname, week=8, day} \\
+
+        \ganttbar[
+            inline,
+            bar height=1,
+            bar top shift=0,
+            bar/.append style={fill=red, draw=red},
+            bar label font=\color{yellow}
+        ]{Christmas Holidays}{2015-12-12}{2016-01-03} \\
+        
+        \ganttgroup{Algorithm Work}{2015-11-16}{2015-12-09} \\
+        \ganttbar{Algorithm Implementation}{2015-11-16}{2015-11-29} \\
+        \ganttbar{Testing and Evaluation}{2015-11-16}{2015-12-09} \\
+        \ganttmilestone{Target Completion}{2015-12-09} \ganttnewline[ultra thick, red]
+
+        \ganttbar{Seminar Preparation}{2015-11-16}{2015-11-22} \\
+        \ganttlinkedmilestone{Progress Seminar 2}{2015-11-23} \\
+
+        \ganttbar{Report Writing}{2015-12-14}{2015-12-20}
+    \end{ganttchart}
+\end{document}
