@@ -8,6 +8,7 @@ This interface exposes a Mass Storage device to the host computer via a USB conn
 
 \subsection{Why the mBed}
 \note{Need a better name for this subsection?}
+\note{Talk about the availability of other required protocols}
 
 When initially looking at various ways to emulate the sub-threshold version of the ARM Cortex M0, using an existing non sub-threshold version of the ARM Cortex M0 was considered. This involved searching for some form of micro-controller or device which would allow for programming of the processor. This lead to the mBed family which appeared easy to program and use featuring ARM processors. Within the mBed family of micro-controllers, the LPC11U24 model uses an ARM Cortex M0 as its processor.
 
@@ -26,7 +27,23 @@ Some concerns were made realising that the Watchdog oscillator has an error marg
 
 \subsection{I2C Communication}
 
+\subsubsection{Sensor library}
 
+The sensor used in this project, the MPU6050 within a Xadow board, has an online library available \cite{sensory_library}. It contains two separate classes, one called I2Cdev and the other MPU6050. 
+
+The I2Cdev class contains an interface to the processors I2C class expanding its functionality and allowing for more abstract functions for the MPU6050 class. For example, functionality for reading or writing multiple bytes or words were implemented within this class.
+
+The MPU6050 class contains the functionality for configuring the sensor itself as well as reading data that it collects. It uses the I2Cdev class for communicating with the sensor.
+
+The libraries are written for use with the Atmel chipset which use different libraries than those used by the ARM chipset. This poses a small issue as this means that the I2Cdev class would be incompatible for the ARM chip in use. In turn, due to the reliance on this class by the MPU6050 class, it would also be incompatible. 
+
+This can easily be rectified by re-writing the I2Cdev class to make it compatible with the ARM libraries, which would also make the MPU6050 compatible.
+
+\note{Talk more about this}
+
+\section{Serial Communication}
+
+For the purposes of debugging, serial communication was used to extract information from the device and onto the host computer. To accomplish this, a C232HM cable \cite{c232hm_datasheet} was used to interface with the host computer, via USB, and the mBed, via Serial pins 9 and 10. 
 
 \note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
 \note{Serial communication - autobaud, python script}
