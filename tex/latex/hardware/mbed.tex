@@ -19,12 +19,14 @@ This oscillator consists of two parts, an oscillator function which generates an
 
 \begin{equation}
 	\label{eq:wdt_osc_clk}
+	\verb|wdt_osc_clk| = \frac{Fclkana}{2 * (1 + DIVSEL)}
 \end{equation}
-\todo{fill in equation wdt\_osc\_clk = Fclkana / (2 * (1 + DIVSEL))}
 
 Some concerns were made realising that the Watchdog oscillator has an error margin of $\pm 40\%$ for the frequency of Fclkana. In a meeting with the client, it was decided to carry forward with the device while paying attention to this margin and analysing the impact of it upon the project.
 
- 
+\subsection{I2C Communication}
+
+
 
 \note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
 \note{Serial communication - autobaud, python script}
