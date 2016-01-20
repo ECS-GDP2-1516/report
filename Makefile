@@ -8,9 +8,10 @@ PLOT_TARGETS := $(PLOTS:.tex=.pdf)
 
 all: report.pdf wordcount
 
-report.pdf: report.tex $(FILES) .style/ecsgdp.cls $(PLOT_TARGETS)
+report.pdf: report.tex $(FILES) .style/ecsgdp.cls $(PLOT_TARGETS) .aux/report.bbl
 	lualatex --output-directory=.aux report
 	mv .aux/report.pdf ./report.pdf
+	touch .aux/report.bbl
 	@echo ""
 
 wordcount:
@@ -34,3 +35,10 @@ report.tex:
 
 ecsgdp.cls:
 
+ECS.bib:
+
+.aux/report.aux:
+	lualatex --output-directory=.aux report
+
+.aux/report.bbl: .aux/report.aux ECS.bib
+	bibtex $<
