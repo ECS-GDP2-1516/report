@@ -101,3 +101,11 @@ This method requires no stack usage and can operate in a small memory space, the
 \label{eq:algo-size}
 \max\{\forall L_n \in LAYERS \wedge L_{n+1} \in LAYERS : |L_n|+|L_{n+1}|\}
 \end{equation}
+
+\subsection{Moving to C Code}
+
+Weka is a very useful tool for generating and training machine learning algorithms. Unfortuneately, it only allows exporting to \verb|.model| files, which are simply Java serialized objects. As such, we were forced to modify the Weka source code in order to obtain the number, structure and weightings of the nodes in the MLP's neural network.
+
+Once the algorithm was designed, it was decided to modify and improve the Java code such that it became a harness for our C code. In this mannar, rather than simply outputting the node structure which would have to be manually copied and amended to go into the C implementation, the Java code was built to process the nodes prior to output, removing unused layers and returning the required data in a format and structure which could be immediately compiled into the C development repository.
+
+This proved very useful, as training the networks and trying various settings took time and was repeated many times during development. Using this harness allowed the team to quickly deploy updated models onto the device without the need to reprogram the C code for each test.
