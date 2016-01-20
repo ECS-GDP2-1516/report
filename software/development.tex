@@ -55,6 +55,8 @@ X/2^B\approx X \gg B
 
 As described in \ref{section}, the device we are aiming to develop for has a very low memory space availiable to us: 8KB for both program code and data. When we first compiled our code with mBed's precompiled libraries, the total size of the binary was 12KB. Our first step to solve this was to obtain the source code for the mBed libraries to try compiling these directly along with our program, which allowed us to get down to 8KB. This was a substancial improvement, however it was clear that we would need to decrease this further as it left no space for heap or stack space within our program.
 
+\subsubsection{Improving GCC's Optimisations}
+
 While the GNU compiler is very good at optimising code when it compiles C and C++ code, the linker is not able to do so many of the same optimisations across compilation units. It was a logical first step, therefore, to identify the functions and classes that our program code called within the mBed's api. In many cases, specific API calls were only made once from our code, such as the call to \verb|ic2_init()| which gets the I2C ready to communicate with the processor.
 
 It is logical to ensure such a function remains an atomic referenceable item within a library, as it is feasible for a device to use more than one I2C devices and as such the call may need to be made multiple times and with varying parameters. However, as it was only called once within our code, we were able to move this into the same compilation unit as it was originally called, replacing the call with the code itself inline. As a result, the compiler is no longer required to produce assembly instructions to copy in arguments and push a new frame onto the stack saving not only space, but optimising the performance of the code too.
@@ -136,45 +138,3 @@ main:
 Unfortuneately, a similar technique is not used for the Pin Mappings. Instead, these are stored within an array within a C file, which is specific to each target and are worked upon in two seperate files - one common across all devices, and one common to the device's family. The reason this is done is that the pin mappings, and the way in which their modes are updated is more complex and as such is harder to achieve through the use of defined macros. However, as the result of this is that the pin mappings and pin functions are not contained within a single compilation unit, the linker is not able to perform the same optimisations as the compiler is.
 
 This not only results in wasted space, as the pins and their functions must be stored as part of the program code, but it also wastes valueable clock cycles, calculating values for pin addresses which could in theory be precalculated. In order to avoid this, we worked through the pin functions manually from the point at which they were called and manually calculated the registers that would be used. We then replaced these with the hard coded register values.
-
-\subsubsection{Size Outcome}
-
-As a result of the optimisations the total size of the binary comes to 3168 bytes, or 3.09KB. Table \ref{tab:prog-size} shows the break down of these values.
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|l|c|}
-        \hline
-        Section & Size \\
-        \hline
-        System Interrupt Handlers & 204 \\
-        System Init and Shutdown Code & 1184 \\
-        Code & 1128 \\
-        Constant Weights & 524 \\
-        Variable Initialisations for the Heap & 108 \\
-        .ARM.exidx & 8 \\
-        LibC Values & 12 \\
-        \hline
-    \end{tabular}
-    \caption{Binary File Size \label{tab:prog-size}}
-\end{table}
-
-During the initialisation phase, a further 168 bytes are loaded onto the heap, for the following data as detailed in table \ref{tab:heap-size}. The heap, after initialisation does not grow any further, remaining at 276 bytes. As such, support for on-the-fly heap assignments (\verb|malloc|) was removed from the mbed library to save space within the binary.
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|l|c|}
-        \hline
-        Section & Size \\
-        \hline
-        No Operation Instruction & 4 \\
-        Variable Initialisations from binary (as above) & 108 \\
-        The last twenty classifications & 20 \\
-        The last twenty X, Y, Z readings & 140 \\
-        Object data structure used by LibC & 24 \\
-        \hline
-    \end{tabular}
-    \caption{Heap Size \label{tab:heap-size}}
-\end{table}
-
-The stack does not grow above 56 bytes. As such, the total memory requirement for the application can be summerised as the summation of the binary size, the size of the heap and the maximum stack size. This comes to 3392 bytes leaving a theoretical remainder of 4800 bytes availiable for enhancements or storage of excersises performed over the course of a flight.

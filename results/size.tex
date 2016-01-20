@@ -1,0 +1,41 @@
+\namedsection{Size Analysis}{Shepherd}
+
+As a result of the optimisations the total size of the binary comes to 3168 bytes, or 3.09KB. Table \ref{tab:prog-size} shows the break down of these values.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        Section & Size \\
+        \hline
+        System Interrupt Handlers & 204 \\
+        System Init and Shutdown Code & 1184 \\
+        Code & 1128 \\
+        Constant Weights & 524 \\
+        Variable Initialisations for the Heap & 108 \\
+        .ARM.exidx & 8 \\
+        LibC Values & 12 \\
+        \hline
+    \end{tabular}
+    \caption{Binary File Size \label{tab:prog-size}}
+\end{table}
+
+During the initialisation phase, a further 168 bytes are loaded onto the heap, for the following data as detailed in table \ref{tab:heap-size}. The heap, after initialisation does not grow any further, remaining at 276 bytes. As such, support for on-the-fly heap assignments (\verb|malloc|) was removed from the mbed library to save space within the binary.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        Section & Size \\
+        \hline
+        No Operation Instruction & 4 \\
+        Variable Initialisations from binary (as above) & 108 \\
+        The last twenty classifications & 20 \\
+        The last twenty X, Y, Z readings & 140 \\
+        Object data structure used by LibC & 24 \\
+        \hline
+    \end{tabular}
+    \caption{Heap Size \label{tab:heap-size}}
+\end{table}
+
+The stack does not grow above 56 bytes. As such, the total memory requirement for the application can be summerised as the summation of the binary size, the size of the heap and the maximum stack size. This comes to 3392 bytes leaving a theoretical remainder of 4800 bytes availiable for enhancements or storage of excersises performed over the course of a flight.
