@@ -6,7 +6,7 @@ Taking into account the constraints of the system, we decided to focus on the Mu
 
 As Weka had been used to determine and train the best algorithm, it was decided to inspect its source code to obtain a starting point for the algorithm development. This, while provided a good insight into the manar in which the algorithm functions, highlighted some key areas of inefficiencies that would have to be avoided when working on a subthreshold device.
 
-\subsubsection{Backwards vs Forwards Propogation}
+\subsubsection{Backwards Propogation}
 
 Weka's implementation of the MultiLayer Perceptron uses ``backwards propogration'', which recursively workings backwards in a depth-first mannar from each output node towards the input layer. The function which calculates a node's output does so by taking the summation of each of its input values multiplied by their respective input weights. Each input value, however, is requested on the fly from the inputting node by calculating its output which in turn causes it to perform the same loop over its input nodes:
 
@@ -84,3 +84,20 @@ class Node
     }
 }
 \end{lstlisting}
+
+While this does succeed in reducing the number of unnessisarry node vistits, it does not eliminiate them; each node in the network, other than the output nodes, are visited three times each with this immplementaiton. This scheme also adds two new node properties which must be stored and manipulated; the side effect of this is an increase in instructutions and memory requirement, which is not ideal for subthreshold development.
+
+The algorithm itself still relies on recursion - this is also suboptimal as this requires extensive use of the stack.
+
+\subsubsection{The Alternative: Forwards Propogation}
+
+As a result of the inherant inefficiencies in a Backwards Propogation implementation, it was decided instead to redesign the algorithm, employing Forwards Propogation. This technique, in contrast to the one described above, starts from the input layer nodes and works forward in a width first mannar.
+
+For the example in Figure \ref{fig:eg-ml}, this means the algorithm would first write the outputs of $i_1$, $i_2$ and $i_3$ into three memory spaces. Following this, three new memory spaces are reserved, in which the base values of $m_1$, $m_2$ and $m_3$ are placed. The algorithm then loops over the input nodes and, for each one, adds the multiplication of its value by its parent weight to the parent's memory space. Once complete, the outputs for all three middle layer nodes have been completed so the process can be shifted one layer to the right and repeated. An added benefit here is that the input layers are now no longer required, so their memory can be freed and reused if desired.
+
+This method requires no stack usage and can operate in a small memory space, the equation for which is given below. For our algorithm, which has the same number of layers as the example above, this results in only 5 32bit memory spaces: 20 bytes.
+
+\begin{equation}
+\label{eq:algo-size}
+\max\{\forall L_n \in LAYERS \wedge L_{n+1} \in LAYERS : |L_n|+|L_{n+1}|\}
+\end{equation}
