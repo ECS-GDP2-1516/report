@@ -80,7 +80,7 @@ The next four bits contains a value for \verb|FREQSEL|, where a value within the
 	\label{tab:freqsel}
 \end{table}
 
-This allows for the Watchdog oscillator to have a frequency in the range $ 9.4 $ kHz $ \leq \verb|wdt_osc_clk| \leq 2.3 $ MHz.
+With the available frequency values and divisors, it confirms the range the Watchdog oscillator achieves given earlier.
 
 \subsection{Serial Communication}
 
@@ -89,6 +89,10 @@ For the purposes of debugging, serial communication was used to extract informat
 This communication was done when the device was operating at its default frequency of 48 Mhz where the libraries have the correct default values set in the registers to enable the correct divisors to enable the device to operate at 9600 baud. However, these would not be viable values when using the Watchdog Oscillator as the system clock.
 
 \subsubsection{Serial Divisor}
+
+To enable the device to communicate with the desired baud rate when the system clock is set at a lower frequency, the divisor needs to be configured. There are multiple registers that need to be modified to achieve this. The first two are the DLL and DLM registers. These registers, within the lowest eight bits, contain the DLL and DLM bytes respectively, where DLL is the least significant byte of the Divisor Latch (DL) and DLM is the most significant byte.
+
+For access to be granted to the DL, the Divisor Latch Access Bit (DLAB) needs to be set. This value is stored within the Line Control Register as the seventh bit. The final register is the Fractional Divide Register which contains the DIVADDVAL and MULVAL values. DIVADDVAL is stored within the lowest four bits, whilst MULVAL is stored within the next four lowest bits. 
 
 \subsubsection{Auto-Baud}
 
