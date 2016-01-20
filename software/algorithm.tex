@@ -67,7 +67,7 @@ A side effect of this is that all nodes, other than the output nodes are visted 
 
 Weka reduces this by storing a node's value after an \verb|output()| call. When \verb|output()| is called on a node again, it checks if it has already been called and returns the cached value if it has:
 
-\begin{lstlisting}{language=Java,caption={Weka's method of preventing repeated calculations}}
+\begin{lstlisting}[language=Java,caption={Weka's method of preventing repeated calculations}]
 class Node
 {
     boolean visited = false;
