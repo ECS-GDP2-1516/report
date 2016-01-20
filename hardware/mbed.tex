@@ -94,12 +94,21 @@ To enable the device to communicate with the desired baud rate when the system c
 
 For access to be granted to the DL, the Divisor Latch Access Bit (DLAB) needs to be set. This value is stored within the Line Control Register as the seventh bit. The final register is the Fractional Divide Register which contains the DIVADDVAL and MULVAL values. DIVADDVAL is stored within the lowest four bits, whilst MULVAL is stored within the next four lowest bits. 
 
-Using these values, the baud rate can be calculated using Equation~\ref{eq:serial_baud_rate} \cite{mbed_datasheet}.
+Using these values, the baud rate can be calculated using Equation~\ref{eq:serial_baud_rate} where PCLK is the clock frequency\cite{mbed_datasheet}.
 
 \begin{equation}
 	\label{eq:serial_baud_rate}
-	UART_{baud rate} = \frac{CLK}{16 * (256 * DLM + DLL) * (1 + \frac{DivAddVal}{MulVal})}
+	UART_{baud rate} = \frac{PCLK}{16 * (256 * DLM + DLL) * (1 + \frac{DivAddVal}{MulVal})}
 \end{equation}
+
+Within the mBed datasheet \cite{mbed_datasheet}, a methodology for calculating these values is provided which can be seen in Figure~\ref{fig:serial_algo}. Along with the algorithm, a look up table is provided which can be used to translate a FR value to DIVADDVAL and MULVAL values. 
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=.9]{usart_algorithm.png}
+	\caption{Algorithm to calculate required values for Serial baud rate}
+	\label{fig:serial_algo}
+\end{figure}
 
 \subsubsection{Auto-Baud}
 
