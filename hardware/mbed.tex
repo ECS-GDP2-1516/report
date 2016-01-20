@@ -1,5 +1,7 @@
 \namedsection{mBed}{Gupta}
 
+\note{Add a plan?}
+
 \subsection{Introduction}
 
 mBed is a platform which implements ARM 32-bit processors within micro-controllers which is primarily developed by ARM. They are of the DIP form factor with 40 pins. It features an online SDK allowing for the development of projects online. It permits code to be written online as well as compiled into a binary compatible with the board being used. This binary can then be downloaded removing the pre-requisite of having the ARM toolchain available locally. The manner of uploading to the mBed is relatively straight forward with the presence of the mBed interface. \cite{mbed_website}\todo{Try expanding on this section}
@@ -16,7 +18,7 @@ The requirements for this project require the processor to be emulate the sub-th
 
 The device typically runs at 48MHz using its Internal RC oscillator (IRC) as its system clock. However, it also has the ability to switch its system clock to be sourced from the internal Watchdog oscillator instead. 
 
-This oscillator consists of two parts, an oscillator function which generates an analog clock (\verb|Fclkana|) as well as a divisor (\verb|DIVSEL|) which is used to divide the analog clock to the required output frequency (\verb|wdt_osc_clk|). The output frequency can be calculated using Equation~\ref{eq:wdt_osc_clk}. This allows for the Watchdog oscillator to have a frequency in the range $ 9.4 $ kHz $ \leq \verb|wdt_osc_clk| \leq 2.3 $ MHz. \cite{mbed_datasheet}
+This oscillator consists of two parts, an oscillator function which generates an analog clock (\verb|Fclkana|) as well as a divisor (\verb|DIVSEL|) which is used to divide the analog clock to the required output frequency (\verb|wdt_osc_clk|). The output frequency can be calculated using Equation~\ref{eq:wdt_osc_clk} and is within the range $ 9.4 $ kHz $ \leq \verb|wdt_osc_clk| \leq 2.3 $ MHz. \cite{mbed_datasheet}
 
 \begin{equation}
 	\label{eq:wdt_osc_clk}
@@ -41,11 +43,58 @@ This can easily be rectified by re-writing the I2Cdev class to make it compatibl
 
 \note{Talk more about this}
 
+\subsection{Watchdog Oscillator}
+
+As mentioned before, one of the objectives of this project is to operate at a low operating frequency. It has already been seen that the Watchdog oscillator can operate in the desired frequency range using an analog clock as well as a divisor. 
+
+To configure the Watchdog oscillator, it needs to be configured, powered on and then switched to. To do this, there are three registers that need interaction with to complete. The first register is the Watchdog oscillator control register (\verb|WDTOSCCTRL|) which contains the \verb|DIVSEL| and \verb|FREQSEL| talked about earlier. 
+
+The lowest five bits of the register contains the unsigned value of \verb|DIVSEL|, hence allowing it to be within the range $ 0 \leq $ \verb|DIVSEL| $ \leq 31$. Thus, allowing for the divisor being within the range $ 2 \leq $ divisor $ \leq 64$.
+
+The next four bits contains a value for \verb|FREQSEL|, where a value within the register corresponds to a different frequency with the relationship that can be seen in Table~\ref{tab:freqsel}.
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|r|}
+		\hline
+		Value & Frequency \\
+		\hline
+		0x1 & 0.6 MHz \\
+		0x2 & 1.05 MHz \\
+		0x3 & 1.4 MHz \\
+		0x4 & 1.75 MHz \\
+		0x5 & 2.1 MHz \\
+		0x6 & 2.4 MHz \\
+		0x7 & 2.7 MHz \\
+		0x8 & 2.0 MHz \\
+		0x9 & 3.25 MHz \\
+		0xA & 3.5 MHz \\
+		0xB & 3.75 MHz \\
+		0xC & 4.0 MHz \\
+		0xD & 4.2 MHz \\
+		0xE & 4.4 MHz \\
+		0xF & 4.6 MHz \\
+		\hline
+	\end{tabular}
+	\caption{FREQSEL table for WDTOSCCTRL register}
+	\label{tab:freqsel}
+\end{table}
+
+This allows for the Watchdog oscillator to have a frequency in the range $ 9.4 $ kHz $ \leq \verb|wdt_osc_clk| \leq 2.3 $ MHz.
+
 \subsection{Serial Communication}
 
-For the purposes of debugging, serial communication was used to extract information from the device and onto the host computer. To accomplish this, a C232HM cable \cite{c232hm_datasheet} was used to interface with the host computer, via USB, and the mBed, via Serial pins 9 and 10. The baudrate was left at the default value of 9600 and to test the communication, the mBed was programmed to send "Hello World!" to the host pc via Serial communication.
+For the purposes of debugging, serial communication was used to extract information from the device and onto the host computer. To accomplish this, a C232HM cable \cite{c232hm_datasheet} was used to interface with the host computer, via USB, and the mBed, via Serial pins 9 and 10. The baud rate was left at the default value of 9600 and to test the communication, the mBed was programmed to send "Hello World!" to the host pc via Serial communication.
 
+This communication was done when the device was operating at its default frequency of 48 Mhz where the libraries have the correct default values set in the registers to enable the correct divisors to enable the device to operate at 9600 baud. However, these would not be viable values when using the Watchdog Oscillator as the system clock.
 
+\subsubsection{Serial Divisor}
+
+\subsubsection{Auto-Baud}
+
+One possible method to account for this is a feature provided within the processor called Auto-Baud\cite{mbed_datasheet}. This is where the device waits on receiving communication upon its RX pin and of the data coming in, it measures the baud rate between a falling edge and a subsequent rising or falling edge dependant on the mode set within the registers.
+
+Using this information, the divisor registers are set accordingly allowing the Serial communication to communicate at the required baud rate. 
 
 \note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
 \note{Serial communication - autobaud, python script}
