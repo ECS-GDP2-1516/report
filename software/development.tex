@@ -8,13 +8,13 @@ The sigmoid function's graph and equation is shown below in figure \ref{fig:sigm
 
 The first area of note in this graph is that the value of f(t) quickly starts to tend towards 0 in the negative direction, and 1 in the positive direction. It is not uncommon, therefore, to approximate the value of the function at these extremes. Figure \ref{fig:sigmoid-ends} shows this approximation highlighted in blue for t values outside of the range between 5 and -5; it is plain to see that the difference between figures \ref{fig:sigmoid} and \ref{fig:sigmoid-ends} is difficult to see. On average, we have found that approximately 42\% \todo{REF needed} of nodes produce values in outside this range meaning they can be approximated to 0 or 1 without the sigmoid function.
 
-\begin{figure}[!htbp]
+\begin{figure}[!h]
     \centering
-    \caption{Sigmoid Functions \label{fig:sigmoid-options}}
     \subfigure[Normal Sigmoid Function]{\label{fig:sigmoid}\includegraphics[width=70mm]{figures/sigmoid.pdf}}
     \subfigure[Approximated Ends]{\label{fig:sigmoid-ends}\includegraphics[width=70mm]{figures/sigmoid-ends.pdf}}
     \subfigure[Approximated With Lines]{\label{fig:sigmoid-soft}\includegraphics[width=70mm]{figures/sigmoid-soft.pdf}}
     \subfigure[Approximated With Linear Equation]{\label{fig:sigmoid-hard}\includegraphics[width=70mm]{figures/sigmoid-hard.pdf}}
+    \caption{Sigmoid Functions \label{fig:sigmoid-options}}
 \end{figure}
 
 For the remaining range, between 5 and -5, the sigmoid function is does not tend to any fixed value, so a different approximation must be used. Fortuneately, the sigmoid's ``S''-like shape lends itself to being easily split into a series of smaller lines, as shown in figure \ref{fig:sigmoid-soft}. This provides a suitable level of accuracy with far lower computing overhead. However, as beneficial as the approximation in figure \ref{fig:sigmoid-soft} is, it is possible to approximate this further. We have found that approximating the sigmoid function with a single
