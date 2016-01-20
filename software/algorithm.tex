@@ -1,0 +1,86 @@
+\namedsection{Developing the Algorithm}{Shepherd}
+
+Taking into account the constraints of the system, we decided to focus on the MultiLayer Perceptron as it does not require matrix maths and typically has a smaller network of nodes. This session discusses the process by which we developed an implementation of this algorithm.
+
+\subsection{Existing Weka Implementation}
+
+As Weka had been used to determine and train the best algorithm, it was decided to inspect its source code to obtain a starting point for the algorithm development. This, while provided a good insight into the manar in which the algorithm functions, highlighted some key areas of inefficiencies that would have to be avoided when working on a subthreshold device.
+
+\subsubsection{Backwards vs Forwards Propogation}
+
+Weka's implementation of the MultiLayer Perceptron uses ``backwards propogration'', which recursively workings backwards in a depth-first mannar from each output node towards the input layer. The function which calculates a node's output does so by taking the summation of each of its input values multiplied by their respective input weights. Each input value, however, is requested on the fly from the inputting node by calculating its output which in turn causes it to perform the same loop over its input nodes:
+
+\begin{lstlisting}[language=Java,caption={Weka's method of calculating a node's output}]
+class Node
+{
+    double weights[NUM_INPUTS];
+    Node inputs[NUM_INPUTS];
+    double baseValue;
+
+    double output()
+    {
+        double out = base;
+
+        for (int i = 0; i < NUM_INPUTS; i++)
+        {
+            out += weights[i] * inputs[i].output();
+        }
+
+        return out;
+    }
+}
+\end{lstlisting}
+
+A side effect of this is that all nodes, other than the output nodes are visted multiple times. For example, for the network below, $o_1.output()$ will loop over $m_1$, $m_2$ and $m_3$, calling \verb|output()| on each, each of which will loop over $i_1$, $i_2$ and $i_3$, meaning the input nodes will be visted a total of 3 times each. This process must then be repeated for $o_2$, causing the middle layer nodes to each be revisted, and the input layers revisted another 3 times, and again for $o_3$. In total the input nodes is accessed 9 times each, the middle layer 3 times each.
+
+\begin{figure}[!h]
+    \centering
+    \begin{tikzpicture}[shorten >=1pt,node distance=1.3cm and 3cm,on grid,auto,initial text={}] 
+    \node[state,initial] (i1) {$i_1$};
+    \node[state,initial] (i2) [below=of i1] {$i_2$}; 
+    \node[state,initial] (i3) [below=of i2] {$i_3$}; 
+
+    \node[state] (h11) [right=of i1] {$m_1$};
+    \node[state] (h12) [below=of h11] {$m_2$}; 
+    \node[state] (h13) [below=of h12] {$m_3$}; 
+
+    \node[state] (hb1) [right=of h11] {$o_1$};
+    \node[state] (hb2) [below=of hb1] {$o_2$}; 
+    \node[state] (hb3) [below=of hb2] {$o_3$}; 
+
+    \path[->] 
+    (i1) edge node {} (h11) (i2) edge node {} (h11)
+    (i1) edge node {} (h12) (i2) edge node {} (h12)
+    (i1) edge node {} (h13) (i2) edge node {} (h13)
+    (i3) edge node {} (h11) (h11) edge node {} (hb1)
+    (i3) edge node {} (h12) (h11) edge node {} (hb2)
+    (i3) edge node {} (h13) (h11) edge node {} (hb3)
+    (h12) edge node {} (hb1) (h13) edge node {} (hb1)
+    (h12) edge node {} (hb2) (h13) edge node {} (hb2)
+    (h12) edge node {} (hb3) (h13) edge node {} (hb3)
+
+    ;
+    \end{tikzpicture}
+    \caption{Example MultiLayer Perceptron Network}
+    \label{fig:eg-ml}
+\end{figure}
+
+Weka reduces this by storing a node's value after an \verb|output()| call. When \verb|output()| is called on a node again, it checks if it has already been called and returns the cached value if it has:
+
+\begin{lstlisting}{language=Java,caption={Weka's method of preventing repeated calculations}}
+class Node
+{
+    boolean visited = false;
+    double value;
+
+    double output()
+    {
+        if (this.visited) return this.value;
+
+        // Otherwise perform recursive calculation above
+
+        this.visited = true;
+        return this.value = out;
+    }
+}
+\end{lstlisting}
