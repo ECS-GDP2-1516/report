@@ -51,6 +51,22 @@ As division is not supported on our system, we have defined our scale factor $S$
 X/2^B\approx X \gg B
 \end{equation}
 
+\subsubsection{Using this on the Device}
+
+To decide the bit scale factor, $B$, for the exercise detection algorithm, it is important to consider the memory restrictions on variable size. At a hardware level, 32bits, or 4 bytes, is the maximum size an integer can be. As the algorithm requires the multiplication of numbers, ideally these would need to fit into just a 2 bytes space, as the multiplication of numbers results in the addition of powers, as shown in equation \ref{eq:bits:multiplication-shift}.
+
+\begin{equation}
+\label{eq:bits:multiplication-shift}
+(x*2^B)(y*2^B)=(x*y)*(2^B)^2=(x*y)*2^{2B}
+\end{equation}
+
+As such, the value of $B$ has to be high enough such that precision is not lost unnessisarily, but low enough such that $x*2^B<2^{16}$. Solve this, the highest possible floating point value must be known; in the case of the algorithm, this is the base value of the first node in the middle layer: -10.6 (3s.f.), using this in the rearranged equation, \ref{eq:bits:number-calc}, gives a bitshift of 12.
+
+\begin{equation}
+\label{eq:bits:number-calc}
+B<\lfloor\log_{2}\left\{\frac{2^{16}}{|x|}\right\}\rfloor
+\end{equation}
+
 \subsection{Space Restrictions}
 
 As described in \ref{section}, the device we are aiming to develop for has a very low memory space availiable to us: 8KB for both program code and data. When we first compiled our code with mBed's precompiled libraries, the total size of the binary was 12KB. Our first step to solve this was to obtain the source code for the mBed libraries to try compiling these directly along with our program, which allowed us to get down to 8KB. This was a substancial improvement, however it was clear that we would need to decrease this further as it left no space for heap or stack space within our program.
