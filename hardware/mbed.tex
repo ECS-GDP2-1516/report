@@ -120,6 +120,10 @@ Another option to account for this is a feature provided within the processor ca
 
 Using this information, the required registers are set to enable Serial communication such that the device can communicate at the required baud rate. To enable an effective method for enabling auto baud, a python script was created which can be used on the host PC. This script continuously sends the character 'g' whilst also receiving and printing bytes. The continuous stream of 'g's gives a signal for auto baud to configure itself and should the device be reset during communication it will be configured automatically after reset should the script be running.
 
+\section{Getting Sensor Data}
+
+With the sensor libraries re-written to be compatible with the ARM libraries, the sensor can be interfaced with the mBed.
+
 \note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
 \note{Serial communication - autobaud, python script}
 \note{I2C with sensor}
