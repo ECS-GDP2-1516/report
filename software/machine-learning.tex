@@ -191,6 +191,24 @@ The user study was performed on a number \todo{How many?} subjects, where both a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 The main contenders for the algorithm were the MLP and RBF network due to high performance while having relatively low complexity, allowing them to be implemented on a constrained device without too much difficulty. Between these two algorithms, there was minimal difference in terms of 
 
+\begin{figure}
+	\centering
+	\subfigure[Top-Down]{\label{fig:mlp-multi-flat}\includegraphics[width=70mm]{figures/mlp-multi-analysis-flat.pdf}}
+	\subfigure[Side-On, Varying Hidden Layers]{\label{fig:mlp-multi-3d}\includegraphics[width=64mm]{figures/mlp-multi-analysis-3d.pdf}}
+	%\subfigure[Varying Frequency]{\label{fig:mlp-multi-3d-2}\includegraphics[width=70mm]{figures/mlp-multi-analysis-3d-2.pdf}}
+	%\subfigure[Varying Both]{\label{fig:mlp-multi-3d-3}\includegraphics[width=70mm]{figures/mlp-multi-analysis-3d-3.pdf}}
+	\caption{MLP Parameter Performance Surface Plot \label{fig:mlp-multi}}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{subject-fold-results.pdf}
+	\caption{Subject Performance with Different Sensors and Algorithms \label{fig:subfold}}
+\end{figure}
+% Note: acc-mlp 0.5842176471 (-)
+%       acc-rbf 0.6203764706 (tt 0.6053772895)
+%       gyr-mlp 0.6116235294 (tt 0.5858137193)
+%       gyr-rbf 0.8015705882 (tt 0.0002064496) <-- Mention this
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% WHY CROSS-VALIDATION IS BAD %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -199,3 +217,5 @@ To evaluate the models on the user study data, cross-validation was considered, 
 A noteworthy observation about the results was that the performance of the algorithm was initially poor, by any measure, after the first day data collection, giving just 5 \todo{Really?} subjects to model against. However, as the number of subjects increased, so did the performance of the system. This would indicate that the algorithm was overfitting on subjects, and that the introduction of more subjects was able to at least in part negate this overfitting.
 
 \note{What parameters are there and how did they affect the accuracy of the system?}
+
+\note{Still need to add RBF stuff...}
