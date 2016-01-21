@@ -204,6 +204,10 @@ The main contenders for the algorithm were the MLP and RBF network due to high p
 	\includegraphics[width=\linewidth]{subject-fold-results.pdf}
 	\caption{Subject Performance with Different Sensors and Algorithms \label{fig:subfold}}
 \end{figure}
+% Note: acc-mlp 0.5842176471 (-)
+%       acc-rbf 0.6203764706 (tt 0.6053772895)
+%       gyr-mlp 0.6116235294 (tt 0.5858137193)
+%       gyr-rbf 0.8015705882 (tt 0.0002064496) <-- Mention this
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% WHY CROSS-VALIDATION IS BAD %%%
@@ -213,3 +217,5 @@ To evaluate the models on the user study data, cross-validation was considered, 
 A noteworthy observation about the results was that the performance of the algorithm was initially poor, by any measure, after the first day data collection, giving just 5 \todo{Really?} subjects to model against. However, as the number of subjects increased, so did the performance of the system. This would indicate that the algorithm was overfitting on subjects, and that the introduction of more subjects was able to at least in part negate this overfitting.
 
 \note{What parameters are there and how did they affect the accuracy of the system?}
+
+\note{Still need to add RBF stuff...}
