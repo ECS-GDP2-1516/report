@@ -158,7 +158,7 @@
 \faculty     {\texorpdfstring{\href{http://www.fpse.soton.ac.uk/}
                 {Faculty of Physical Sciences and Engineering}}
                 {Faculty of Physical Sciences and Engineering}}
-\FACULTY     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
+\FACULTY     {\texorpdfstring{\href{http://www.fpse.soton.ac.uk}
                 {FACULTY OF PHYSICAL SCIENCES AND ENGINEERING}}
                 {FACULTY OF PHYSICAL SCIENCES AND ENGINEERING}}
 \addresses   {}
