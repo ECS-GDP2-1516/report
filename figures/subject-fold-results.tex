@@ -36,16 +36,16 @@
         }
     ]
         \addplot[style={bblue,fill=bblue,mark=none}]
-            table {data/10-final-acc-mlp};
+            table {data/10-final-acc-mlp.csv};
 
         \addplot[style={rred,fill=rred,mark=none}]
-	        table {data/10-final-gyro-mlp};
+	        table {data/10-final-gyro-mlp.csv};
 
         \addplot[style={ggreen,fill=ggreen,mark=none}]
-			table {data/10-final-acc-rbf};
+			table {data/10-final-acc-rbf.csv};
 
         \addplot[style={ppurple,fill=ppurple,mark=none}]
-			table {data/10-final-gyro-rbf};
+			table {data/10-final-gyro-rbf.csv};
 			
         \legend{Accelerometer using MLP, Gyroscope using MLP, Accelerometer using RBF, Gyroscope using RBF}
     \end{axis}
