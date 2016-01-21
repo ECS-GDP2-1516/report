@@ -8,21 +8,21 @@ PLOT_TARGETS := $(PLOTS:.tex=.pdf)
 
 all: report.pdf wordcount
 
-report.pdf: report.tex $(FILES) .style/ecsgdp.cls $(PLOT_TARGETS) .aux/report.bbl
-	lualatex --output-directory=.aux report
-	mv .aux/report.pdf ./report.pdf
-	touch .aux/report.bbl
+report.pdf: report.tex $(FILES) .style/ecsgdp.cls $(PLOT_TARGETS) _aux/report.bbl
+	lualatex --output-directory=_aux report
+	mv _aux/report.pdf ./report.pdf
+	touch _aux/report.bbl
 	@echo ""
 
 wordcount:
 	@./texcount.pl -inc -total report.tex
 
 %.pdf: %.tex 
-	cd figures/ && lualatex --output-directory=.aux $(shell basename $<)
-	cp figures/.aux/*.pdf ./figures/
+	cd figures/ && lualatex --output-directory=_aux $(shell basename $<)
+	cp figures/_aux/*.pdf ./figures/
 
 clean:
-	rm -f .aux/* figures/.aux/*
+	rm -f _aux/* figures/_aux/*
 
 cleanpdfs:
 	rm -f report.pdf $(PLOT_TARGETS)
@@ -37,8 +37,8 @@ ecsgdp.cls:
 
 ECS.bib:
 
-.aux/report.aux:
-	lualatex --output-directory=.aux report
+_aux/report.aux:
+	lualatex --output-directory=_aux report
 
-.aux/report.bbl: .aux/report.aux ECS.bib
+_aux/report.bbl: _aux/report.aux ECS.bib
 	bibtex $<
