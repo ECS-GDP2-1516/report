@@ -1,12 +1,12 @@
 \namedsection{Developing for a Limited Environment}{Shepherd}
 % This section talks about the C development
 
-As we have seen in section \ref{ml}, we opted to use a Multilayer Perceptron, which is a good fit for our device as it does not require a great deal of complex mathematical computation. Unfortuneately, however, it does require the use of decimal numbers and uses the sigmoid function, which requires devision and power operations. This section discusses some of the design decisions and sacrifices that were made in order to implement an MLP on the subthreshold Cortex M0+.
+The Multilayer Perceptron is a good fit for a subthreshold Cortex M0+ as it does not require a great deal of complex mathematical computation. Unfortuneately, however, it does require the use of decimal numbers and uses the sigmoid function, which requires division and power operations. This section discusses some of the design decisions and sacrifices that were made in order to implement an MLP on the subthreshold Cortex M0+.
 
 \subsection{Sigmoid Function}
-The sigmoid function's graph and equation is shown below in figure \ref{fig:sigmoid}. Clearly, this equation causes two issues for the proposed device: firstly, it requires devision, and secondly it requires the use of the constant e, which is a non-integer; using this in an operation involving powers could potentially prove expensive.
+The sigmoid function's graph and equation is shown below in figure \ref{fig:sigmoid}. Clearly, this equation causes two issues for the proposed device: firstly, it requires division, and secondly it requires the use of the constant e, which is a non-integer; using this in an operation involving powers could potentially prove expensive.
 
-The first area of note in this graph is that the value of f(t) quickly starts to tend towards 0 in the negative direction, and 1 in the positive direction. It is not uncommon, therefore, to approximate the value of the function at these extremes. Figure \ref{fig:sigmoid-ends} shows this approximation highlighted in blue for t values outside of the range between 5 and -5; it is plain to see that the difference between figures \ref{fig:sigmoid} and \ref{fig:sigmoid-ends} is difficult to see. On average, we have found that approximately 42\% \todo{REF needed} of nodes produce values in outside this range meaning they can be approximated to 0 or 1 without the sigmoid function.
+The first area of note in this graph is that the value of $f(t)$ quickly starts to tend towards 0 in the negative direction, and 1 in the positive direction. It is not uncommon, therefore, to approximate the value of the function at these extremes. Figure \ref{fig:sigmoid-ends} shows this approximation highlighted in blue for t values outside of the range between 5 and -5; it is plain to see that the error introduced here is minimal. On average, we have found that approximately 42\% \todo{REF needed} of nodes produce values in outside this range meaning they can be approximated to 0 or 1 without wasting any processing power on completing the full sigmoid function.
 
 \begin{figure}[!h]
     \centering
@@ -17,11 +17,10 @@ The first area of note in this graph is that the value of f(t) quickly starts to
     \caption{Sigmoid Functions \label{fig:sigmoid-options}}
 \end{figure}
 
-For the remaining range, between 5 and -5, the sigmoid function is does not tend to any fixed value, so a different approximation must be used. Fortuneately, the sigmoid's ``S''-like shape lends itself to being easily split into a series of smaller lines, as shown in figure \ref{fig:sigmoid-soft}. This provides a suitable level of accuracy with far lower computing overhead. However, as beneficial as the approximation in figure \ref{fig:sigmoid-soft} is, it is possible to approximate this further. We have found that approximating the sigmoid function with a single
-linear equation has proved satisfactory and has only lead to an observed drop in accuracy by 1\% \todo{REF}. This is shown in this section's final figure: \ref{fig:sigmoid-hard}.
+For the remaining range, between 5 and -5, the sigmoid function does not tend to any fixed value, so a different approximation must be used. Fortuneately, the sigmoid's ``S''-like shape lends itself to being easily split into a series of smaller lines, as shown in figure \ref{fig:sigmoid-soft}. This provides a suitable level of accuracy with far lower computing overhead as each line can be defined using only a linar equation. However, as beneficial as the approximation in figure \ref{fig:sigmoid-soft} is, it is possible to approximate this further. We have found that approximating the sigmoid function with a single linear equation has proved satisfactory and has only lead to an observed drop in accuracy by 1\% \todo{REF}. This is shown in this section's final figure: \ref{fig:sigmoid-hard}.
 
 \subsection{Floating point}
-The lack of floating point support in the proposed device provided the team with a large challenge, as the neural network is entirely based upon a series of non-integer input weights, and the ability for each node to produce non integer output values. In order to get around this problem, the team opted for a fixed-point implementation: the weights of each node are multiplied by a scale factor and the resulting integer part is taken as the value.
+The lack of floating point support in the proposed device created a large challenge, as the neural network is entirely based upon a series of non-integer input weights, and the ability for each node to produce non integer output values. In order to get around this problem, the team opted for a fixed-point implementation: the weights of each node are multiplied by a scale factor and the resulting integer part is taken as the value.
 
 This form is convienient as it makes the multiplication and addition of such scaled values straight forward: for addition of values using the same scale factor, it is sufficient to simply add the integers as though they were normal. The equation below illustrates this:
 
@@ -69,15 +68,21 @@ B<\lfloor\log_{2}\left\{\frac{2^{16}}{|x|}\right\}\rfloor
 
 \subsection{Space Restrictions}
 
-As described in \ref{section}, the device we are aiming to develop for has a very low memory space availiable to us: 8KB for both program code and data. When we first compiled our code with mBed's precompiled libraries, the total size of the binary was 12KB. Our first step to solve this was to obtain the source code for the mBed libraries to try compiling these directly along with our program, which allowed us to get down to 8KB. This was a substancial improvement, however it was clear that we would need to decrease this further as it left no space for heap or stack space within our program.
+As described in \ref{section}, the device has very little memory space availiable: 8KB for both program code and data. When the algorithm code was first compiled with the mBed's precompiled libraries, the total size of the binary was 12KB. The first step to solve this was to obtain the source code for the mBed libraries; compiling these directly along with the program code, offers further potencial for the compiler to optimise the link between the API and the algorithm, based on the specific usecase.
+
+The method was successful at reducing the total binary size to 8KB. This was a substancial improvement, however it was clear that this would need to be decreased further as it an 8KB binary leaves no space for heap or stack space when the code is run.
 
 \subsubsection{Improving GCC's Optimisations}
 
-While the GNU compiler is very good at optimising code when it compiles C and C++ code, the linker is not able to do so many of the same optimisations across compilation units. It was a logical first step, therefore, to identify the functions and classes that our program code called within the mBed's api. In many cases, specific API calls were only made once from our code, such as the call to \verb|ic2_init()| which gets the I2C ready to communicate with the processor.
+While ARM's compiler is very good at optimising code when it compiles C and C++ code, the linker is not able to do so many of the same optimisations across compilation units. It was a logical first step, therefore, to identify the functions and classes that the program code calls within the mBed's api to investigate the benefits of combining their compilation unit.
 
-It is logical to ensure such a function remains an atomic referenceable item within a library, as it is feasible for a device to use more than one I2C devices and as such the call may need to be made multiple times and with varying parameters. However, as it was only called once within our code, we were able to move this into the same compilation unit as it was originally called, replacing the call with the code itself inline. As a result, the compiler is no longer required to produce assembly instructions to copy in arguments and push a new frame onto the stack saving not only space, but optimising the performance of the code too.
+In many cases, specific API calls were only made once from the algorithm code, such as the call to \verb|ic2_init()| which gets the I2C ready to communicate with the processor at the beginning of the program. Within a library, it is logical to ensure such a function remains an atomic and referenceable item, as it is feasible for a device to use more than one I2C device; as such the call may need to be made multiple times and with varying parameters.
 
-The mBed API's functions also often came with guards on their arguments; for example, the function \verb|gpio_init()| which was called to initialise the LED pins, accepted a pin as an arguement. Before initialising the given pin, it checks that it was not passed the pseudo-pin ``Not Connected''.
+However, as it was only called once in this case, moving \verb|ic2_init()| into the same compilation unit as the function which calls it, replacing the call with the code itself inline. As a result, the compiler is no longer required to produce assembly instructions to copy in arguments and push a new frame onto the stack; this saves not only space, but improves the performance of the code too.
+
+\subsubsection{Argument Guards}
+
+The mBed API's functions also often came with guards on their arguments; for example, the function \verb|gpio_init()| which is used to initialise the LED pins, accepts a pin as an arguement. Before initialising the given pin, it checks that it was not passed the pseudo-pin ``Not Connected''.
 
 \begin{lstlisting}[caption={Argument Guards of gpio init}]
 void gpio_init(gpio_t *obj, PinName pin)
@@ -89,11 +94,11 @@ void gpio_init(gpio_t *obj, PinName pin)
 }
 \end{lstlisting}
 
-Again, such a check is appropriate for an API as incorrectly passing a null pin would cause an error if the code attempts to initialise it. However, in our program we can see which pins we are passing to this function, namely the LED pins, so we can be confident that we are not passing in the null \verb|NC| pin and as such we can delete the check, reducing the number of instructions required.
+Again, such a check is appropriate for an API as incorrectly passing a null pin would cause an error should the code attempt to initialise it. However, in our program we can see which pins we are passing to this function, namely the LED pins, so we can be confident that we are not passing in the null \verb|NC| pin and as such it is safe to delete the check, reducing the number of instructions required.
 
 \subsubsection{Pinmap Functions}
 
-The mBed library is designed to be general purpose across multiple platforms, as such the library contains a layer of abstraction to help it interface with the pins and memory addresses for a specific device. For memory addresses, this abstraction is achieved using macros in device-specific header files, which allows optimisation to can happen at compile time:
+The mBed library is designed to be general purpose across multiple platforms. As such the library contains a layer of abstraction to help it interface with the pins and memory addresses for a specific device. For memory addresses, this abstraction is achieved using macros in device-specific header files, which allows optimisation to can happen at compile time:
 
 \begin{lstlisting}[caption={Memory spaces mapped in LPC11Uxx.h}]
 typedef struct {                 /*!< GPIO_GROUP_INT0 Structure */
@@ -104,17 +109,10 @@ typedef struct {                 /*!< GPIO_GROUP_INT0 Structure */
     __IO uint32_t PORT_ENA[2];   /*!< Interrupt port 0/1 enable register */
 } LPC_GPIO_GROUP_INTx_Type;
 
-// ---------------------------------------
-// -----    Peripheral memory map    -----
-// ---------------------------------------
-
+// Peripheral memory map
 #define LPC_GPIO_PIN_INT_BASE     (0x4004C000)
 #define LPC_GPIO_GROUP_INT0_BASE  (0x4005C000)
 #define LPC_GPIO_GROUP_INT1_BASE  (0x40060000)
-
-// ----------------------------------------
-// -----    Peripheral declaration    -----
-// ----------------------------------------
 
 #define LPC_GPIO_GROUP_INT0 ((LPC_GPIO_GROUP_INTx_Type*) LPC_GPIO_GROUP_INT0_BASE)
 #define LPC_GPIO_GROUP_INT1 ((LPC_GPIO_GROUP_INTx_Type*) LPC_GPIO_GROUP_INT1_BASE)
@@ -151,6 +149,6 @@ main:
     .word   1074118656 @ This is 0x4005C000
 \end{lstlisting}
 
-Unfortuneately, a similar technique is not used for the Pin Mappings. Instead, these are stored within an array within a C file, which is specific to each target and are worked upon in two seperate files - one common across all devices, and one common to the device's family. The reason this is done is that the pin mappings, and the way in which their modes are updated is more complex and as such is harder to achieve through the use of defined macros. However, as the result of this is that the pin mappings and pin functions are not contained within a single compilation unit, the linker is not able to perform the same optimisations as the compiler is.
+Unfortuneately, a similar technique is not used for the Pin Mappings. Instead, these are stored in an array within a C file which is specific to each target. The values in this array are worked upon in two seperate files - one common across all devices, and one common to the device's family. The reason this is done is that the pin mappings, and the way in which their modes are updated is more complex and as such is harder to achieve through the use of defined macros. However, as the result of this is that the pin mappings and pin functions are not contained within a single compilation unit, the linker is not able to perform the same optimisations as the compiler is.
 
 This not only results in wasted space, as the pins and their functions must be stored as part of the program code, but it also wastes valueable clock cycles, calculating values for pin addresses which could in theory be precalculated. In order to avoid this, we worked through the pin functions manually from the point at which they were called and manually calculated the registers that would be used. We then replaced these with the hard coded register values.
