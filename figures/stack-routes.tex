@@ -1,0 +1,54 @@
+% This file is only used to generate the figure to be included
+% This does not need to be compiled each time
+% Do not attempt to include this in the main document, it will break LaTeX!
+
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+\begin{document}
+    \tikzstyle{block} = [rectangle, draw, 
+        text width=10em, text centered, rounded corners, minimum height=4em]
+
+    \tikzstyle{sum} = [rectangle, draw, 
+        text width=5em, text centered, rounded corners, minimum height=4em]
+
+    \begin{tikzpicture}[shorten >=1pt,node distance=2cm and 5cm,on grid,auto,initial text={}] 
+        \node[block,initial] (main_1) {main \\ Stack Size: 56};
+        \node (writeb_1) [block,right=of main_1] {writeBits \\ Stack Size: 32}; 
+        \node (i2cwrite_1) [block,right=of writeb_1] {i2cwrite \\ Stack Size: 24};
+        %\node (end_1) [sum,right=of i2cwrite_1] {Total: \\ 112};
+        \path[->] 
+        (main_1) edge node {} (writeb_1)
+        (writeb_1) edge node {} (i2cwrite_1)
+        ;
+
+        \node[block,initial] (main_2) [below=of main_1] {main \\ Stack Size: 56};
+        \node (writeb_2) [block,right=of main_2] {writeBits \\ Stack Size: 32}; 
+        \node (i2cread_2) [block,right=of writeb_2] {i2cread \\ Stack Size: 32}; 
+        %\node (end_2) [sum,right=of i2cread_2] {Total: \\ 120};
+        \path[->] 
+        (main_2) edge node {} (writeb_2)
+        (writeb_2) edge node {} (i2cread_2)
+        ;
+
+        \node[block,initial] (main_3) [below=of main_2] {main \\ Stack Size: 56};
+        \node (accel_3) [block,right=of main_3] {getAcceleration \\ Stack Size:  32};
+        \node (i2cwrite_3) [block,right=of accel_3] {i2cwrite \\ Stack Size: 24}; 
+        %\node (end_3) [sum,right=of i2cwrite_3] {Total: \\ 112};
+        \path[->] 
+        (main_3) edge node {} (accel_3)
+        (accel_3) edge node {} (i2cwrite_3)
+        ;
+
+        \node[block,initial] (main_4) [below=of main_3] {main \\ Stack Size: 56};
+        \node (accel_4) [block,right=of main_4] {getAcceleration \\ Stack Size:  32};
+        \node (i2cread_4) [block,right=of accel_4] {i2cread \\ Stack Size: 32};
+        %\node (end_4) [sum,right=of i2cread_4] {Total: \\ 120}; 
+        \path[->] 
+        (main_4) edge node {} (accel_4)
+        (accel_4) edge node {} (i2cread_4)
+        ;
+    \end{tikzpicture}
+\end{document}

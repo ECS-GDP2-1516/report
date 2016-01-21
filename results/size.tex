@@ -1,6 +1,14 @@
 \namedsection{Size Analysis}{Shepherd}
 
-As a result of the optimisations the total size of the binary comes to 3168 bytes, or 3.09KB. Table \ref{tab:prog-size} shows the break down of these values.
+In order to assess the overall size requirement of the completed algorithm, two areas of interest were identified: The Binary Size, which specifies the FLASH memory requirement, and the total size of code and in-program memory, which specifies the amount of RAM required. These items can be further split into three areas of investigation: The Code Size, The Heap Size and the Stack Size.
+
+\subsection{Binary Size}
+
+Finding the overall size of the binary file is a trivial task, simply running \verb|du -b output.bin| on a linux-like console gives the result of 3168 bytes, or 3.09KB. However, it is important to assess the contributing factors to this size. The sections which are included in the compiled binary are \verb|.text|, which contains the program code and constant values, \verb|.data|, non-zero initialisations for the heap and finally, \verb|.ARM.exidx| which is an 8 byte section required for stack unwinding.
+
+The size of .data can be obtained by using arm's \verb|arm-none-eabi-size| command, which mirrors the functionality of GCC's \verb|size|; this gives a size of 108 for non zero heap initialisations. The majority of this is LibC values, with the exception of 4 bytes for an array index initialised to -1 which is used by multiple functions in the algorithm.
+
+Finally, the size of .data, which is now plainly 3052 bytes, must be assessed; again it is more meaningful to look into this in further detail. Fortuneately, this can be performed by viewing the annotated disassembly of the binary. Table \ref{tab:prog-size} shows the break down of the binary file, with the values discussed in this section and the code split into logical areas.
 
 \begin{table}[h]
     \centering
@@ -12,30 +20,38 @@ As a result of the optimisations the total size of the binary comes to 3168 byte
         System Init and Shutdown Code & 1184 \\
         Code & 1128 \\
         Constant Weights & 524 \\
-        Variable Initialisations for the Heap & 108 \\
-        .ARM.exidx & 8 \\
         LibC Values & 12 \\
+        .ARM.exidx & 8 \\
+        Non-Zero Variable Initialisations for the Heap & 108 \\
         \hline
     \end{tabular}
     \caption{Binary File Size \label{tab:prog-size}}
 \end{table}
 
-During the initialisation phase, a further 168 bytes are loaded onto the heap, for the following data as detailed in table \ref{tab:heap-size}. The heap, after initialisation does not grow any further, remaining at 276 bytes. As such, support for on-the-fly heap assignments (\verb|malloc|) was removed from the mbed library to save space within the binary.
+\subsection{Memory Size}
 
-\begin{table}[h]
+A more important metric of size to quantify is the memory usage. At startup, the total binary is loaded into RAM. As discussed above, non-zero heap initialisations make up 108 bytes. However, during the system initialisation phase, a further 168 bytes are loaded onto the heap. After this, the heap does not grow any further, remaining at 276 bytes. As such, support for on-the-fly heap assignments (\verb|_sbrk()|) was removed from the mbed library to save space within the binary.
+
+The final section of memory is the stack, which is perhaps the hardest area to accurately assess. For this, the compiler was passed the \verb|-fstack-usage| flag which prompts it to output the stack usage of each function; all of the algorithms had been designed to have static stack usage, which means the size of the stack is constant and therefore predicatable, and the space is reserved at the beginning of the function. This was confirmed by inspecting the disassembly, in which the beginings of functions could be observed to contain a push instruction, followed by an amendment to the stack pointer to reserve the required space.
+
+The stack usage of each function alone is not enough to assure the stack usage overall; this is because some functions call others, which means their stack values must be added. As such, a graph of each function and its stack usage was created, shown in figure \ref{fig:stack-calls}, was drawn up with the calls between these added as vertices. The algorithm was designed to avoid any forms of recursion, so this graph does not contain any cyclic references which makes the task of determining the maximum stack usage more trivial.
+
+\begin{figure}[!h]
     \centering
-    \begin{tabular}{|l|c|}
-        \hline
-        Section & Size \\
-        \hline
-        No Operation Instruction & 4 \\
-        Variable Initialisations from binary (as above) & 108 \\
-        The last twenty classifications & 20 \\
-        The last twenty X, Y, Z readings & 140 \\
-        Object data structure used by LibC & 24 \\
-        \hline
-    \end{tabular}
-    \caption{Heap Size \label{tab:heap-size}}
-\end{table}
+    \includegraphics{figures/stack-calls.pdf}
+    \caption{Example MultiLayer Perceptron Network}
+    \label{fig:stack-calls}
+\end{figure}
 
-The stack does not grow above 56 bytes. As such, the total memory requirement for the application can be summerised as the summation of the binary size, the size of the heap and the maximum stack size. This comes to 3392 bytes leaving a theoretical remainder of 4800 bytes availiable for enhancements or storage of excersises performed over the course of a flight.
+\begin{figure}[!h]
+    \centering
+    \includegraphics{figures/stack-routes.pdf}
+    \caption{Example MultiLayer Perceptron Network}
+    \label{fig:stack-routes}
+\end{figure}
+
+We must first determine each of the possible stack states and their respective sizes, to do this we walk forward from main along each edge, adding the stack size of each node we encounter, until we can move no further. We then repeat this until no further routes can be found. Finally, the route with the maximum stack size is picked; this is the biggest the stack can ever be. This is shown by figure \ref{fig:stack-routes}, and from it is therefore clear to see that the stack never exceeds 120 bytes.
+
+\subsubsection{Conclusion}
+
+In total, the total required RAM size can be calculated the summation of the total binary size, the size of zero-initialised heap variables and the maximum stack size. This comes to 3456 bytes leaving 4736 bytes, or just over 4.6KB, free if deployed on an 8KB device. This space gives scope for providing support for a greater set of excersises, or storing data about the users excersises for long flights.

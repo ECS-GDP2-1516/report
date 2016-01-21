@@ -1,0 +1,29 @@
+% This file is only used to generate the figure to be included
+% This does not need to be compiled each time
+% Do not attempt to include this in the main document, it will break LaTeX!
+
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+\begin{document}
+    \tikzstyle{block} = [rectangle, draw, 
+        text width=10em, text centered, rounded corners, minimum height=4em]
+
+    \begin{tikzpicture}[shorten >=1pt,node distance=3cm and 5cm,on grid,auto,initial text={}] 
+        \node[block,initial] (main) {main \\ Stack Size: 56};
+        \node (writeb) [block,below=of main] {writeBits \\ Stack Size: 32}; 
+        \node (accel) [block,right=of writeb] {getAcceleration \\ Stack Size:  32};
+        \node (i2cwrite) [block,below=of writeb] {i2cwrite \\ Stack Size: 24}; 
+        \node (i2cread) [block,below=of accel] {i2cread \\ Stack Size: 32}; 
+
+        \path[->] 
+        (main) edge node {} (writeb) (main) edge node {} (accel)
+
+        (writeb) edge node {} (i2cwrite) (writeb) edge node {} (i2cread)
+        (accel) edge node {} (i2cwrite) (accel) edge node {} (i2cread)
+
+        ;
+    \end{tikzpicture}
+\end{document}
