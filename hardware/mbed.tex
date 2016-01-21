@@ -109,7 +109,7 @@ Within the mBed datasheet \cite{mbed_datasheet}, a methodology for calculating t
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=.9]{usart_algorithm.png}
+	\includegraphics[scale=.85]{usart_algorithm.png}
 	\caption{Algorithm to calculate required values for Serial baud rate}
 	\label{fig:serial_algo}
 \end{figure}
@@ -118,7 +118,7 @@ Within the mBed datasheet \cite{mbed_datasheet}, a methodology for calculating t
 
 Another option to account for this is a feature provided within the processor called Auto-Baud\cite{mbed_datasheet}. This is where the device waits on receiving communication upon its RX pin and of the data coming in, it measures the baud rate between a falling edge and a subsequent rising or falling edge depending on the mode set within the registers.
 
-Using this information, the required registers are set to enable Serial communication such that the device can communicate at the required baud rate. 
+Using this information, the required registers are set to enable Serial communication such that the device can communicate at the required baud rate. To enable an effective method for enabling auto baud, a python script was created which can be used on the host PC. This script continuously sends the character 'g' whilst also receiving and printing bytes. The continuous stream of 'g's gives a signal for auto baud to configure itself and should the device be reset during communication it will be configured automatically after reset should the script be running.
 
 \note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
 \note{Serial communication - autobaud, python script}
@@ -128,4 +128,4 @@ Using this information, the required registers are set to enable Serial communic
 \note{Use output pin in while loop due to clkout pin not on the mBed breakout}
 \note{I2C pulse and Watchdog setting to optimise sensor sampling rate}
 \note{SPI mBed library cannot be compiled because it is bigger than the flash memory}
-\note{Bitshifting gives random outputs fun}
+\note{Bitshifting gives random outputs fun -- little endian}
