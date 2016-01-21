@@ -1,0 +1,9 @@
+\chapter{Project Brief}
+
+This project will research and attempt to develop an algorithm for identifying and monitoring exercises performed by a human wearer, suitable for execution on an ultra-low-power (a few uW) subthreshold ARM Cortex-M0+, which is currently being investigated at ARM Research. This requires that the algorithm can execute on a processor clocked at a few hundred kHz and from limited memory.
+
+The project shall be split into three overlapping areas. The first task will be to effectively emulate the required environment, by creating a test platform from an ARM DesignStart Cortex-M0 to an FPGA. This must be clocked at frequencies from 100s of kHz to a few MHz, and contain a single memory space of 32kB for use by both program code and variables. This will then be used to obtain movement data for test subject performing exercises designed to reduce the risk of suffering from deep vein thrombosis whilst flying\footnote{For example: http://www.virgin-atlantic.com/gb/en/travel-information/your-health/inflight-exercise.html}.
+
+Secondly, the project shall investigate existing algorithms and approaches for monitoring exercises and activities, specifically focusing on following machine learning approaches. Existing tools, such as Weka, will be considered to assist with assessing of machine learning approaches. At first the research will look at unconstrained systems, before looking at machine learning in a wider context on constrained systems and how effective algorithms can deal with a power-effectiveness tradeoff. Finally the group will aim to use this research to inform the conception of a system designed for deep vein thrombosis exercises.
+
+Finally, the theorised algorithm will be implemented and deployed onto the test platform, allowing for demonstration and evaluation, including making estimates of the energy and power consumption compared to the existing algorithms looked at in the research phase.
