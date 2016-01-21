@@ -191,6 +191,20 @@ The user study was performed on a number \todo{How many?} subjects, where both a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 The main contenders for the algorithm were the MLP and RBF network due to high performance while having relatively low complexity, allowing them to be implemented on a constrained device without too much difficulty. Between these two algorithms, there was minimal difference in terms of 
 
+\begin{figure}
+	\centering
+	\subfigure[Top-Down]{\label{fig:mlp-multi-flat}\includegraphics[width=70mm]{figures/mlp-multi-analysis-flat.pdf}}
+	\subfigure[Side-On, Varying Hidden Layers]{\label{fig:mlp-multi-3d}\includegraphics[width=64mm]{figures/mlp-multi-analysis-3d.pdf}}
+	%\subfigure[Varying Frequency]{\label{fig:mlp-multi-3d-2}\includegraphics[width=70mm]{figures/mlp-multi-analysis-3d-2.pdf}}
+	%\subfigure[Varying Both]{\label{fig:mlp-multi-3d-3}\includegraphics[width=70mm]{figures/mlp-multi-analysis-3d-3.pdf}}
+	\caption{MLP Parameter Performance Surface Plot \label{fig:mlp-multi}}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{subject-fold-results.pdf}
+	\caption{Subject Performance with Different Sensors and Algorithms \label{fig:subfold}}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% WHY CROSS-VALIDATION IS BAD %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

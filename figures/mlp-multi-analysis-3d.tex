@@ -1,0 +1,18 @@
+\documentclass{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat = 1.7, colormap={bnw}{rgb=(0,0,0) rgb=(1,1,1)},}
+
+\begin{document}
+	\begin{tikzpicture}
+	\begin{semilogxaxis}[
+		colormap name={bnw},
+		xlabel={Sampling Frequency / Hz},
+		ylabel={Hidden Layers},
+		zlabel={Kappa Statistic},
+		view = {90}{0},
+	]
+	\addplot3 [surf, very thin] table {data/final-mlp-multianalysis.csv};
+	 
+	\end{semilogxaxis}
+	\end{tikzpicture}
+\end{document}
