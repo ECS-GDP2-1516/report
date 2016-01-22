@@ -84,7 +84,11 @@ With the available frequency values and divisors, it confirms the range that the
 
 \subsubsection{Analysing the error margin}
 
-It is known that the Watchdog oscillator has an error margin of $ \pm 40\%$, the actual impact this would have however is unknown. According to the data sheet \cite{mbed_not_datasheet}, 
+It is known that the Watchdog oscillator has an error margin of $ \pm 40\%$, the actual impact this would have however is unknown. According to the data sheet \cite{mbed_not_datasheet}, the primary reason for this is temperature. Due to the conditions that the device is intended for, upon a plane, the ambient temperature can be assumed to not be at extreme temperatures in either direction, hence should not be an issue. There was a hypothesis that the power supply voltage could also affect the frequency of the oscillator. 
+
+To test this, the supply voltage for the mBed is varied and the output frequency of the oscillator is checked. There was an issue due to the fact that the mBed does not provide a breakout pin for the CLKOUT pin. To get around this, the while loop is programmed to contain only toggling a pin. The act of toggling the pin should take a constant number of cycles each time, hence the frequency of that pin should be proportional to the frequency of the clock. Hence, can be used to measure deviations in the system clock.
+
+Implementing this with the watchdog oscillator using a FCLKANA of 0x1 (0.6 MHz) and a DIVSEL of 2 (Divisor of 6), the Watchdog oscillator oscillates at 100 kHz. Measuring the frequency of the pin over a range of voltages shows no change in frequency, hence disproving the hypothesis that the voltage would also affect the operating frequency.
 
 \subsection{Serial Communication}
 
