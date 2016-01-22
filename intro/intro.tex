@@ -4,7 +4,7 @@ Ultra Low Power Processors, such as ARM's Cortex-M0+, are becomming an increasin
 
 However, such processors clearly create very tight constraints for potencial developers, as processing power is often limited, leading to the ever-continuing requirement for more efficient and optimised algorithms. As memory usage is also proportional to power consumption, the RAM availaible on such systems is also extremely limiting. As we begin to rely on these systems more and more, these constraints make it a growing challenge to implement systems which are not only useful, but can be relied upon to function when needed.
 
-\section{Project Overview}
+\namedsection{Project Overview}{Shepherd}
 
 ARM is currently investigating the concept of a subthreshold Cortex-M0+, which attempts to push the extremes of these constraints further by providing just 8KB of memory for both program code and data, and running at just a few hundred cycles per second. This project aims to research and develop an algorithm which is capable of running on such a device, to act as a proof of concept that such a processor would be worth while.
 
@@ -18,7 +18,7 @@ Other parts of the project include a user study to collect movement data of the 
 
 This report concludes by evaluating the final developed algorithm in terms of its accuracy in detecting exercises and its power and resource requirements. This is then used as a basis for determining the suitableness of using constrained subthreshold devices to compute complex problems.
 
-\section{Project Specification}
+\namedsection{Project Specification}{Finch}
 
 The particular algorithm that is to be developed is a way to identify and monitor exercises performed by a human wearer. These are specifically exercises which can be done on aeroplanes to reduce the risk of suffering from Deep Vein Thrombosis, a condition where a blood clot can form in one of the deep veins in the body, most commonly the legs. This can lead to further complications such as pulmonary embolism which is when part of the blood clot moves and blocks a blood vessel in the lungs \cite{NHS2014DVT}. Long-haul flights can increase the risk of getting DVT because of the long periods of time sitting down and not moving which reduces circulation in the legs.
 
@@ -34,7 +34,7 @@ Figure \ref{fig:exercises} shows some of the inflight exercises which can be per
 Possible uses of the algorithm would be to incorporate it into a device which could be given to passengers to strap to their legs. It would then monitor how much exercise each person was doing. This could help inform the passengers whether or not they are doing enough exercise to stay risk free. The device itself could make use of energy efficient technologies (for example the Cortex-M0+) so that its battery could easily last the entire duration of a long-haul flight.
 
 
-\section{Requirements}
+\namedsection{Requirements}{Finch}
 
 \begin{enumerate}
   \item The algorithm must be capable of detecting and monitoring exercises designed to combat deep vein thrombosis
