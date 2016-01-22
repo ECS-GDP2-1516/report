@@ -3,12 +3,14 @@
 \usepackage{pgfplots}
 \usepackage{tikz}
 
+\usetikzlibrary{patterns}
+
 % Define bar chart colors
 %
-\definecolor{bblue}{HTML}{4F81BD}
-\definecolor{rred}{HTML}{C0504D}
-\definecolor{ggreen}{HTML}{9BBB59}
-\definecolor{ppurple}{HTML}{9F4C7C}
+\definecolor{bblue}{HTML}{CCCCCC}
+\definecolor{rred}{HTML}{999999}
+\definecolor{ggreen}{HTML}{666666}
+\definecolor{ppurple}{HTML}{333333}
 
 
 \begin{document}
@@ -35,16 +37,16 @@
                 column sep=1ex
         }
     ]
-        \addplot[style={bblue,fill=bblue,mark=none}]
+        \addplot[style={black,fill=bblue,mark=none}]
             table {data/10-final-acc-mlp.csv};
 
-        \addplot[style={rred,fill=rred,mark=none}]
+        \addplot[style={black,fill=rred,mark=none}]
 	        table {data/10-final-gyro-mlp.csv};
 
-        \addplot[style={ggreen,fill=ggreen,mark=none}]
+        \addplot[style={black,fill=ggreen,mark=none}]
 			table {data/10-final-acc-rbf.csv};
 
-        \addplot[style={ppurple,fill=ppurple,mark=none}]
+        \addplot[style={black,fill=ppurple,mark=none}]
 			table {data/10-final-gyro-rbf.csv};
 			
         \legend{Accelerometer using MLP, Gyroscope using MLP, Accelerometer using RBF, Gyroscope using RBF}
