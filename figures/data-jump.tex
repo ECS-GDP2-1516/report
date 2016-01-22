@@ -1,0 +1,19 @@
+% This file is only used to generate the figure to be included
+% This does not need to be compiled each time
+% Do not attempt to include this in the main document, it will break LaTeX!
+
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\begin{document}
+	\begin{tikzpicture}
+	\begin{axis}[xmin=12,xmax=13,xticklabels={,,},xlabel=Time,ylabel=Acceleration / g,
+	 ylabel absolute, ylabel style={yshift=-5mm}, xlabel absolute, xlabel style={yshift=4mm}]
+	\addplot[] table [x=time, y=x, col sep=comma] {data/acc_walking_2.csv};
+	\addplot[dashed] table [x=time, y=y, col sep=comma] {data/acc_walking_2.csv};
+	\addplot[dotted] table [x=time, y=z, col sep=comma] {data/acc_walking_2.csv};
+	\end{axis}
+	\end{tikzpicture}
+\end{document}
