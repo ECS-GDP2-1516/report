@@ -120,7 +120,7 @@
 }
 \newcommand*{\supervisor}[1]{\def\supname{#1}}
 \newcommand*{\examiner}[1]{\def\examname{#1}}
-\newcommand*{\degree}[1]{\def\degreename{#1}}
+\newcommand*{\degrees}[1]{\def\degreename{#1}}
 \newcommand*{\authors}[1]{\def\authornames{#1}}
 \newcommand*{\addresses}[1]{\def\addressnames{#1}}
 \newcommand*{\university}[1]{\def\univname{#1}}
@@ -135,7 +135,7 @@
 \newcommand*{\keywords}[1]{\def\keywordnames{#1}}
 \supervisor  {}
 \examiner    {}
-\degree      {}
+\degrees     {}
 \authors     {}
 \university  {\texorpdfstring{\href{http://www.soton.ac.uk}
                 {University of Southampton}}
