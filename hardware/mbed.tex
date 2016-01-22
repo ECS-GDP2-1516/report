@@ -155,14 +155,9 @@ The model employed requires a set sampling rate, and to minimise the communicati
 	\label{eqn:i2c_clock}
 \end{equation}
 
-It was decided that the duty cycle of the I2C clock is 50\%, hence the value of SCLL and SCLH should be the same. 
+It was decided that the duty cycle of the I2C clock is 50\%, hence the value of SCLL and SCLH should be the same. A similar method, from when measuring the frequency of the oscillator with varying voltage via a pin, was used where the frequency of the pin is half the sampling rate. This because in one cycle of the pin, it goes through the while loop twice and the sensor is queried once each loop.
 
 \note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
-\note{Serial communication - autobaud, python script}
-\note{I2C with sensor}
-\note{Receiving sensor data}
 \note{Configuring Watchdog Oscillator for main clock}
-\note{Use output pin in while loop due to clkout pin not on the mBed breakout}
-\note{I2C pulse and Watchdog setting to optimise sensor sampling rate}
 \note{SPI mBed library cannot be compiled because it is bigger than the flash memory}
 \note{Bitshifting gives random outputs fun -- little endian}
