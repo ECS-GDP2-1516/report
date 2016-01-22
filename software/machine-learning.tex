@@ -1,12 +1,10 @@
 \namedsection{Machine Learning}{Playle}
 \label{ml}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Rewritten
 %%% WHAT IS MACHINE LEARNING? %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Machine learning is a technique that takes some observations about a system in addition to a value of interest \todo{Maybe s/value of interest/output/}, builds a model around these parameters and uses this model to create predictions about the value of interest for the system. There are typically three categories of machine learning algorithm: classification, where the value of interest is in a finite set of classes; regression, where the value of interest is continuous; and clustering, where the value of interest is related to other values.
-
-In order to detect exercise, a classifying supervised machine learning algorithm will be most suitable, with the classes being types of activity observed.
+Machine learning is a technique that takes some observations about a system in addition to some desired outputs, building a model around these parameters and uses this model to create predictions about the output for other observed data. There are typically three categories of machine learning algorithm: classification, where the output is in a finite set of classes; regression, where the output is continuous; and clustering, where the output of the algorithm are the groupings of observed data. In order to detect exercise, a supervised classifying machine learning algorithm will be most suitable, with the classes being types of activity observed.
 
 \subsection{Considered Issues}
 
@@ -127,6 +125,7 @@ Each perceptron affectively defines a plane in $d$-dimensional space. Instances 
 \begin{figure}
 	\centering
 	% I'm not too happy with this, but it'll do, I guess...
+	% Might get rid of this actually...
 	\begin{tikzpicture}[shorten >=1pt,node distance=1.3cm and 3cm,on grid,auto,initial text={}] 
 	\node[state,rectangle] (i1) {$i_1$};
 	\node[state,rectangle] (i2) [below=of i1] {$i_2$}; 
@@ -218,6 +217,8 @@ To evaluate the models on the user study data, cross-validation was considered, 
 %%% SUBJECT PERFORMANCE %%% Woo, statistics!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 Figure \ref{fig:subfold} shows the resultant performance, measured using the kappa statistic, for each of the subjects performing activities using different sensors sampling at 20Hz for the MLP and RBF classifiers. These results are collected using the subject-fold cross-validation technique as previously described. \todo{Could mention accl and gyro data collected independently.}. As the \textit{Accelerometer using MLP} result class is likely to require the most suitable for a low-power constrained device \todo{As mention in ...}, this shall be used as a base-line to compare performance against. The null hypothesis was the mean of other result classes were equal to the mean of \textit{Accelerometer using MLP}. The alternative hypothesis was that these means were different. These hypothesises were tested using a series of \textit{t}-tests with significance level, $\alpha = 0.01$. The resultant $p$-values from these $t$-tests are displayed in table \ref{tab:res-ttest}. Despite the \textit{Gyroscope using MLP} and \textit{Accelerometer using RBF} result classes having a higher mean performance than \textit{Accelerometer using MLP} class, these increases were not statistically significant and therefore the null hypothesis in these cases could not be rejected. For \ textit{Gyroscope using RBF}, a statistically significant change in mean performance was observed, leading to acceptance of the alternative hypothesis.
+
+Further analysis of the subject performance results show a large difference in performance between subjects. This can quite likely be attributed to some subjects performing the activities unlike the majority of other subjects, resulting in lower performance when they are used as the test data. In this result set, a negative kappa statistic was observed, indicating that the performance was worse than guessing for this one case. However, generally, the performance for all result classes can be considered good.
 
 \begin{table}
 	\centering
