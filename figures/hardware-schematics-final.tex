@@ -1,0 +1,24 @@
+% This file is only used to generate the figure to be included
+% This does not need to be compiled each time
+% Do not attempt to include this in the main document, it will break LaTeX!
+
+\documentclass{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+\begin{document}
+    \tikzstyle{block} = [rectangle, draw, 
+        text width=10em, text centered, rounded corners, minimum height=4em]
+
+    \begin{tikzpicture}[shorten >=1pt,node distance=3cm and 7cm,on grid,auto,initial text={}] 
+        \node (sensor) [block] {Sensor};
+        \node (proc) [block,right=of sensor] {Processor}; 
+        \node (led) [block,below=of proc] {LED};
+
+        \path[->] 
+        (sensor) edge node {Communication} (proc)
+        (proc) edge node {Toggle LED} (led)
+        ;
+    \end{tikzpicture}
+\end{document}
