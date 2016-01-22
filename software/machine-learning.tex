@@ -8,30 +8,44 @@ Machine learning is a technique that takes some observations about a system in a
 
 \subsection{Considered Issues}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% CURSE OF DIMENSIONALITY %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-One of the frequently encountered problems is the curse of dimensionality \cite{bellman1957dynamic}. Having a high number of dimensions, often as a result of having a large number of inputs into a machine learning algorithm, can create the problem whereby the amount of instances required to sufficiently train the model increases as the amount of training of the model must have instances such that the input feature space must be explored sufficiently. \cite{oommen2008objective}. Further to this effect, the time and space complexity of many machine learning algorithms are functions of the feature space's dimensionality. However, existing work has demonstrated that the curse of dimensionality is not necessarily applicable to time-series data as the nature of such data explores the feature space on the condition that the signal-to-noise ratio is sufficiently high \cite{bernecker2011quality}.
+One of the frequently encountered problems is the curse of dimensionality \cite{bellman1957dynamic}, whereby having a high number of dimensions, often as a result of having a large number of inputs into a machine learning algorithm, can create the problem where the amount of instances required to sufficiently train the model increases as the amount of training of the model must have instances such that the input feature space must be explored sufficiently \cite{oommen2008objective}. Further to this effect, the time and space complexity of many machine learning algorithms are functions of the feature space's dimensionality. However, existing work has demonstrated that the curse of dimensionality is not necessarily applicable to time-series data as the nature of such data explores the feature space on the condition that the signal-to-noise ratio is sufficiently high \cite{bernecker2011quality}.
 
-%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% * Okay
 %%% OVERFITTING %%%
 %%%%%%%%%%%%%%%%%%%
-\todo{cites}
-Another problem encountered in machine learning is that of overfitting, where the model for some algorithm is trained such that it specialises on the training set alone. This can be problematic where the model is introduced to new data, as such models have poor performance on unseen data. Overfitting can be prevented by reducing the complexity of the model, as if the model is not complex enough, it is not possible for it to overfit on the training data exactly. Additionally, evaluation should be performed on a data set other than the training set, which can be achieved with using cross-validation, or even having a completely separate data set on which to test.
+% Could do with some cites, but I can't find any decent ones
+Another problem encountered in machine learning is that of overfitting, where the model for some algorithm is trained such that it specialises on the training set alone. This can be problematic where the model is introduced to new data, as such models have poor performance on unseen data. Overfitting can be prevented by reducing the complexity of the model, as if the model is not complex enough, it is not possible for it to overfit on the training data exactly. Additionally, testing should be performed on a data set other than the training set, which can be achieved with using some form of cross-validation, or even having a completely separate data set on which to test.
 
 \note{How exactly does the machine learning algorithm work? Reference papers that describe these methods.}
 
 \note{What experiments were conducted in order to determine machine learning feasibility?}
 \subsection{Initial Feasibility Assessment}
-In order to initially determine the feasibility of applying machine learning for detecting exercise, a simple experiment was conducted with a single subject. The intent of the experiment was to implement a similar machine learning algorithm as is described in \cite{kwapisz2011activity} to ensure understanding of the problem at hand.
+%%%%%%%%%%%%%%%%%%%% * Okay 
+%%% INTRO TO IFA %%%
+%%%%%%%%%%%%%%%%%%%%
+In order to initially determine the feasibility of applying machine learning for detecting exercise, a simple experiment was conducted with a single subject. The intent of the experiment was to implement a similar machine learning algorithm as is described in \cite{kwapisz2011activity} to ensure understanding of the problem at hand and identify any issues with such a set-up.
 
-The collection device used came in the form of a Sony Z3 mobile phone, providing kinematic sensors, of which the gyroscope, measuring the angular velocity, was used. The subject had the collection device attached to their foot while they performed activities including a foot rotation exercise; walking on a flat surface; and walking up and down stairs. Additionally, noise was collected by moving the collection device in random directions. The collection device sampled data at 200Hz on each axis, so for the purpose of assessing feasibility, this value was carried through into machine learning, using a window size of 200 samples for a classification over 1 second intervals.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
+%%% IFA EXPERIMENTAL SETUP %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Maybe reword "random", doesn't sound right
+The collection device used came in the form of a Sony Z3 mobile phone, providing kinematic sensors, of which the gyroscope, measuring the angular velocity was used. The subject had the collection device attached to their foot while they performed activities including a foot rotation exercise; walking on a flat surface; and walking up and down stairs. Additionally, noise was collected by moving the collection device in random directions. The collection device sampled data at 200Hz on each axis, so for the purpose of assessing feasibility, this value was carried through into machine learning, using a window size of 200 samples for a classification over 1 second intervals. In this machine learning technique, the window of samples is treated as a single instance of data to be classified. Each new classification will therefore shift the window forwards by a single time step to produce a new instance.
 
-Data for each activity was collected separately to ensure classification could be performed without having to note exact timings of activities. Some examples of the data collected in these activities are shown in figure \ref{fig:first-data}, where the periodic nature of all the activities (with the exception of noise), can be seen clearly. \todo{Discuss this data more?}
+%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
+%%% MORE ON IFA SETUP %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Could further this
+Data for each activity was collected separately to ensure classification could be performed without having to note exact timings of activities. Some examples of the data collected in these activities are shown in figure \ref{fig:first-data}, where the periodic nature of all the activities (with the exception of noise), can be seen clearly.
 
-This data was run through a series of tools to build a model, as described in section \ref{sec:tools-produced}. Initial evaluation of the performance was conducted using 10-fold cross-validation. The confusion matrix for a simple naive Bayes classifier is shown in table \ref{tab:first-confusion}, giving a classification accuracy of \todo{}. Despite the data only being collected from a single individual using a small set of instances, the results were promising, indicating that machine learning as a method of activity recognition was feasible.
+%%%%%%%%%%%%%%%%%%% * Okay
+%%% IFA RESULTS %%%
+%%%%%%%%%%%%%%%%%%%
+This data was run through a series of tools to build a model, as described in section \ref{sec:tools-produced}. Initial evaluation of the performance was conducted using 10-fold cross-validation with the confusion matrix for a simple naive Bayes classifier shown in table \ref{tab:first-confusion}, giving a classification accuracy of 89\%. Despite the data only being collected from a single individual using a small set of instances, the results were considered promising, indicating that this machine learning technique as a method of activity recognition was feasible.
 
-\begin{table}[]
+\begin{table}
 	\centering
 	\begin{tabular}{|cccc|ll|}
 		\hline
@@ -44,53 +58,61 @@ This data was run through a series of tools to build a model, as described in se
 		1        & 0     & 1      & 7       & Walking  &                       \\
 		\hline
 	\end{tabular}
-	\caption{Feasibility Assessment Confusion Matrix \label{tab:first-confusion}}
+	\caption{Feasibility assessment confusion matrix \label{tab:first-confusion}}
 \end{table}
 
-
+% Axes labels!
 \begin{figure}
 	\centering
 	\subfigure[Exercise]{\label{fig:first-exercise}\includegraphics[width=70mm]{figures/first-exercise.pdf}}
 	\subfigure[Noise]{\label{fig:first-noise}\includegraphics[width=70mm]{figures/first-noise.pdf}}
 	\subfigure[Stairs]{\label{fig:first-stairs}\includegraphics[width=70mm]{figures/first-stairs.pdf}}
 	\subfigure[Walking]{\label{fig:first-walking}\includegraphics[width=70mm]{figures/first-walking.pdf}}
-	\caption{Feasibility Assessment Data \label{fig:first-data}}
+	\caption{Feasibility assessment collected data \label{fig:first-data}}
 \end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% TOOLS USED / PRODUCED %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Could perhaps do with more content
 \subsection{Tools \label{sec:tools}}
 Weka, a machine learning library, was used extensively for machine learning aspects. It provides a vast multitude of implemented machine learning algorithms, including various methods of evaluating the performance of these trained models.
 
-%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% THE ARFF SCRIPT %%%
 %%%%%%%%%%%%%%%%%%%%%%%
-In order to produce this, it is first necessary to know the desired classification over given intervals for some time series data. This is achieved by mapping a single point of interest on some time series data to a class. This mapping is then passed to a script that takes windows centered on these points of interest and creates the corresponding \texttt{.arff}. In addition to these points of interest, the number of samples per window is also taken.
+Weka accepts instances in the form of an \texttt{.arff} file, this file specifies all the classes for the classifier to accept; the inputs for the classifier; and some number of instances and their actual class, if known. In order to produce this, it is first necessary to know the desired classification over given intervals for some time series data. This is achieved by mapping a single point of interest on some time series data to a class. This mapping, along with the number of samples for each window is then passed to a script that makes windows centered on these points of interest and creates the corresponding \texttt{.arff}.
 
-%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% * Okay
 %%% DOWNSAMPLING %%%
 %%%%%%%%%%%%%%%%%%%%
-Data collection is already an expensive task in terms of time consumed. It was therefore deemed infeasible to sample at multiple frequencies on top of all the variables being explored during data collection. Further to this, the device being used for data collection was rigid in terms of allowable sampling frequencies. To allow for analysis of multiple sampling frequencies at a later data, sampling was done at 200Hz, the fastest the collection device would allow. Any collected data could then be downsampled, which was achieved by taking the closest sample to $n/f$ where f is the frequency to downsample to.
+Data collection is already an expensive task in terms of time consumed. It was therefore deemed infeasible to sample at multiple frequencies on top of all the variables being explored during data collection. Further to this, the device being used for data collection was not flexible enough in terms of allowable sampling frequencies. To allow for analysis of multiple sampling frequencies at a later data, sampling was done at 200Hz, the fastest the collection device would allow. Any collected data could then be downsampled, which was achieved by taking the closest sample to $n/f$ where f is the frequency to downsample to.
 
-%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% CLASSIFICATION %%%
 %%%%%%%%%%%%%%%%%%%%%%
-As shown in figure \ref{fig:first-data}, activities produce periodic data that is easily manually identified. This feature of the collected data was used to in order to identify the intervals for classification. Collected data was separated at the time of collection into individual files each representing a different activity/sensor tuple, allowing for trivial manual classification.
+As shown in figure \ref{fig:first-data}, activities of interest produce periodic data in a way that the key features of a given activity can be considered trivial to identify should the activity be known to the manual classifier. This characteristic of the collected data was used to in order to identify the ideal intervals for classification. Collected data was separated at the time of collection into individual files each representing a different activity/sensor tuple, allowing for manual classification. 
 
-The act of data classification occurred by viewing the plotted data and points of interest were noted. For the two exercise classes \todo{Name the classes?}, the points of interest were the peak and trough of the y-axis. For the class representing not exercise, points of interest were taken at frequent points throughout collected data files where subjects were not performing exercise, meaning that manual classification of the not exercise class was not required.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
+%%% HOW CLASSIFICATION WAS PERFORMED %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The act of data classification occurred by viewing the plotted data from which the points of interest were noted. For the \textit{not exercise} class, points of interest were taken at frequent points throughout collected data files where subjects were not performing exercise, meaning that manual classification of the \textit{not exercise} class was not required. These points of interest are then ready to be passed to the script to generate the \texttt{.arff} file.
 
-These classified points of interest were then run through a script 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ASSESSING MODEL PERFORMANCE - WHY ACCURACY IS BAD %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+There are multiple methods of assessing the performance of a model. A simple assessment may include measuring the accuracy, that is, just looking at the number of correctly and incorrectly classified instances, although this does not take into account the probability of specific classes existing, and can therefore skew results when there are significantly more instances of a subset of classes over another subset of classes. An extreme example of this is the 0-R classifier, which will determine the modal class of some training set and classify all instances as this. Such a classifier is very simple, and has a severely limited utility, but depending on the distribution of instanced between classes, a high accuracy may be possible, despite what can be considered poor classifying behaviour.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% ASSESSING MODEL PERFORMANCE %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-There are multiple methods of assessing the performance of a model. A simple assessment may include measuring the accuracy, although this does not take into account the probability of specific classes existing, and can therefore skew results when there are significantly more instances of a subset of classes over another subset of classes. An extreme example of this is the 0-R classifier, which will determine the most frequent class and classify all instances as this. Such a classifier is very simple, and has a severely limited utility, but as shown in \todo{figure}, a high accuracy is still possible, despite what can be considered poor performance.
+%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
+%%% THE KAPPA STATISTIC %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+By taking into account the probability of instances being in any given class, the bias that leads to this poor metric can be eliminated. Such a statistic is the kappa statistic, which measures performance with respect to a null classifier, that is, a classifier that solely takes into account the frequencies of observed data \cite{viera2005understanding}. A kappa statistic, $\kappa < 0$  would indicate very bad performance (worse than guessing while only taking into account the class frequencies). $\kappa > 0$ indicates better performance, with $\kappa = 1$ being a perfect classifier. The kappa statistic has therefore been used to measure the performance of later classifiers.
 
-By taking into account the probability of classes existing, the bias that leads to this poor metric can be eliminated. Such a statistic is the kappa statistic \todo{add cite}, which measures performance with respect to a null classifier, that is, a classifier that solely takes into account the frequencies of observed data. A kappa statistic, $\kappa < 0$  would indicate very bad performance (worse than guessing while taking into account the class frequencies). $\kappa$ increasing from 0 to 1 indicates increasing performance, with $\kappa = 1$ being a perfect classifier. The kappa statistic has therefore been used to measure the performance of later classifiers.
-
-% Maybe remove this
-In some cases, it may be important to quantify the trade-off a classifier makes between true and false positives. This can especially be the case where it is more important to detect some class over another. Achieving this can be done with a custom cost function, which is applied to the resultant confusion matrix (equation \ref{eq:cost}). From this, the average cost per instance can be computed, allowing comparisons to be drawn.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% CUSTOM COST FUNCTIONS %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% I don't like this paragraph
+In some cases, it may be important to quantify the trade-off a classifier makes between true and false positives. This can especially be the case where it is more important to detect some class over another. Achieving this can be done with a cost function, which is applied to the resultant confusion matrix (equation \ref{eq:cost}). From this, the average cost per instance can be computed, allowing comparisons to be drawn. This method of performance evaluation is similar to an ROC curve, except where an ROC curve shows performance with varying discriminating thresholds, cost functions dictate where the threshold must lie.
 
 \begin{equation}
 	\label{eq:cost}
@@ -100,15 +122,10 @@ In some cases, it may be important to quantify the trade-off a classifier makes 
 	\end{gathered}
 \end{equation}
 
-This method of performance quantification is similar to an ROC curve, except where 
-
-Weka accepts instances in the form of an \texttt{.arff} file, this file specifies all the classes for the classifier to accept; the inputs for the classifier; and some number of instances and their actual class, if known.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% 3 CLASSES OVER JUST 2 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The number of classes to classify was considered, as a variable parameter for the classifier. A classifier with the 2 classes \textit{exercise} \todo{Maybe s/exercise/activity/} and \textit{not exercise}, would only allow for binary classification. Depending on the classifier behaviour and the nature of the exercise in question, it may be the case that when the window of classification lies between 2 exercises, the window could be classified as either class. This unpredictable behaviour would prevent further analysis of the subject's exercise beyond how much time exercise has been detected for. \todo{Add figure}. However, by splitting the \textit{exercise} class into 2 distinct classes, such that every exercise performed will always be composed of these parts, it allows 3 classes to be used with the classifier. Such a change would allow counting of distinct exercises, by ensuring that one type of \textit{exercise} class is followed by the other type of \textit{exercise} class. This would allow the number of exercises to be counted, as well as the amount of time exercised. Further to this, the additional information may allow for heuristics to increase accuracy should the classifier ``bounce''. \todo{More on this in heuristics...} Other numbers of classes were also considered, such as some number of classes for the exercise, along with a class for each likely type of non-exercise activity. \todo{and this idea was rejected because...}
+The number of classes to classify was considered as a variable parameter for the classifier. A classifier with the 2 classes \textit{activity} and \textit{not activity}, would only allow for binary classification. Depending on the classifier behaviour and the nature of the exercise in question, it may be the case that when the window of classification lies between 2 classes, such a window could be classified as either class. This unpredictable behaviour would prevent further analysis of the subject's activity beyond how much time a given activity was detected for. \todo{Add figure}. However, by splitting the \textit{activity} class into 2 distinct classes, such that every activity performed will always be composed of these parts, it allows 3 classes to be used with the classifier. Such a change would allow counting of distinct activities, by ensuring that one type of \textit{activity} class is followed by the other type of \textit{activity} class. This would allow the number of exercises to be counted, as well as the amount of time exercised. Further to this, the additional information this provides may allow for heuristics to increase accuracy should the classifier ``bounce'' during a transition between classes. \todo{More on this in heuristics...} Other numbers of classes were also considered, such as some number of classes for the exercise, along with a class for each likely type of non-exercise activity, however this was ultimately rejected due to the increased complexity of the system, leading to further resource consumption for the constrained system, while the performance of the algorithm was already considered satisfactory. For the final machine learning algorithm, the subclasses for the activity were based on the peaks and troughs of the y-axis data. This data was determined to be quite clear for manual classification.
 
 \note{What classification algorithms were trialled? What kind of results were achieved with these. Explain and discuss the workings of each algorithm / type of algorithm.}
 
@@ -160,7 +177,7 @@ Each perceptron affectively defines a plane in $d$-dimensional space. Instances 
 \end{figure}
 
 \subsection{Radial Basis Function Networks}
-A Radial Basis Function (RBF) network is a type of Neural Network that is composed of 2 layers, an input layer and an output layer. The activation functions for this output layer are RBFs. An RBF can be any function that is only dependent on the distance from some point. An example of a commonly used RBF is the Gaussian function.
+A Radial Basis Function (RBF) network is a type of Neural Network that is composed of 2 layers, an input layer and an output layer. The activation functions for this output layer are RBFs. An RBF can be any function that is only dependent on the distance from some point. An example of a commonly used RBF is the Gaussian function. \todo{Finish}
 
 \subsection{Instance-Based Learning}
 Instance-based learning is a type of machine learning algorithm that postpones model creation until an output for a problem instance is required. Some number of labelled instances are stored in memory, and these are used to label problem instances.
@@ -172,7 +189,8 @@ As a number of labelled instanced must be kept in memory in order to compute the
 An example of instance-based learning is the k-nearest neighbours algorithm where any problem instance is compared to the k-nearest labelled instances. The class that the problem instance is most similar to is then given this classification. \todo{Reword}
 
 \note{What issues were faced as a result of implementing a machine learning algorithm on a constrained system? How were these problems overcome? \cite{anguita2012human}}
-Each machine learning algorithm comes with its own memory-processing-accuracy trade-off, 
+
+Each machine learning algorithm comes with its own memory-processing-accuracy trade-off, \todo{Finish}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ALGORITHM PARAMETERS %%%
@@ -180,7 +198,7 @@ Each machine learning algorithm comes with its own memory-processing-accuracy tr
 \note{Selection of the algorithm - mention hidden layers  /frequency}
 There are many parameters that affect the performance of classifiers. In the case of the collected data, the sampling frequency for the kinematic sensor and the window with a number of samples over which the classifier classifies have a direct impact on the classifier's ability to perform. In the case of the model, most machine learning algorithms have some form parameters allowing their behaviour to change. 
 
-As the MLP was 
+As the MLP was \todo{Finish}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% USER STUDY RESULTS %%%
