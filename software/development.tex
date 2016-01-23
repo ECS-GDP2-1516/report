@@ -4,9 +4,9 @@
 The Multilayer Perceptron is a good fit for a subthreshold Cortex M0+ as it does not require a great deal of complex mathematical computation. Unfortuneately, however, it does require the use of decimal numbers and uses the sigmoid function, which requires division and power operations. This section discusses some of the design decisions and sacrifices that were made in order to implement an MLP on the subthreshold Cortex M0+.
 
 \subsection{Sigmoid Function}
-The sigmoid function's graph and equation is shown below in figure \ref{fig:sigmoid}. Clearly, this equation causes two issues for the proposed device: firstly, it requires division, and secondly it requires the use of the constant e, which is a non-integer; using this in an operation involving powers could potentially prove expensive.
+The sigmoid function's graph and equation is shown below in figure \ref{fig:sigmoid}. Clearly, this equation causes two issues for the proposed device: firstly, it requires division, and secondly it requires the use of the constant \verb|e|, which is a non-integer; using this in an operation involving powers could potentially prove expensive.
 
-The first area of note in this graph is that the value of $f(t)$ quickly starts to tend towards 0 in the negative direction, and 1 in the positive direction. It is not uncommon, therefore, to approximate the value of the function at these extremes. Figure \ref{fig:sigmoid-ends} shows this approximation highlighted in blue for t values outside of the range between 5 and -5; it is plain to see that the error introduced here is minimal.
+The first area of note in this graph is that the value of $f(t)$ quickly starts to tend towards 0 in the negative direction, and 1 in the positive direction. It is not uncommon, therefore, to approximate the value of the function at these extremes. Figure \ref{fig:sigmoid-ends} shows this approximation highlighted in blue for \verb|t| values outside of the range between 5 and -5; it is plain to see that the error introduced here is minimal.
 
 \begin{figure}[!h]
     \centering
@@ -17,33 +17,33 @@ The first area of note in this graph is that the value of $f(t)$ quickly starts 
     \caption{Sigmoid Functions \label{fig:sigmoid-options}}
 \end{figure}
 
-For the remaining range, between 5 and -5, the sigmoid function does not tend to any fixed value, so a different approximation must be used. Fortuneately, the sigmoid's ``S''-like shape lends itself to being easily split into a series of smaller lines, as shown in figure \ref{fig:sigmoid-soft}. This provides a suitable level of accuracy with far lower computing overhead as each line can be defined using only a linar equation. However, as beneficial as the approximation in figure \ref{fig:sigmoid-soft} is, it is possible to approximate this further: using a function with a single linear equation. This is shown in this section's final figure: \ref{fig:sigmoid-hard}. When run on the training dataset, which under non-constrained conditions achieves 94.5\% accuracy, this approximation only yields a reserved drop of 3\%. This margin of error is acceptable as it can be dealt with by the added heuristics.
+For the remaining range, between 5 and -5, the sigmoid function does not tend to any fixed value, so a different approximation must be used. Fortunately, the sigmoid's ``S''-like shape lends itself to being easily split into a series of smaller lines, as shown in figure \ref{fig:sigmoid-soft}. This provides a suitable level of accuracy with far lower computing overhead as each line can be defined using only a linear equation. However, as beneficial as the approximation in figure \ref{fig:sigmoid-soft} is, it is possible to approximate this further: using a function with a single linear equation. This is shown in this section's final figure: \ref{fig:sigmoid-hard}. When run on the training dataset, which under non-constrained conditions achieves 94.5\% accuracy, this approximation only yields a reserved drop of 3\%. This margin of error is acceptable as it can be dealt with by the added heuristics.
 
 \subsection{Floating point}
 The lack of floating point support in the proposed device created a large challenge, as the neural network is entirely based upon a series of non-integer input weights, and the ability for each node to produce non integer output values. In order to get around this problem, the team opted for a fixed-point implementation: the weights of each node are multiplied by a scale factor and the resulting integer part is taken as the value.
 
-This form is convienient as it makes the multiplication and addition of such scaled values straight forward: for addition of values using the same scale factor, it is sufficient to simply add the integers as though they were normal. The equation below illustrates this:
+This form is convenient as it makes the multiplication and addition of such scaled values straight forward: for addition of values using the same scale factor, it is sufficient to simply add the integers as though they were normal. The equation below illustrates this:
 
 \begin{equation}
 \label{eq:bits:addition}
 x*S+y*S=(x+y)*S
 \end{equation}
 
-For the case of multiplation, the scale factors of each number must be added, meaning that when two numbers with a scale factor of $S$ are multiplied, the resulting number's scale factor is $S^2$:
+For the case of multiplication, the scale factors of each number must be added, meaning that when two numbers with a scale factor of $S$ are multiplied, the resulting number's scale factor is $S^2$:
 
 \begin{equation}
 \label{eq:bits:multiplication}
 (x*S)(y*S)=(x*y)*S^2
 \end{equation}
 
-This can be easily rectified by simplying dividing the result by $S$ again to return to the original scale factor:
+This can be easily rectified by simplifying dividing the result by $S$ again to return to the original scale factor:
 
 \begin{equation}
 \label{eq:bits:rescale}
 \frac{(x*y)*S^2}{S}=(x*y)*S
 \end{equation}
 
-As division is not supported on our system, we have defined our scale factor $S$ as a power of 2: $S=2^B$. We are then able to approximate divisions of powers of 2, by simply performing a bitshift:
+As division is not supported on our system, we have defined our scale factor $S$ as a power of 2: $S=2^B$. We are then able to approximate divisions of powers of 2, by simply performing a bit shift:
 
 \begin{equation}
 \label{eq:bits:div_approx}
@@ -59,7 +59,7 @@ To decide the bit scale factor, $B$, for the exercise detection algorithm, it is
 (x*2^B)(y*2^B)=(x*y)*(2^B)^2=(x*y)*2^{2B}
 \end{equation}
 
-As such, the value of $B$ has to be high enough such that precision is not lost unnessisarily, but low enough such that $x*2^B<2^{16}$. Solve this, the highest possible floating point value must be known; in the case of the algorithm, this is the base value of the first node in the middle layer: -10.6 (3s.f.), using this in the rearranged equation, \ref{eq:bits:number-calc}, gives a bitshift of 12.
+As such, the value of $B$ has to be high enough such that precision is not lost unnecessarily, but low enough such that $x*2^B<2^{16}$. Solve this, the highest possible floating point value must be known; in the case of the algorithm, this is the base value of the first node in the middle layer: -10.6 (3s.f.), using this in the rearranged equation, \ref{eq:bits:number-calc}, gives a bit shift of 12.
 
 \begin{equation}
 \label{eq:bits:number-calc}

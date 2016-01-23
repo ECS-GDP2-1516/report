@@ -4,11 +4,11 @@ Taking into account the constraints of the system, we decided to focus on the Mu
 
 \subsection{Existing Weka Implementation}
 
-As Weka had been used to determine and train the best algorithm, it was decided to inspect its source code to obtain a starting point for the algorithm development. This, while provided a good insight into the manar in which the algorithm functions, highlighted some key areas of inefficiencies that would have to be avoided when working on a subthreshold device.
+As Weka had been used to determine and train the best algorithm, it was decided to inspect its source code to obtain a starting point for the algorithm development. This, while provided a good insight into the manner in which the algorithm functions, highlighted some key areas of inefficiencies that would have to be avoided when working on a sub threshold device.
 
-\subsubsection{Backwards Propogation}
+\subsubsection{Backwards Propagation}
 
-Weka's implementation of the MultiLayer Perceptron uses ``backwards propogration'', which recursively workings backwards in a depth-first mannar from each output node towards the input layer. The function which calculates a node's output does so by taking the summation of each of its input values multiplied by their respective input weights. Each input value, however, is requested on the fly from the inputting node by calculating its output which in turn causes it to perform the same loop over its input nodes:
+Weka's implementation of the Multilayer Perception uses ``backwards propagation'', which recursively workings backwards in a depth-first manner from each output node towards the input layer. The function which calculates a node's output does so by taking the summation of each of its input values multiplied by their respective input weights. Each input value, however, is requested on the fly from the inputting node by calculating its output which in turn causes it to perform the same loop over its input nodes:
 
 \begin{lstlisting}[language=Java,caption={Weka's method of calculating a node's output}]
 class Node
@@ -31,12 +31,12 @@ class Node
 }
 \end{lstlisting}
 
-A side effect of this is that all nodes, other than the output nodes are visted multiple times. For example, for the network below, $o_1.output()$ will loop over $m_1$, $m_2$ and $m_3$, calling \verb|output()| on each, each of which will loop over $i_1$, $i_2$ and $i_3$, meaning the input nodes will be visted a total of 3 times each. This process must then be repeated for $o_2$, causing the middle layer nodes to each be revisted, and the input layers revisted another 3 times, and again for $o_3$. In total the input nodes is accessed 9 times each, the middle layer 3 times each.
+A side effect of this is that all nodes, other than the output nodes are visited multiple times. For example, for the network below, $o_1.output()$ will loop over $m_1$, $m_2$ and $m_3$, calling \verb|output()| on each, each of which will loop over $i_1$, $i_2$ and $i_3$, meaning the input nodes will be visited a total of 3 times each. This process must then be repeated for $o_2$, causing the middle layer nodes to each be revisited, and the input layers revisited another 3 times, and again for $o_3$. In total the input nodes is accessed 9 times each, the middle layer 3 times each.
 
 \begin{figure}[!h]
     \centering
     \includegraphics{eg-ml}
-    \caption{Example MultiLayer Perceptron Network}
+    \caption{Example Multilayer Perception Network}
     \label{fig:eg-ml}
 \end{figure}
 
@@ -60,13 +60,13 @@ class Node
 }
 \end{lstlisting}
 
-While this does succeed in reducing the number of unnessisarry node vistits, it does not eliminiate them; each node in the network, other than the output nodes, are visited three times each with this immplementaiton. This scheme also adds two new node properties which must be stored and manipulated; the side effect of this is an increase in instructutions and memory requirement, which is not ideal for subthreshold development.
+While this does succeed in reducing the number of unnecessary node visits, it does not eliminates them; each node in the network, other than the output nodes, are visited three times each with this implementation. This scheme also adds two new node properties which must be stored and manipulated; the side effect of this is an increase in instructions and memory requirement, which is not ideal for sub threshold development.
 
 The algorithm itself still relies on recursion - this is also suboptimal as this requires extensive use of the stack.
 
-\subsubsection{The Alternative: Forwards Propogation}
+\subsubsection{The Alternative: Forwards Propagation}
 
-As a result of the inherant inefficiencies in a Backwards Propogation implementation, it was decided instead to redesign the algorithm, employing Forwards Propogation. This technique, in contrast to the one described above, starts from the input layer nodes and works forward in a width first mannar.
+As a result of the inerrant inefficiencies in a Backwards Propagation implementation, it was decided instead to redesign the algorithm, employing Forwards Propagation. This technique, in contrast to the one described above, starts from the input layer nodes and works forward in a width first manner.
 
 For the example in Figure \ref{fig:eg-ml}, this means the algorithm would first write the outputs of $i_1$, $i_2$ and $i_3$ into three memory spaces. Following this, three new memory spaces are reserved, in which the base values of $m_1$, $m_2$ and $m_3$ are placed. The algorithm then loops over the input nodes and, for each one, adds the multiplication of its value by its parent weight to the parent's memory space. Once complete, the outputs for all three middle layer nodes have been completed so the process can be shifted one layer to the right and repeated. An added benefit here is that the input layers are now no longer required, so their memory can be freed and reused if desired.
 
@@ -79,8 +79,8 @@ This method requires no stack usage and can operate in a small memory space, the
 
 \subsection{Moving to C Code}
 
-Weka is a very useful tool for generating and training machine learning algorithms. Unfortuneately, it only allows exporting to \verb|.model| files, which are simply Java serialized objects. As such, we were forced to modify the Weka source code in order to obtain the number, structure and weightings of the nodes in the MLP's neural network.
+Weka is a very useful tool for generating and training machine learning algorithms. Unfortunately, it only allows exporting to \verb|.model| files, which are simply Java serialized objects. As such, we were forced to modify the Weka source code in order to obtain the number, structure and weightings of the nodes in the MLP's neural network.
 
-Once the algorithm was designed, it was decided to modify and improve the Java code such that it became a harness for our C code. In this mannar, rather than simply outputting the node structure which would have to be manually copied and amended to go into the C implementation, the Java code was built to process the nodes prior to output, removing unused layers and returning the required data in a format and structure which could be immediately compiled into the C development repository.
+Once the algorithm was designed, it was decided to modify and improve the Java code such that it became a harness for our C code. In this manner, rather than simply outputting the node structure which would have to be manually copied and amended to go into the C implementation, the Java code was built to process the nodes prior to output, removing unused layers and returning the required data in a format and structure which could be immediately compiled into the C development repository.
 
 This proved very useful, as training the networks and trying various settings took time and was repeated many times during development. Using this harness allowed the team to quickly deploy updated models onto the device without the need to reprogram the C code for each test.

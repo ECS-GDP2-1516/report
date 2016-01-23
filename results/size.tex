@@ -4,11 +4,11 @@ In order to assess the overall size requirement of the completed algorithm, two 
 
 \subsection{Binary Size}
 
-Finding the overall size of the binary file is a trivial task, simply running \verb|du -b output.bin| on a linux-like console gives the result of 3168 bytes, or 3.09KB. However, it is important to assess the contributing factors to this size. The sections which are included in the compiled binary are \verb|.text|, which contains the program code and constant values, \verb|.data|, non-zero initialisations for the heap and finally, \verb|.ARM.exidx| which is an 8 byte section required for stack unwinding.
+Finding the overall size of the binary file is a trivial task, simply running \verb|du -b output.bin| on a Linux-like console gives the result of 3168 bytes, or 3.09KB. However, it is important to assess the contributing factors to this size. The sections which are included in the compiled binary are \verb|.text|, which contains the program code and constant values, \verb|.data|, non-zero initialisations for the heap and finally, \verb|.ARM.exidx| which is an 8 byte section required for stack unwinding.
 
 The size of .data can be obtained by using arm's \verb|arm-none-eabi-size| command, which mirrors the functionality of GCC's \verb|size|; this gives a size of 108 for non zero heap initialisations. The majority of this is LibC values, with the exception of 4 bytes for an array index initialised to -1 which is used by multiple functions in the algorithm.
 
-Finally, the size of .data, which is now plainly 3052 bytes, must be assessed; again it is more meaningful to look into this in further detail. Fortuneately, this can be performed by viewing the annotated disassembly of the binary. Table \ref{tab:prog-size} shows the break down of the binary file, with the values discussed in this section and the code split into logical areas.
+Finally, the size of .data, which is now plainly 3052 bytes, must be assessed; again it is more meaningful to look into this in further detail. Fortunately, this can be performed by viewing the annotated disassembly of the binary. Table \ref{tab:prog-size} shows the break down of the binary file, with the values discussed in this section and the code split into logical areas.
 
 \begin{table}[h]
     \centering
@@ -30,9 +30,9 @@ Finally, the size of .data, which is now plainly 3052 bytes, must be assessed; a
 
 \subsection{Memory Size}
 
-A more important metric of size to quantify is the memory usage. At startup, the total binary is loaded into RAM. As discussed above, non-zero heap initialisations make up 108 bytes. However, during the system initialisation phase, a further 168 bytes are loaded onto the heap. After this, the heap does not grow any further, remaining at 276 bytes. As such, support for on-the-fly heap assignments (\verb|_sbrk()|) was removed from the mbed library to save space within the binary.
+A more important metric of size to quantify is the memory usage. At startup, the total binary is loaded into RAM. As discussed above, non-zero heap initialisations make up 108 bytes. However, during the system initialisation phase, a further 168 bytes are loaded onto the heap. After this, the heap does not grow any further, remaining at 276 bytes. As such, support for on-the-fly heap assignments (\verb|_sbrk()|) was removed from the mBed library to save space within the binary.
 
-The final section of memory is the stack, which is perhaps the hardest area to accurately assess. For this, the compiler was passed the \verb|-fstack-usage| flag which prompts it to output the stack usage of each function; all of the algorithms had been designed to have static stack usage, which means the size of the stack is constant and therefore predicatable, and the space is reserved at the beginning of the function. This was confirmed by inspecting the disassembly, in which the beginings of functions could be observed to contain a push instruction, followed by an amendment to the stack pointer to reserve the required space.
+The final section of memory is the stack, which is perhaps the hardest area to accurately assess. For this, the compiler was passed the \verb|-fstack-usage| flag which prompts it to output the stack usage of each function; all of the algorithms had been designed to have static stack usage, which means the size of the stack is constant and therefore predictable, and the space is reserved at the beginning of the function. This was confirmed by inspecting the disassembly, in which the beginnings of functions could be observed to contain a push instruction, followed by an amendment to the stack pointer to reserve the required space.
 
 The stack usage of each function alone is not enough to assure the stack usage overall; this is because some functions call others, which means their stack values must be added. As such, a graph of each function and its stack usage was created, shown in figure \ref{fig:stack-calls}, was drawn up with the calls between these added as vertices. The algorithm was designed to avoid any forms of recursion, so this graph does not contain any cyclic references which makes the task of determining the maximum stack usage more trivial.
 
@@ -54,4 +54,4 @@ We must first determine each of the possible stack states and their respective s
 
 \subsubsection{Conclusion}
 
-In total, the total required RAM size can be calculated the summation of the total binary size, the size of zero-initialised heap variables and the maximum stack size. This comes to 3456 bytes leaving 4736 bytes, or just over 4.6KB, free if deployed on an 8KB device. This space gives scope for providing support for a greater set of excersises, or storing data about the users excersises for long flights.
+In total, the total required RAM size can be calculated the summation of the total binary size, the size of zero-initialised heap variables and the maximum stack size. This comes to 3456 bytes leaving 4736 bytes, or just over 4.6KB, free if deployed on an 8KB device. This space gives scope for providing support for a greater set of exercises, or storing data about the users exercises for long flights.

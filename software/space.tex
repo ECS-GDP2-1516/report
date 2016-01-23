@@ -6,7 +6,7 @@ The method was successful at reducing the total binary size to 8KB. This was a s
 
 \subsection{Improving GCC's Optimisations}
 
-While ARM's compiler is very good at optimising code when it compiles C and C++ code, the linker is not able to do so many of the same optimisations across compilation units. It was a logical first step, therefore, to identify the functions and classes that the program code calls within the mBed's api to investigate the benefits of combining their compilation unit.
+While ARM's compiler is very good at optimising code when it compiles C and C++ code, the linker is not able to do so many of the same optimisations across compilation units. It was a logical first step, therefore, to identify the functions and classes that the program code calls within the mBed's API to investigate the benefits of combining their compilation unit.
 
 In many cases, specific API calls were only made once from the algorithm code, such as the call to \verb|ic2_init()| which gets the I2C ready to communicate with the processor at the beginning of the program. Within a library, it is logical to ensure such a function remains an atomic and referenceable item, as it is feasible for a device to use more than one I2C device; as such the call may need to be made multiple times and with varying parameters.
 
@@ -14,7 +14,7 @@ However, as it was only called once in this case, moving \verb|ic2_init()| into 
 
 \subsection{Argument Guards}
 
-The mBed API's functions also often came with guards on their arguments; for example, the function \verb|gpio_init()| which is used to initialise the LED pins, accepts a pin as an arguement. Before initialising the given pin, it checks that it was not passed the pseudo-pin ``Not Connected''.
+The mBed API's functions also often came with guards on their arguments; for example, the function \verb|gpio_init()| which is used to initialise the LED pins, accepts a pin as an argument. Before initialising the given pin, it checks that it was not passed the pseudo-pin ``Not Connected''.
 
 \begin{lstlisting}[caption={Argument Guards of gpio init}]
 void gpio_init(gpio_t *obj, PinName pin)
@@ -54,7 +54,7 @@ typedef struct {                 /*!< GPIO_GROUP_INT0 Structure */
 #define LPC_GPIO_GROUP_INT1 ((LPC_GPIO_GROUP_INTx_Type*) LPC_GPIO_GROUP_INT1_BASE)
 \end{lstlisting}
 
-The above specifices the structure of the GPIO INT memory space, then defines the memory spaces and creates references to these. This allows the developer, and the libraries to use the constant pointers, as illustrated:
+The above specifies the structure of the GPIO INT memory space, then defines the memory spaces and creates references to these. This allows the developer, and the libraries to use the constant pointers, as illustrated:
 
 \begin{lstlisting}[caption={LPC GPIO GROUP INT0 being used}]
 #include ``LPC11Uxx.h'';
@@ -87,7 +87,7 @@ main:
 
 \subsubsection{Inefficient Mapping}
 
-Unfortuneately, a similar technique is not used for the Pin Mappings. Instead, these are stored in an array within a C file which is specific to each target, as shown below. These values are worked upon in two seperate files - one common across all devices, and one common to the device's family.
+Unfortunately, a similar technique is not used for the Pin Mappings. Instead, these are stored in an array within a C file which is specific to each target, as shown below. These values are worked upon in two separate files - one common across all devices, and one common to the device's family.
 
 \begin{lstlisting}[caption={PinMap Arrays}]
 /************UART***************/
@@ -108,12 +108,12 @@ const PinMap PinMap_UART_RX[] = {
 
 The reason for this is that the library is used to support a wide range of devices and configurations; the number of peripherals from use to use, and the way in which these are connected up by specific users, is entirely unpredictable, and leads to a more complex mapping structure being required. This is harder, and sometimes not possible, to achieve through the use of defined macros.
 
-This not only results in wasted space, as the pins and their functions must be stored as part of the program code, but it also wastes valueable clock cycles, calculating values for pin addresses which could in theory be precalculated. \verb|i2c_init()|, for example, first loops over the PinMap to find the memory address for the I2C with its SDA connected on pin 28, then repeats this process to search for the I2C with its SCL pin on port 27. Finally, it checks that these I2Cs are the same, before saving this memory address to a pointer for actual use. In total, this requires 5 function calls, and uses two loops to search over the data-mapping array; none of this can be optimised as it is spread across multiple compilation units. Setting just these two pin's mode and function requires a further 8 function calls, and 4 loops over the PinMap data structure.
+This not only results in wasted space, as the pins and their functions must be stored as part of the program code, but it also wastes valuable clock cycles, calculating values for pin addresses which could in theory be pre calculated. \verb|i2c_init()|, for example, first loops over the PinMap to find the memory address for the I2C with its SDA connected on pin 28, then repeats this process to search for the I2C with its SCL pin on port 27. Finally, it checks that these I2Cs are the same, before saving this memory address to a pointer for actual use. In total, this requires 5 function calls, and uses two loops to search over the data-mapping array; none of this can be optimised as it is spread across multiple compilation units. Setting just these two pin's mode and function requires a further 8 function calls, and 4 loops over the PinMap data structure.
 
-It is plain to see that this is an extremely ineffecient process and requires superfluous instructions to be added to the binary, especially as the device used for this project, the \verb|LPC11U24_401|, can have only one I2C bus and as such these functions can only ever return the same memory address each and every time they are run. In order to avoid this, these constant memory addresses were calculated by hand then saved in the form of a defined macro as used in the section above. The entirety of the pinmap datastructure and supporting functions could then be removed from the project, drastically reducing its memory footprint.
+It is plain to see that this is an extremely inefficient process and requires superfluous instructions to be added to the binary, especially as the device used for this project, the \verb|LPC11U24_401|, can have only one I2C bus and as such these functions can only ever return the same memory address each and every time they are run. In order to avoid this, these constant memory addresses were calculated by hand then saved in the form of a defined macro as used in the section above. The entirety of the pinmap data structure and supporting functions could then be removed from the project, drastically reducing its memory footprint.
 
 \subsection{General Library Overhead}
 
-A secondary side effect of using libraries is that they come with a large amount of general overhead; for example, the gyroscopic device that was used, the \verb|MPU6050| comes with a C++ class to interact with it. This, in turn, used its own secondary class, \verb|I2Cdev|, to interact with the device over the I2C bus. This class contained the logic to transform values into bitmasks to allow the updating of individual bits within the device's configuration registers. These bitmasks were passed on to the mBed library's \verb|I2C| class, which holds a \verb|struct| containing the pointer to the I2C memory address range, and acts as a wrapper for the mBed library's C i2c functions.
+A secondary side effect of using libraries is that they come with a large amount of general overhead; for example, the gyroscopic device that was used, the \verb|MPU6050| comes with a C++ class to interact with it. This, in turn, used its own secondary class, \verb|I2Cdev|, to interact with the device over the I2C bus. This class contained the logic to transform values into bit masks to allow the updating of individual bits within the device's configuration registers. These bit masks were passed on to the mBed library's \verb|I2C| class, which holds a \verb|struct| containing the pointer to the I2C memory address range, and acts as a wrapper for the mBed library's C I2C functions.
 
-Defining, instantiating and storing a pointer, within a struct, within a class, within a class, within yet another class is an enormous overhead, especially as the middle layers of this abstraction are not adding significant functionality, but are mearly acting as gatekeepers between the \verb|MPU6050| class and the lower level i2c functions. As part of the optimisation process, these unnessisary data structures were combined and removed where possible: pointers to memory addresses were replaced with definitions, as discussed above in section \ref{section:constant-memory-map}, bit masks were replaced with precomputed constants and the MPU class was converted into a set of static functions to be called directly from \verb|main()|, removing the need to instantiate an object at all.
+Defining, instantiating and storing a pointer, within a struct, within a class, within a class, within yet another class is an enormous overhead, especially as the middle layers of this abstraction are not adding significant functionality, but are merely acting as gatekeepers between the \verb|MPU6050| class and the lower level I2C functions. As part of the optimisation process, these unnecessary data structures were combined and removed where possible: pointers to memory addresses were replaced with definitions, as discussed above in section \ref{section:constant-memory-map}, bit masks were replaced with precomputed constants and the MPU class was converted into a set of static functions to be called directly from \verb|main()|, removing the need to instantiate an object at all.
