@@ -1,14 +1,14 @@
 \namedsection{Developing the Algorithm}{Shepherd}
 
-Taking into account the constraints of the system, we decided to focus on the MultiLayer Perceptron as it does not require matrix maths and typically has a smaller network of nodes. This session discusses the process by which we developed an implementation of this algorithm.
+Taking into account the constraints of the system, we decided to focus on the MultiLayer Perceptron as it does not require matrix maths and typically has a smaller network of nodes. This section discusses the process by which we developed an implementation of this algorithm.
 
 \subsection{Existing Weka Implementation}
 
 As Weka had been used to determine and train the best algorithm, it was decided to inspect its source code to obtain a starting point for the algorithm development. This, while provided a good insight into the manner in which the algorithm functions, highlighted some key areas of inefficiencies that would have to be avoided when working on a sub threshold device.
 
-\subsubsection{Backwards Propagation}
+\subsubsection{Backward Propagation}
 
-Weka's implementation of the Multilayer Perception uses ``backwards propagation'', which recursively workings backwards in a depth-first manner from each output node towards the input layer. The function which calculates a node's output does so by taking the summation of each of its input values multiplied by their respective input weights. Each input value, however, is requested on the fly from the inputting node by calculating its output which in turn causes it to perform the same loop over its input nodes:
+Weka's implementation of the Multilayer Perception uses ``backward propagation'', which recursively works backwards in a depth-first manner from each output node towards the input layer. The function which calculates a node's output does so by taking the summation of each of its input values multiplied by their respective input weights. Each input value, however, is requested on the fly from the inputting node by calculating its output which in turn causes it to perform the same loop over its input nodes:
 
 \begin{lstlisting}[language=Java,caption={Weka's method of calculating a node's output}]
 class Node
@@ -31,7 +31,7 @@ class Node
 }
 \end{lstlisting}
 
-A side effect of this is that all nodes, other than the output nodes are visited multiple times. For example, for the network below, $o_1.output()$ will loop over $m_1$, $m_2$ and $m_3$, calling \verb|output()| on each, each of which will loop over $i_1$, $i_2$ and $i_3$, meaning the input nodes will be visited a total of 3 times each. This process must then be repeated for $o_2$, causing the middle layer nodes to each be revisited, and the input layers revisited another 3 times, and again for $o_3$. In total the input nodes is accessed 9 times each, the middle layer 3 times each.
+A side effect of this is that all nodes, other than the output nodes are visited multiple times. For example, for the network below, $o_1.output()$ will loop over $m_1$, $m_2$ and $m_3$, calling \verb|output()| on each, each of which will loop over $i_1$, $i_2$ and $i_3$, meaning the input nodes will be visited a total of 3 times each. This process must then be repeated for $o_2$, causing the middle layer nodes to each be revisited, and the input layers revisited another 3 times, and again for $o_3$. In total the each input node is accessed 9 times, the middle layer 3 times each.
 
 \begin{figure}[!h]
     \centering
@@ -64,9 +64,9 @@ While this does succeed in reducing the number of unnecessary node visits, it do
 
 The algorithm itself still relies on recursion - this is also suboptimal as this requires extensive use of the stack.
 
-\subsubsection{The Alternative: Forwards Propagation}
+\subsubsection{The Alternative: Forward Propagation}
 
-As a result of the inerrant inefficiencies in a Backwards Propagation implementation, it was decided instead to redesign the algorithm, employing Forwards Propagation. This technique, in contrast to the one described above, starts from the input layer nodes and works forward in a width first manner.
+As a result of the inerrant inefficiencies in a Backward Propagation implementation, it was decided instead to redesign the algorithm, employing Forwards Propagation. This technique, in contrast to the one described above, starts from the input layer nodes and works forward in a width first manner.
 
 For the example in Figure \ref{fig:eg-ml}, this means the algorithm would first write the outputs of $i_1$, $i_2$ and $i_3$ into three memory spaces. Following this, three new memory spaces are reserved, in which the base values of $m_1$, $m_2$ and $m_3$ are placed. The algorithm then loops over the input nodes and, for each one, adds the multiplication of its value by its parent weight to the parent's memory space. Once complete, the outputs for all three middle layer nodes have been completed so the process can be shifted one layer to the right and repeated. An added benefit here is that the input layers are now no longer required, so their memory can be freed and reused if desired.
 
