@@ -2,8 +2,28 @@
 
 While regular meetings, both as a team and with the group's supervisors, are an essencial part of the project management process, it is also important to put in place a structure in which the members can communicate with each other throughout the week, and share work in an auditable fashion.
 
-As such, it was decided that the team should agree on a common platform on which to communicate with one another. Email was ruled out as the group felt it was too unstructured to use, and as such the team opted to use Slack, which allows users to send messages in a secure mannar. It allows a team to create an arbitrary number of `channels' which group similar messages together such that multiple threads of conversations can be had simultaniously. It is supported on a variety of platforms, including web, Windows and most mobile systems, allowing the team members to maintain a point of contact throughout the day.
+\subsection{Communication}
+As such, it was decided that the team should agree on a common platform on which to communicate with one another. As the majority of the team member run their own mailservers, and PGP keys which allow messages to be encrypted and signed, email was considered as a potencially secure and private option, especially considering some of ARM's System Verilog is under a non-public license. However, the group felt it was too unstructured to use and as such opted to use this only when large, one-off, files needed to be transfered between two people.
 
-In order to share code, the decision was made to use Git Version Control, a tool which allows users to track changes to text files and directory-like structures. This was very useful for this project, as it required development in both Java and C, allowing both sets of code to be kept in separate repositories, with all changes to the codebase being tracked in a logged an auditable manner.
+For general team conversations, the team decided to use Slack, which is a popular messaging tool amoung developers. It is similar to IRC in that it allows a team to create an arbitrary number of `channels' which group similar messages together such that multiple threads of conversations can be had simultaniously. However, it has a greater degree of centralisation, meaning all messages are stored and searchable, which was seen as an important requirement for structured group work. It also apps on a variety of platforms, including web, Windows and most mobile systems, allowing the team members to maintain a point of contact throughout the day.
 
-As the decision to use Git had been made, the group also opted to use LaTeX to write the report and draw up the required figures and tables. This proved to be a good choice as LaTeX is also plaintext based, allowing it to be kept in its own Git repository too.
+\subsection{Code Storage and Management}
+In order to share code, the decision was made to use Git Version Control, a widely-used tool which imposes the requirement to `commit' atomic units of work in order for a developer to share their work. A commit log acts as an audit trail, tracking changes to text files and directory-like structures, to ensure that bugs and issues can be easily spotted and addressed. It is also very useful for collaboration, as it includes tools to perform `merges', when more than one developer has worked on a file at the same time; this is a task that would have to be performed manually without version control.
+
+For this project, a range of repositories were created, all of which are publically availiable on GitHub, a centralised website for storing Git repositories. The repositories were:
+
+\begin{description}
+    \item[ml-data] \hfill \\ The data and conversion scripts used to collect movement data
+    \item[docs] \hfill \\ Minutes and Administrative documents associated with the project
+    \item[ml-java] \hfill \\ Scaled down version of Weka, converted to a processing harness to output a neural network in optimised format
+    \item[ml-c] \hfill \\ An implementation of the algorithm, capable of running on a desktop machine
+    \item[mbed] \hfill \\ The implementation of the algorithm, with optimised mBed libraries, designed for the \verb|LPC11U24_401|
+    \item[report] \hfill \\ This report
+\end{description}
+
+Git also keeps a full local copy of each repository on each developer's computer, allowing each member to continue their work even when not connected to the internet. This is also acted as a backup, as well as a Git server which is run by Daniel Playle, which the group also pushed their changes to.
+
+\subsection{Report Writeup}
+Git proved successful at managing changes to the project's source code, and aiding in the administration overhead required when multiple people are working on the code simultaniously. As such, the group were keen to make use of Git for the report writeup too. This meant bnary formats, such as those used by Microsoft Word and other WYSIWYG editors, unacceptable; instead a text-based report writeup would be required, to allow Git to effectively hold it under source control.
+
+\LaTeX is such a system; it uses one or more text files in which report content can be placed, and marked-up with the defined \TeX markup. This can be compiled into a professionally typesetted PDF documents. The team found this solution very helpful as it allowed each member to focus solely on content creation rather than formatting, in the knowledge that the final report would be in a consitent and appropriate format. \LaTeX can also be used to create complex charts, tables and flow diagrams, not only reducing the time spent on such activies, but also ensuring a common `style' for all material produced by the group.
