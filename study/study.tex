@@ -19,11 +19,25 @@ Overall, this required several documents to be submitted as part of the ethics a
 
 In this project, there were two areas where user studies could have been required. One was to collect movement data to train the algorithm by generating a model as already mentioned. The other area was to perform a user study to test the final system and measure its accuracy. As applying for ethics approval is a very time consuming process, it was decided to incorporate both areas into a single study. This was possible because both areas involve the participants performing exactly the same actions, it was only what was being recorded that changed. This was made clear throughout the ethics application which eventually led to it being approved.
 
-\namedsection{During the Study}{Finch}
-In the end, only the first area of the user study was performed for collecting movement data to train the algorithm. Specifically, accelerometer and gyroscope sensor data was required to be collected so that the effectiveness of the two at training the algorithm and accurately classifying exercises could be compared.
+\namedsection{First User Study}{Finch}
+The first area of the user study was performed to collect movement data to train the algorithm. Specifically, accelerometer and gyroscope sensor data was required to be collected so that the effectiveness of the two at training the algorithm and accurately classifying exercises could be compared.
 
+Appendix ?? shows the plan for the data gathering sessions along with instructions on what should be done for each participant.
+
+\subsection{Recording Devive}
 At this stage in the project, the prototype device was not yet ready to be used to record the movement data so a mobile phone with inbuilt accelerometer and gyroscope sensor was used instead. The Physics Toolbox Suite Version 1.4.4 app \cite{vieyra2016} was used to record data directly from the phones sensors by allowing us to choose which sensors to use.
 
+Initially, the plan was to record both accelerometer and gyroscope sensor data at the same time. This would save time as the participant would not have to repeat the exercise for each type of sensor. However, after the first two participants, it was quickly realised that the recorded data was of a poor quality as shown in figure \ref{fig:bad-data}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=70mm]{figures/data-jump.pdf}
+	\caption{Poor data collection showing unstable sampling\label{fig:bad-data}}
+\end{figure}
+
+This is a result of unstable sampling from the phone as it clearly was not powerful enough to sample data from both sensors at the same time at the highest frequency. Unfortunately, these sets of data were unusable to train the algorithm so the problem had to be rectified immediately before the next participant. The solution was to record from each sensor separately. The downside of this is that it doubled the time it took to collect the data.
+
+\subsection{Performing the Recording}
 For each participant, the phone was strapped to various parts of their body using Velcro. These positions included the top of the right foot, and the outer side of their upper right arm. It was also made sure that these positions and the orientation of the phone were the same for each participant in order to make sure the data was consistent. This was vital as the data from each participant was combined to form the overall training data.
 
 When the phone was attached to the foot, each participant was sat down and performed the foot rotation exercises where they stretched out their legs and slowly rotated their feet in both clockwise and anticlockwise directions about 10 times each. Also while sitting down, each participant performed the ballerina exercise where they placed their feet on the ground and raised their heels, followed by raising their toes and rolling back their heels to the ground. This was also repeated about 10 times. Walking movement data was also collected while the phone was on the foot. The purpose of collecting this was to use it to train the algorithm to not classify walking as exercise.
