@@ -183,8 +183,24 @@ The power consumption of the sensor is not constant over time due to the fact th
 
 As can be seen from Table~\ref{tab:power}, the sensor on average took $861\mu W$ which can be considered low power. However, there is the potential for a lower power consumption, within the configuration used, the current flowing through the sensor was $262\mu A$, but the data sheet for the sensor says for the sampling rate and configuration that is being used, the typical value is $70\mu A$. This decrease would reduce the power consumption by over a factor of 3 leaving a power usage of $230\mu W$.
 
+\subsection{Prototyping}
+
+During development, breadboard was used to prototype the system with both the mBed and sensor placed upon. The power rails on the breadboard received power from the mBed which in turn received power from the host PC via USB. These conditions were acceptable when developing, however was impractical for moving the device to the foot for further testing. 
+
+It was decided to create a small board for this purpose using veroboard which would be powered with a few AA batteries. This is beneficial as the board can be made to a desired size with on-board power alleviating the requirement of having a cable trailing to a computer as well as being more comfortable on the foot over the breadboard.
+
+A design was created using fritzing \cite{fritzing} which can be seen in Figure~\ref{fig:veroboard_schematic}. The mBed has a $V_{in}$ pin upon pin 2 which can take from 4.5V up to 9V which is supplied using four AA batteries within two AA battery holders. To prevent the mBed from constantly being powered, a jumper is added to control whether the mBed receives power or not enabling for the device to be switched on or off at will. Power to the sensor is provided via the 3.3V regulated output of the mBed, which also is used by the pull-up resistors to hold the I2C lines high when not in use. Extra space was added above and below the sensor due to the fact that the physical board is larger than that in the CAD software upon that axis, thus requires more space to avoid colliding with the mBed or hanging off the edge of board.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=.6]{veroboard_schematic.png}
+	\caption{Schematic for veroboard}
+	\label{fig:veroboard_schematic}
+\end{figure}
+
+This was then built, as can be seen from Figure~\ref{fig:board}. To avoid having to solder on the actual mBed and sensor to the veroboard, female header pins are used in a manner similar to IC holders allowing for them to be placed and removed from the board as required. For compactness, the battery packs were attached to the underside of the board using velcro. 
+
 \note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
 \note{Configuring Watchdog Oscillator for main clock}
 \note{SPI mBed library cannot be compiled because it is bigger than the flash memory}
 \note{Bitshifting gives random outputs fun -- little endian}
-\note{Talk about the prototype board}
