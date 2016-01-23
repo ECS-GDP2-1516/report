@@ -1,0 +1,24 @@
+\chapter{Source Code}
+
+The source code for the algorithm, designed to run on the \verb|LPC11U24_401|, is availiable with this report. Please see figure \ref{fig:source} below for a short description of the file structure.
+
+\begin{figure}[!h]
+\dirtree{%
+.1 /.
+.2 main.cpp\DTcomment{Main runnable file}.
+.2 classify.h\DTcomment{Contains classifier}.
+.2 heuristic.h\DTcomment{Contains added heuristic code}.
+.2 Makefile\DTcomment{Builds the project with $make$}.
+.2 lib.
+.3 startup\_LPC11x.S\DTcomment{mBed provided ASM to start the device}.
+.3 system\_LPC11xx.c\DTcomment{mBed provided function to init the clock}.
+.3 LPC11U24.ld\DTcomment{mBed provided linker script}.
+.3 api.
+.4 DigitalOut.h\DTcomment{Optimised mBed library for LEDs}.
+.4 i2c\_api.h\DTcomment{Optimised mBed I2C library}.
+.4 LPC11Uxx.h\DTcomment{Defines WDT speed and system memory maps}.
+.4 MPU6050.h\DTcomment{Optimised library for Gyroscope}.
+}
+\label{fig:source}
+\caption{Source code directory structure}
+\end{figure}
