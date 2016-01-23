@@ -18,7 +18,7 @@ wordcount:
 	@./texcount.pl -inc -total report.tex
 
 %.pdf: %.tex 
-	cd figures/ && lualatex --output-directory=_aux $(shell basename $<)
+	cd figures/ && lualatex --output-directory=_aux $(notdir $<)
 	cp figures/_aux/*.pdf ./figures/
 
 clean:
