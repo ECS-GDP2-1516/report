@@ -51,4 +51,29 @@ In the end, the second part of the user study was not carried out due to the fac
 
 While testing the accuracy of the system is a vital part of the project, there were alternative ways to carry out the testing rather than performing a whole user study. This is why it was decided it was more feasible to drop the second user study and instead use the members of the project to test the system. The results of this can be seen in section ??
 
-\section{Classification of Results}
+\namedsection{Classification of Results}{Finch}
+Once the first user study had been completed, the data collected from it needed to be manually classified. This is because a machine learning algorithm needs to be explicitly told what each piece of individual data means in order for it to use that as training data to create a model. In theory, when it is presented with new data it has not seen before, it will classify it based on how similar training data was manually classified.
+
+As discussed in section ??, three separate classification classes were decided upon. These were “not exercise” for any activity that is not part of an exercise and “peaks” and “troughs” for activities that were exercises. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=70mm]{figures/classification_data_plot.png}
+	\caption{Gnuplot of accelerometer data for an anticlockwise revolver exercise\label{fig:gnuplot-rev}}
+\end{figure}
+
+Figure \ref{fig:gnuplot-rev} shows a plot of the accelerometer sensor data for one of the revolver exercises performed anticlockwise. The periodic motion of the exercise clearly translates to a series of peaks and troughs in the data.
+
+These peaks and troughs are present in all of the dimensions (x, y, and z) but are certainly more distinct in some compared to others.  For example, for the accelerometer revolver data, the x axis showed the peaks and troughs best overall.
+
+To perform the manual classification, each set of data was opened in Gnuplot, as shown in figure \ref{fig:gnuplot-rev}. Gnuplot is a tool which is capable of plotting data in any sort of format. The data received from the phone was in a simple CSV format so it was easy to instruct Gnuplot on how to plot this. As the mouse is moved across the plot, the precise coordinates of the mouse relative to the data in the plot is reported on screen. 
+
+The manual classification involved first deciding which dimension to use (in this example the x dimension) and then moving the mouse pointer to every peak and trough in the data and recording the x-axis coordinates of each one.
+
+This process was aided by the use of a simple Bash script which took the name of the file currently being classified, whether or not a peak or trough was being classified and then a list of x-axis coordinates of the location of those peaks and troughs. The script then output the results in a suitable format which could be read later on to be used to train the algorithm and generate the model.
+
+Overall, there were about 20 sets of data that needed to be classified (a set of data from each participant). Each set included the revolver exercise (both clockwise and anticlockwise), the ballerina exercise and the shoulder rolling exercise. On top of this, each type of exercise is duplicated for both the accelerometer data and gyroscope data. This results in nearly 160 separate data plots to be manually classified.
+
+As can be imagined, this was quite a time consuming process. Fortunately, for the vast majority of data plots, the peaks and troughs were very clear so it did not take very long to jot down their coordinates. Sometimes, the peaks and troughs were much harder to locate in the data which did increase the manual classification time.
+
+Finally, the classification of the “not exercise” class did not need to be performed manually. This is because unlike the exercise classes, there was no need to distinguish different types of non-exercise. Instead, a script was used to mark periodic coordinates of the data as not exercise.
