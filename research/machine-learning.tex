@@ -91,7 +91,7 @@ Data collection is already an expensive task in terms of time consumed. It was t
 %%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% CLASSIFICATION %%%
 %%%%%%%%%%%%%%%%%%%%%%
-As shown in figure \ref{fig:first-data}, activities of interest produce periodic data in a way that the key features of a given activity can be considered trivial to identify should the activity be known to the manual classifier. This characteristic of the collected data was used to in order to identify the ideal intervals for classification. Collected data was separated at the time of collection into individual files each representing a different activity/sensor tuple, allowing for manual classification. 
+As shown in figure \ref{fig:first-data}, activities of interest produce periodic data in a way that the key features of a given activity can be considered trivial to identify should the activity be known to the manual classifier. This characteristic of the collected data was used to identify the ideal intervals for classification. Collected data was separated at the time of collection into individual files each representing a different activity/sensor tuple, allowing for manual classification. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% HOW CLASSIFICATION WAS PERFORMED %%%
@@ -132,14 +132,15 @@ The number of classes to classify was considered as a variable parameter for the
 
 \subsection{Considered Algorithms}
 \subsubsection{Multilayer Perceptrons}
-A Multilayer Perceptron (MLP) is a type Neural Network, where the nodes, or perceptrons, are organised in layers. Each node accepts some number of inputs with some weight. These summation of these weighted inputs are computed and applied to some activation function, the result of which is the output of the node (equation \ref{eq:perceptron}).
+A Multilayer Perceptron (MLP) is a type of Neural Network, where the nodes, or perceptrons, are organised in layers. Each node accepts some number of inputs with some weight. The summation of these weighted inputs are computed and applied to some activation function, the result of which is the output of the node (equation \ref{eq:perceptron}).
+
 
 \begin{equation}
 \label{eq:perceptron}
 \text{Output } o = activation\bigg(\sum_{i=1}^{d}{x_iw_i}\bigg) 
 \end{equation}
 
-Each perceptron affectively defines a plane in $d$-dimensional space. Instances on either side of this plane can then be classed, allowing a single perceptron to act as a simple classifier. By combining multiple perceptrons in a layer, it is possible to build up these planes in order to create more complex classifier made of these linear classifiers. The addition of layers, using previous layers are inputs allows a more complex classifier still by allowing the importance of these sub-classifiers to vary with the inputs. MLPs with enough inputs and layers can therefore replicate any function \cite{baum1988capabilities}.
+Each perceptron affectively defines a plane in $d$-dimensional space. Instances on either side of this plane can then be classed, allowing a single perceptron to act as a simple classifier. By combining multiple perceptrons in a layer, it is possible to build up these planes in order to create more complex classifier made of these linear classifiers. The addition of layers, using previous layers as inputs allows a more complex classifier still by allowing the importance of these sub-classifiers to vary with the inputs. MLPs with enough inputs and layers can therefore replicate any function \cite{baum1988capabilities}.
 
 \begin{figure}
 	\centering
@@ -193,7 +194,7 @@ Instance-based learning is a type of machine learning algorithm that postpones m
 
 Instance-based learning is advantageous over other machine learning methods in that adapting the model with new instances is trivial. This makes it attractive for simple systems where some adaptation of the model is required.
 
-As a number of labelled instanced must be kept in memory in order to compute the model, instance-based learning methods can require large amounts of memory to classify. Additionally, any problem instances must be compared against each labelled instanced that is to be used for the model, meaning that time complexity for classification of any problem instance is linear in the number of labelled instances. This can present significant challenges when the size of the training data set become large with respect to the underlying device.
+As a number of labelled instanced must be kept in memory in order to compute the model, instance-based learning methods can require large amounts of memory to classify. Additionally, any problem instances must be compared against each labelled instance that is to be used for the model, meaning that time complexity for classification of any problem instance is linear in the number of labelled instances. This can present significant challenges when the size of the training data set become large with respect to the underlying device.
 
 An example of instance-based learning is the k-nearest neighbours algorithm where any problem instance is compared to the k-nearest labelled instances. The class that the problem instance is most similar to is then given this classification. \todo{Reword}
 
@@ -247,7 +248,7 @@ To evaluate the models on the user study data, cross-validation was considered, 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% SUBJECT PERFORMANCE %%% Woo, statistics!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-Figure \ref{fig:subfold} shows the resultant performance, measured using the kappa statistic, for each of the subjects performing activities using different sensors sampling at 20Hz for the MLP and RBF classifiers. These results are collected using the subject-fold cross-validation technique as previously described. \todo{Could mention accl and gyro data collected independently.}. As the \textit{Accelerometer using MLP} result class is likely to require the most suitable for a low-power constrained device \todo{As mention in ...}, this shall be used as a base-line to compare performance against. The null hypothesis was the mean of other result classes were equal to the mean of \textit{Accelerometer using MLP}. The alternative hypothesis was that these means were different. These hypothesises were tested using a series of \textit{t}-tests with significance level, $\alpha = 0.01$. The resultant $p$-values from these $t$-tests are displayed in table \ref{tab:res-ttest}. Despite the \textit{Gyroscope using MLP} and \textit{Accelerometer using RBF} result classes having a higher mean performance than \textit{Accelerometer using MLP} class, these increases were not statistically significant and therefore the null hypothesis in these cases could not be rejected. For \ textit{Gyroscope using RBF}, a statistically significant change in mean performance was observed, leading to acceptance of the alternative hypothesis.
+Figure \ref{fig:subfold} shows the resultant performance, measured using the kappa statistic, for each of the subjects performing activities using different sensors sampling at 20Hz for the MLP and RBF classifiers. These results are collected using the subject-fold cross-validation technique as previously described. \todo{Could mention accl and gyro data collected independently.}. As the \textit{Accelerometer using MLP} result class is likely to require the most suitable for a low-power constrained device \todo{As mention in ...}, this shall be used as a base-line to compare performance against. The null hypothesis was the mean of other result classes were equal to the mean of \textit{Accelerometer using MLP}. The alternative hypothesis was that these means were different. These hypotheses were tested using a series of \textit{t}-tests with significance level, $\alpha = 0.01$. The resultant $p$-values from these $t$-tests are displayed in table \ref{tab:res-ttest}. Despite the \textit{Gyroscope using MLP} and \textit{Accelerometer using RBF} result classes having a higher mean performance than \textit{Accelerometer using MLP} class, these increases were not statistically significant and therefore the null hypothesis in these cases could not be rejected. For \textit{Gyroscope using RBF}, a statistically significant change in mean performance was observed, leading to acceptance of the alternative hypothesis.
 
 Further analysis of the subject performance results show a large difference in performance between subjects. This can quite likely be attributed to some subjects performing the activities unlike the majority of other subjects, resulting in lower performance when they are used as the test data. In this result set, a negative kappa statistic was observed, indicating that the performance was worse than guessing for this one case. However, generally, the performance for all result classes can be considered good.
 
