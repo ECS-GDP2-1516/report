@@ -48,13 +48,31 @@ After this is selected, the options menu is accessed for this device. Next, the 
 
 -under Utilities, the Use Target Driver for Flash Programming in the Configure Flash Menu Command is left checked.
 
-After all of these steps have been done,it is now time to add assembly file provided by ARM, the cm0dasm.s to the source. Taking a look at the reset handler, which can be seen in \ref{reset_handler},  the value 0x55 is written to the LED when a specific pattern is detected and 0xAA if another pattern is detected.
-\begin{figure}
-\centering
-\includegraphics[scale=0.7]{figures/reset_handler.PNG}
-\caption{Reset handler} 
-\label{fig:armcm0p}
-\end{figure}
+After all of these steps have been done,it is now time to add assembly file provided by ARM, the cm0dasm.s to the source. Taking a look at the reset handler, which can be seen in \ref{lst:reset-handler},  the value 0x55 is written to the LED when a specific pattern is detected and 0xAA if another pattern is detected.
+
+\begin{lstlisting}[caption={Reset Handler},label={lst:reset-handler}]
+Reset_Handler	PROC
+		GLOBAL Reset_Handler
+		ENTRY
+
+AGAIN		LDR	R1, =0x50000000		;Write to LED with value 0x55
+		LDR	R0, =0x55
+		STR	R0, [R1]
+
+
+		LDR	R0, =0x2FFFFF		;Delay
+Loop		SUBS	R0,R0,#1
+		BNE Loop
+
+		LDR	R1, =0x50000000		;Write to LED with value 0xAA
+		LDR	R0, =0x55
+		STR	R0, [R1]
+
+		LDR	R0, =0x2FFFFF		;Delay
+Loop1		SUBS	R0,R0,#1
+		BNE Loop1
+\end{lstlisting}
+
 
 After the successful building of the code.hex should be created and converted into a .axf because it was set in the User section. The .axf file needs to be converted to a .bin in order to program the FPGA. The MDK/Keil offers a tool called "fromelf" which can do this conversion. It is called in the following way:
 
