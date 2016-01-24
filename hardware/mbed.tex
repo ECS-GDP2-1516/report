@@ -192,6 +192,8 @@ It was found that forgetting to power on the Watchdog oscillator before switchin
 
 SPI communication was attempted to interface the mBed to a SD card allowing for data from the sensor to be stored within the SD card so it is possible to revisit collected data at a later point in time. This would be especially useful should the device not be connected to the host PC to send debug information to. Navigating the mBed site does show a library with functionality perfect for this aim, however attempting to compile the example code resulted in a error during compilation due to the fact the binary would have been larger than the flash capacity of the mBed. Switching over to the online compiler provided by mBed resulted in compilation however the binary would not execute upon the mBed. \todo{Did we find the downloaded binary to also be too big?}
 
+
+
 \subsection{Measuring power}
 
 It is required to measure the power of the system as a requirement is for it to be low powered as the sub threshold processor will be operating at a low power. It was deemed unnecessary to measure the power consumption of the mBed because of the various peripherals which are also powered which would not be there on the sub threshold version as well as the fact that this processor is not designed for sub threshold power and the method ARM implement to achieve this may leave a different power fingerprint than the Cortex M0. 
@@ -252,5 +254,4 @@ The board was now able to be placed upon a foot, however there was nothing to se
 \end{figure}
 
 \note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
-\note{SPI mBed library cannot be compiled because it is bigger than the flash memory}
 \note{Bitshifting gives random outputs fun -- little endian}
