@@ -1,22 +1,10 @@
 \chapter{Introduction}
 
-Ultra Low Power Processors, such as ARM's Cortex-M0+, are becoming an increasingly appealing area of research, particularly because they provide a platform for the Internet of Things. As our culture develops new ways for technology to aid our every-day lives, the devices which support these progressions are required to be less and less intrusive, forcing companies to search for new methods of making systems smaller and require lower power. In some cases devices are required to run for months or even years using a single power source.
+Ultra-Low Power Processors, such as ARM's Cortex-M0+, are becoming an increasingly appealing area of research, particularly because they provide a platform for the Internet of Things. As our culture develops new ways for technology to aid our every-day lives, the devices which support these progressions are required to be less and less intrusive, forcing companies to search for new methods of making systems smaller and require lower power. In some cases, devices are required to run for months or even years using a single power source.
 
 However, such processors clearly create very tight constraints for potential developers, as processing power is often limited, leading to the ever-continuing requirement for more efficient and optimised algorithms. As memory usage is also proportional to power consumption, the RAM available on such systems is also extremely limiting. As we begin to rely on these systems more and more, these constraints make it a growing challenge to implement systems which are not only useful, but can be relied upon to function when needed.
 
-\namedsection{Project Overview}{Shepherd}
-
 ARM is currently investigating the concept of a sub threshold Cortex-M0+, which attempts to push the extremes of these constraints further by providing just 8KB of memory for both program code and data, and running at just a few hundred cycles per second. This project aims to research and develop an algorithm which is capable of running on such a device, to act as a proof of concept that such a processor would be worthwhile.
-
-This report first describes the research and analysis of the algorithms used for exercise detection which currently exist, specifically focusing on Machine Learning techniques. This includes a description of the tools and techniques used, and the methods by which the effectiveness of trained algorithms were evaluated.
-
-Following on from this, the second chapter discusses the details of the implementation of the chosen algorithm, specifically looking into the improvements that were made to further optimise existing versions of the algorithm. This also explores the heuristics that were added to raise the accuracy of the detection system for this project's specific use case, and the supporting software that was developed by the team to aid the process of development. The chapter concludes by assessing the tradeoffs that were required to have the program code run on a low power device.
-
-As the proposed sub threshold Cortex-M0+ is still in development, it was not readily available for the group to use; consequently, the team have used a Cortex M0 to emulate the processor. The report next details the challenges involved in this, particularly discussing the research into components and a comparison between using the FPGA and mBed as a platform on which to develop, allowing the clock speeds to be adjusted based on the efficiency and requirements of the algorithm.
-
-Other parts of the project include a user study to collect movement data of the exercises\todo{Think about this, ``the exersises'' aren't defined yet}; this data is needed in order to develop the algorithm and a user study is an ideal way to collect a range of data from a selection of different people because each individual is likely to perform the exercises with slight variations.
-
-This report concludes by evaluating the final developed algorithm in terms of its accuracy in detecting exercises and its power and resource requirements. This is then used as a basis for determining the suitability of using constrained sub threshold devices to compute complex problems.
 
 \namedsection{Project Specification}{Finch}
 
@@ -29,10 +17,23 @@ The particular algorithm that is to be developed is a way to identify and monito
   \label{fig:exercises}
 \end{figure}
 
-Figure \ref{fig:exercises} shows some of the inflight exercises which can be performed. We have focussed on a few of them including the revolver, the ballerina and the shrug \todo{Might need to be clearer about which exercises we're covering}. These involve rotating the feet in circles, pointing the feet up and down and rolling the shoulders backwards and forwards. These are all designed to help keep the circulation going in the limbs.
+Figure \ref{fig:exercises} shows some of the inflight exercises which can be performed. We have looked into a few of them including the revolver, the ballerina and the shrug. These involve lifting both feet off the floor and rotating them in circles in clockwise and anticlockwise directions, pointing the feet up and down and rolling the shoulders backwards and forwards. These are all designed to help keep the circulation going in the limbs. However, a specific focus was made to the revolver exercise for the purpose of prototyping a system.
 
 Possible uses of the algorithm would be to incorporate it into a device which could be given to passengers to strap to their legs. It would then monitor how much exercise each person was doing. This could help inform the passengers whether or not they are doing enough exercise to stay risk free. The device itself could make use of energy efficient technologies (for example the Cortex-M0+) so that its battery could easily last the entire duration of a long-haul flight.
 
+\namedsection{Report Overview}{Finch}
+
+This report first describes the research and analysis of the algorithms used for exercise detection which currently exist, specifically focusing on Machine Learning techniques. This includes a description of the tools and techniques used, and the methods by which the effectiveness of trained algorithms were evaluated.
+
+As the proposed sub threshold Cortex-M0+ is still in development, it was not readily available for the group to use; consequently, the team have used a Cortex M0 to emulate the processor. The report next details the challenges involved in this, particularly discussing the research into components and a comparison between using the FPGA and mBed as a platform on which to develop, allowing the clock speeds to be adjusted based on the efficiency and requirements of the algorithm.
+
+Following on from this, the next chapter discusses the details of the implementation of the chosen algorithm, specifically looking into the improvements that were made to further optimise existing versions of the algorithm. This also explores the heuristics that were added to raise the accuracy of the detection system for this project's specific use case, and the supporting software that was developed by the team to aid the process of development. The chapter concludes by assessing the trade-offs that were required to have the program code run on a low power device.
+
+Another part of the project is the user study to collect movement data of the exercises; this data is needed in order to develop the algorithm and a user study is an ideal way to collect a range of data from a selection of different people because each individual is likely to perform the exercises with slight variations.
+
+Furthermore, as this project was such a large undertaking by the group, a detailed look is given to the project management including the planning and tools that were used throughout.
+
+This report concludes by evaluating the final developed algorithm in terms of its accuracy in detecting exercises and its power and resource requirements. This is then used as a basis for determining the suitability of using constrained sub threshold devices to compute complex problems.
 
 \namedsection{Requirements}{Finch}
 
