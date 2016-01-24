@@ -1,4 +1,22 @@
 \namedsection{Adding Heuristics}{Finch}
+As with any classification algorithm, it is not possible to always produce the correct result. This is especially true when the classification needs to be performed on real world sensor data which can be so varied and random that even the best algorithms can sometimes be tricked into outputting incorrect classifications, let alone algorithms designed to run on highly constrained systems.
 
-\note{Todo}
+Heuristics can provide a way to increase the overall accuracy of the algorithm. While they will not help to gain 100\% accuracy, they can be written to require very little computation and memory which is ideal for the constrained Cortex-M0+.
+
+\subsection{Naive Approach}
+Even an incredibly simple implementation of a heuristic can help to improve performance. In this method, the last N classification results are stored in memory. When a new classification is calculated it is given to the heuristic function which replaces the oldest value with this new one. The function must then return whether or not it thinks the user is currently performing exercise. It bases this off the most recent N results from the classifier. If the number of “exercise” classifications is above a certain threshold, then the heuristic states the current user activity is exercise. 
+
+In a way, this acts as an average calculator where the last N results are averaged out. If on average, the classifier has been classifying the activity as mostly exercise, then it is safe to assume the current activity is also exercise. This can also help to reduce the effect of “bouncing”, where the classifier may quickly alternate between classifying something and exercise and not exercise during the transition of those classes. As the average is used, the heuristic will be able to clearly switch between the two, rather than incorrectly alternate.
+
+Such a heuristic can be implemented very efficiently by using a circular array. All that is needed is a small block of memory to store the last N classifications and a single pointer to the rear of the array. This way, inserting the latest classification is as trivial as incrementing the pointer and overriding the old value at that location. 
+
+The size of N directly effects how much memory is needed but it should be based on the trade-off between storing enough values to average over and not storing too many that stale data is being used. In this system, the sensors are being sampled at 20Hz so that is 20 readings per second, and hence 20 classifications per second. Therefore, 20 was also selected as the number of readings to hold in memory as this is enough to average on and the oldest classification will only ever be 1 second old.
+
+\subsection{Alternative}
+A slightly more sophisticated approach is to use the fact we are sub-classifying exercise as “peaks” and “troughs”. When the user is performing exercise, this will translate into a series of peaks and troughs in the output classification due to the periodic motion of the movement.
+
+As before, the last N classifications are kept in memory, but a check is done to make sure peaks and troughs are alternating consistently before classifying the activity as exercise. This uses the fact that peaks and troughs must alternate when exercise is being done and so would reduce the number of false positives caused by stray peak or trough classifications in a period of non-exercise. 
+
+A threshold is also used to allow for a certain number of non-exercise classifications before classifying as not exercise. This would help to reduce the number of false negatives caused by stray non-exercise classifications in a period of actual exercise.
+
 \note{Could possibly be in Chapter 2?}
