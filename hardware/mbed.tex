@@ -87,8 +87,6 @@ With the available frequency values and divisors, it confirms the range that the
 
 The next register is the Power configuration register (\verb|PDRUNCFG|), which controls the power distribution to various analog blocks. At reset, the Watchdog oscillator is not powered meaning that before switching the system clock to it, it requires to be powered on. The bit that controls this is the sixth bit within the register, and toggling that bit to a value of 0 powers up the Watchdog oscillator. 
 
-It was found that forgetting to power on the Watchdog oscillator before switching the system clock over to it left it in a state where it was unable to execute any code. This state, for unknown reasons, persisted even after a reset and reboot of the device. An eventual solution to this problem was found, which was to re-flash the mBed interface firmware.
-
 The next register (\verb|MAINCLKSEL|) sets the system clock to the Watchdog oscillator from the default IRC oscillator. This is stored in the lowest two bits of the register and potential values can be seen in Table~\ref{tab:sysclocksource}. As can be seen, for the system clock to use the Watchdog oscillator, the bottom two bits of the register need to be 0x2.
 
 \begin{table}
@@ -188,7 +186,11 @@ It was decided that the duty cycle of the I2C clock is 50\%, hence the value of 
 
 \subsection{Issues}
 
-There were a variety of issues faced when working with the mBed.
+There were a variety of issues that were encountered with the mBed. It was possible to remedy some of the issues, however not all.
+
+It was found that forgetting to power on the Watchdog oscillator before switching the system clock over to it left it in a state where it was unable to execute any code. This state, for unknown reasons, persisted even after a reset and reboot of the device. An eventual solution to this problem was found, which was to re-flash the mBed interface firmware.
+
+SPI communication was attempted to interface the mBed to a SD card allowing for data from the sensor to be stored within the SD card so it is possible to revisit collected data at a later point in time. This would be especially useful should the device not be connected to the host PC to send debug information to. Navigating the mBed site does show a library with functionality perfect for this aim, however attempting to compile the example code resulted in a error during compilation due to the fact the binary would have been larger than the flash capacity of the mBed. Switching over to the online compiler provided by mBed resulted in compilation however the binary would not execute upon the mBed. \todo{Did we find the downloaded binary to also be too big?}
 
 \subsection{Measuring power}
 
