@@ -59,7 +59,7 @@ To decide the bit scale factor, $B$, for the exercise detection algorithm, it is
 (x*2^B)(y*2^B)=(x*y)*(2^B)^2=(x*y)*2^{2B}
 \end{equation}
 
-As such, the value of $B$ has to be high enough such that precision is not lost unnecessarily, but low enough such that $x*2^B<2^{16}$. To solve this, the highest possible floating point value must be known; in the case of the algorithm, this is the base value of the first node in the middle layer: -10.6 (3s.f.)\todo{Does this seem a bit sudden? Maybe explain this came from Dan's training above?}, using this in the rearranged equation, \ref{eq:bits:number-calc}, gives a bit shift of 12.
+As such, the value of $B$ has to be high enough such that precision is not lost unnecessarily, but low enough such that $|x*2^B|<2^{16}$. To solve this, the highest possible floating point value must be known; in the case of the algorithm, this is the base value of the first node in the middle layer: -10.6 (3s.f.)\todo{Does this seem a bit sudden? Maybe explain this came from Dan's training above?}, using this in the rearranged equation, \ref{eq:bits:number-calc}, gives a bit shift of 12.
 
 \begin{equation}
 \label{eq:bits:number-calc}
