@@ -10,9 +10,12 @@ This interface exposes a Mass Storage device to the host computer via a USB conn
 
 \subsection{Why the mBed}
 \note{Need a better name for this subsection?}
-\note{Talk about the availability of other required protocols}
 
 When initially looking at various ways to emulate the sub-threshold version of the ARM Cortex M0, using an existing non sub-threshold version of the ARM Cortex M0 was considered. This involved searching for some form of micro-controller or device which would allow for programming of the processor. This lead to the mBed family which appeared easy to program and use featuring ARM processors. Within the mBed family of micro-controllers, the LPC11U24 model uses an ARM Cortex M0 as its processor.
+
+An important factor for the device is being able to communicate with other devices using various communication protocols. Fortunately, multiple pins are broken out on the mBed which allow for flexibility in choice, in particular there are 2 SPI, 1 I2C, and 1 Serial interfaces available simultaneously upon the mBed. \cite{mbed_website} 
+
+For obtaining data from the sensor, it is most likely to use I2C or One-Wire communication, should it be I2C, the mBed would work well. It also allows for the Serial pins to be interfaced with the host PC allowing for debugging information to be transmitted to the host PC. 
 
 The requirements for this project require the processor to be emulate the sub-threshold version which operates with a system clock in the range of a few hundred kHz to a few MHz. This would require a clock in the micro-controller which can operate at these frequencies and also be able to be set as the system clock.
 
