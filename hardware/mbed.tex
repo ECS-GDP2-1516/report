@@ -50,7 +50,7 @@ This can easily be rectified by re-writing the I2Cdev class to make it compatibl
 
 As mentioned before, one of the objectives of this project is to operate at a low operating frequency. It has already been seen that the Watchdog oscillator can operate in the desired frequency range using an analog clock as well as a divisor. 
 
-To configure the Watchdog oscillator, it needs to be configured, powered on and then switched to. To do this, there are three registers that need interaction with to complete. The first register is the Watchdog oscillator control register (\verb|WDTOSCCTRL|) which contains the \verb|DIVSEL| and \verb|FREQSEL| talked about earlier. 
+To configure the Watchdog oscillator, it needs to be configured, powered on and then switched to. To do this, there are four registers that need interaction with to complete. The first register is the Watchdog oscillator control register (\verb|WDTOSCCTRL|) which contains the \verb|DIVSEL| and \verb|FREQSEL| talked about earlier. 
 
 The lowest five bits of the register contains the unsigned value of \verb|DIVSEL|, hence allowing it to be within the range $ 0 \leq $ \verb|DIVSEL| $ \leq 31$. Thus, allowing for the divisor being within the range $ 2 \leq $ divisor $ \leq 64$.
 
@@ -84,6 +84,32 @@ The next four bits contains a value for \verb|FREQSEL|, where a value within the
 \end{table}
 
 With the available frequency values and divisors, it confirms the range that the Watchdog oscillator achieves which was given earlier.
+
+The next register is the Power configuration register (\verb|PDRUNCFG|), which controls the power distribution to various analog blocks. At reset, the Watchdog oscillator is not powered meaning that before switching the system clock to it, it requires to be powered on. The bit that controls this is the sixth bit within the register, and toggling that bit to a value of 0 powers up the Watchdog oscillator. 
+
+It was found that forgetting to power on the Watchdog oscillator before switching the system clock over to it left it in a state where it was unable to execute any code. This state, for unknown reasons, persisted even after a reset and reboot of the device. An eventual solution to this problem was found, which was to re-flash the mBed interface firmware.
+
+The next register (\verb|MAINCLKSEL|) sets the system clock to the Watchdog oscillator from the default IRC oscillator. This is stored in the lowest two bits of the register and potential values can be seen in Table~\ref{tab:sysclocksource}. As can be seen, for the system clock to use the Watchdog oscillator, the bottom two bits of the register need to be 0x2.
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|l|}
+		\hline
+		Value & Source \\
+		\hline
+		0x0 & IRC Oscillator \\
+		0x1 & PLL input \\
+		0x2 & Watchdog Oscillator \\
+		0x3 & PLL output \\
+		\hline
+	\end{tabular}
+	\caption{Sources for the system clock}
+	\label{tab:sysclocksource}
+\end{table}
+
+However, this does not automatically switch the system clock to use the Watchdog oscillator. It is required for the system clock to be updated before any change takes place, this is done in the final register (\verb|MAINCLKUEN|) within its least significant bit. For the update to take place, the value in this bit needs to change from a 0 to a 1. The reset value within this bit is 1, and thus it is required for it to first be set as 0 before switching it to 1.
+
+After all the register changes have taken effect, the system clock is configured to source itself from the Watchdog oscillator allowing the mBed to operate in the correct frequency range to simulate the sub threshold processor.
 
 \subsubsection{Analysing the error margin}
 
@@ -160,6 +186,10 @@ The model employed requires a set sampling rate, and to minimise the communicati
 
 It was decided that the duty cycle of the I2C clock is 50\%, hence the value of SCLL and SCLH should be the same. A similar method, from when measuring the frequency of the oscillator with varying voltage via a pin, was used where the frequency of the pin is half the sampling rate. This because in one cycle of the pin, it goes through the while loop twice and the sensor is queried once each loop.
 
+\subsection{Issues}
+
+There were a variety of issues faced when working with the mBed.
+
 \subsection{Measuring power}
 
 It is required to measure the power of the system as a requirement is for it to be low powered as the sub threshold processor will be operating at a low power. It was deemed unnecessary to measure the power consumption of the mBed because of the various peripherals which are also powered which would not be there on the sub threshold version as well as the fact that this processor is not designed for sub threshold power and the method ARM implement to achieve this may leave a different power fingerprint than the Cortex M0. 
@@ -220,6 +250,5 @@ The board was now able to be placed upon a foot, however there was nothing to se
 \end{figure}
 
 \note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
-\note{Configuring Watchdog Oscillator for main clock}
 \note{SPI mBed library cannot be compiled because it is bigger than the flash memory}
 \note{Bitshifting gives random outputs fun -- little endian}
