@@ -153,6 +153,8 @@ Using this information, the required registers are set to enable Serial communic
 
 \subsection{Getting Sensor Data}
 
+\note{Should this be moved to the I2C subsection?}
+
 With the sensor libraries re-written to be compatible with the ARM libraries, the sensor can be interfaced with the mBed. Upon the sensor, all pins used were on Junction 4. This pins connected between the mBed and sensor were the data line, pins 28 and 3 respectively, as well as the clock line, pins 27 and 2 respectively. These pins were also connected to pull-up resistors with values of 2.2k\ohm. Power was also supplied to the sensor from the mBed from its 3.3V Regulated Output which went to pin 1 of the sensor along with a common ground between the Ground pin of the mBed and pin 6 of the sensor. 
 
 Once done, it was possible to extract sensor readings from the device, depending on what data is required a variety of different functions from the library can be used.
@@ -192,7 +194,7 @@ It was found that forgetting to power on the Watchdog oscillator before switchin
 
 SPI communication was attempted to interface the mBed to a SD card allowing for data from the sensor to be stored within the SD card so it is possible to revisit collected data at a later point in time. This would be especially useful should the device not be connected to the host PC to send debug information to. Navigating the mBed site does show a library with functionality perfect for this aim, however attempting to compile the example code resulted in a error during compilation due to the fact the binary would have been larger than the flash capacity of the mBed. Switching over to the online compiler provided by mBed resulted in compilation however the binary would not execute upon the mBed. \todo{Did we find the downloaded binary to also be too big?}
 
-
+\note{Talk about little endian here}
 
 \subsection{Measuring power}
 
@@ -252,6 +254,3 @@ The board was now able to be placed upon a foot, however there was nothing to se
 	\caption{Prototype board with velcro straps}
 	\label{fig:board:velcro}
 \end{figure}
-
-\note{Limitations of mBed, e.g. hardware divide, floating point arithmetic}
-\note{Bitshifting gives random outputs fun -- little endian}
