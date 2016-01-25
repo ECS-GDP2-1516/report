@@ -106,6 +106,7 @@ The AHBMUX.v contains the code for the slave multiplexor of the AHB bus. This us
 \end{figure}
 In figure \ref{fig:decoder_multiplexer} how two Address Decoder and Slave Multiplexor can bee seen. The HADRR[0:31] signal, sends the read data from multiplexer to master. The HREADY signal goes from the multiplexor to the master and slaves and when it is set to HIGH, it indicates that the previous transfer has been completed. The HRESP signal transfers the response sigal from multiplexor to master. Each of the slaves has its own select signal HSEL which indicates the current transfer intended for that specific slave. Before being able to respond to the current transfer, the status of HREADY must be known in order to know in order to ensure that the previous transfer has been completed. 
 \note{add AMBA 3 AHB-Lite reference}
+
 The AHB2BRAM.v contains the on-chip memory peripheral (BRAM) 
 which is a configurable memory module that gives access to a variety of BRAM Interface Controllers. This is used for the program memory of the processor.
 
@@ -122,7 +123,9 @@ All of these files files need to be added to a Vivado project in order to create
 \caption{AHB Lite top-module } 
 \label{fig:ahblite_sys}
 \end{figure}
+
 After the project is created, the AHBALITE\_SYS.v is set as a top module since this creates the connection between all the components. This can be seen in \ref{fig:ahblite_sys} above. Because this is a Nexys4 board and the Clock Divider supplied in the package are not compatible due to the fact that it requires a Spartan 6 Series processor, a new IP needed to be created for this specific FPGA. In order to add this we need to go to Source-> New Source-> IP CORE(Generator and Architecture Wizard)-> Clocking-> Clocking Wizard. This is going to generate a system clock at 10MHz from the board's 50MHz external oscillator. In figure \ref{fig:clock}, the Input Clock Frequency is set 50 MHz and the Output Frequency to 10 MHz and it is named "uClockDiv".
+
 \begin{figure}
 \centering
 \includegraphics[scale=0.7]{figures/clock_creation.PNG}
@@ -145,3 +148,4 @@ HRESP
 
 \subsection{Conclusion}
 The team decided that the mBed platform had a better progress and would be more suitable for our final design since it's small size will allow strapping it people, opposed to the FPGA board which was much greater in size. Because of this, I stopped attempting to implement the Cortex M0 and redirected my attention to other aspects of the project where is was more necessary. Next, the successful section prototype of our project which was implemented on the mBed will be discussed.
+
