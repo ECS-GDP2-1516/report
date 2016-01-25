@@ -2,7 +2,7 @@
 
 Ultra-Low Power Processors, such as ARM's Cortex-M0+, are becoming an increasingly appealing area of research, particularly because they provide a platform for the Internet of Things. As our culture develops new ways for technology to aid our every-day lives, the devices which support these progressions are required to be less and less intrusive, forcing companies to search for new methods of making systems smaller and require lower power, especially as ``essentially all IoT sensor nodes will be powered by small batteries and to a lesser extent by energy harvesting'' \cite{iot_power}.
 
-However, such processors clearly create very tight constraints for potential developers, as processing power is often limited, leading to the ever-continuing requirement for more efficient and optimised algorithms. As memory usage is also proportional to power consumption, the RAM available on such systems is extremely limiting. As we begin to rely on these systems more and more, these constraints make it a growing challenge to implement systems which are not only useful, but can be relied upon to function when needed. This is particularly important in cases in which a device is being used for safety-critical operations, which is becomming increasingly common \cite{iot_saftey} \cite{iot_saftey2}.
+However, such processors clearly create very tight constraints for potential developers, as processing power is often limited, leading to the ever-continuing requirement for more efficient and optimised algorithms. As memory usage is also proportional to power consumption, the RAM available on such systems is extremely limiting. As we begin to rely on these systems more and more, these constraints make it a growing challenge to implement systems which are not only useful, but can be relied upon to function when needed. This is particularly important in cases in which a device is being used for safety-critical operations, which is becoming increasingly common \cite{iot_saftey} \cite{iot_saftey2}.
 
 ARM is currently investigating the concept of a sub threshold Cortex-M0+ \cite{arm_sub}, which attempts to push the extremes of these constraints further by providing just 8KB of memory for both program code and data, and running at just a few hundred cycles per second. This project aims to research and develop an algorithm which is capable of running on such a device, to act as a proof of concept that such a processor would be worthwhile.
 
@@ -13,11 +13,11 @@ The particular algorithm that is to be developed is a way to identify and monito
 \begin{figure}[h]
   \centering
     \includegraphics[width=1.0\textwidth]{figures/exercises}
-  \caption{Inflight exercises \cite{virgin2015exercises}}
+  \caption{In-flight exercises \cite{virgin2015exercises}}
   \label{fig:exercises}
 \end{figure}
 
-Figure \ref{fig:exercises} shows some of the inflight exercises which can be performed. We have looked into a few of them including the revolver, the ballerina and the shrug. These involve lifting both feet off the floor and rotating them in circles in clockwise and anticlockwise directions, pointing the feet up and down and rolling the shoulders backwards and forwards. These are all designed to help keep the circulation going in the limbs. However, a specific focus was made to the revolver exercise for the purpose of prototyping a system.
+Figure \ref{fig:exercises} shows some of the in-flight exercises which can be performed. We have looked into a few of them including the revolver, the ballerina and the shrug. These involve lifting both feet off the floor and rotating them in circles in clockwise and anticlockwise directions, pointing the feet up and down and rolling the shoulders backwards and forwards. These are all designed to help keep the circulation going in the limbs. However, a specific focus was made to the revolver exercise for the purpose of prototyping a system.
 
 Possible uses of the algorithm would be to incorporate it into a device which could be given to passengers to strap to their legs. It would then monitor how much exercise each person was doing. This could help inform the passengers whether or not they are doing enough exercise to stay risk free. The device itself could make use of energy efficient technologies (for example the Cortex-M0+) so that its battery could easily last the entire duration of a long-haul flight.
 
@@ -48,7 +48,7 @@ This report concludes by evaluating the final developed algorithm in terms of it
     \end{enumerate}
     \item Other activities such as walking should be distinguished as not being exercise
   \end{enumerate}
-  \item The algorithm must be suitable to execute on an ultra-low-power subthreshold ARM Cortex-M0+
+  \item The algorithm must be suitable to execute on an ultra-low-power sub threshold ARM Cortex-M0+
   \begin{enumerate}[label*=\arabic*.]
     \item This device has a limited processor clocked from 100 kHz to a maximum of 3 MHz
     \item Memory usage should be kept to a minimum with a target of no more than 8 kB
