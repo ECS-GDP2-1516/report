@@ -1,9 +1,50 @@
 \namedsection{Sensor}{Gupta}
 
-\subsection{Libraries}
+The sensor chosen, Xadow IMU 6DOF which uses the MPU6050 chip, allowed for a great deal of versatility by means of configuring the various registers contained within the MPU6050. This allowed for the option to use what was required by the sensor and nothing else, thus helping to minimise the power consumption of the device where possible. \cite{sensor_specs}
 
+The primary usage of the sensor to the project, are the 3-axis accelerometer and gyroscope which can be used to measure the acceleration and angular velocity upon the foot. The data collected can be extracted from the sensor using I2C communication. 
 
-\note{Talk about the issue with i2c\_stop() and i2c\_start()}
-\note{Talk about scaling the raw sensor values}
-\note{Talk about the different sensor register configurations to configure the different stuff}
-\note{REMEMBER ABOUT GYRO STUFF}
+When reading values from the sensor, the raw value is received. This is a value in the range -32768 to 32767 which then needs to be translated to an actual value. The relationship between the raw value and the actual value is dependant on the sensitivity configured for the accelerometer or gyroscope. The typical values for the sensitivity are $\pm 2g$ and $\pm 250~\degree / sec$ respectively. The sensitivity can be considered the maximum value that the sensor will provide, ie the sensitivity values are also the values at either end of the raw value range. This leaves a linear scale in between allowing for easy calculation of the reading given the sensitivity and the raw value. For example, a range of $\pm 2g$ and a raw value of -32768, -16384 and 0 would give actual values of -2, -1 and 0 respectively. Thus, it can be inferred that the greater the sensitivity, the lower the resolution available. \cite{sensor_raw_explanation}
+
+\subsection{Gyroscope}
+
+The gyroscope can operate at a variety of sensitivities, from $\pm 250$ to $\pm 2000~\degree / sec$ and while active draws $3.6mA$. The sensitivity can be configured within Register 27 (Gyroscope Configuration). Bits 4 and 3 contains a value telling the sensor what sensitivity to use, these values and corresponding sensitivities can be seen in Table~\ref{tab:gyro:range}. \cite{sensor_registers}
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		Value & Sensitivity \\
+		\hline
+		0 & $\pm 250~\degree / sec$ \\
+		1 & $\pm 500~\degree / sec$ \\
+		2 & $\pm 1000~\degree / sec$ \\
+		3 & $\pm 2000~\degree / sec$ \\
+		\hline
+	\end{tabular}
+	\caption{Values to select gyroscope sensitivity}
+	\label{tab:gyro:range}
+\end{table}
+
+\subsection{Accelerometer}
+
+The sensitivities that the accelerometer can operate at range between $\pm 2$ to $\pm 16g$ and typically under normal operation draws $500\mu A$. The sensitivity can be configured within Register 28 (Accelerometer configuration) in bits 4 and 3. Possible values within these two bits as well as corresponding sensitivities can be seen in Table~\ref{tab:accel:range}. \cite{sensor_registers}
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		Value & Sensitivity \\
+		\hline
+		0 & $\pm 2g$ \\
+		1 & $\pm 4g$ \\
+		2 & $\pm 8g$ \\
+		3 & $\pm 16g$ \\
+		\hline
+	\end{tabular}
+	\caption{Values to select accelerometer sensitivity}
+	\label{tab:accel:range}
+\end{table}
+
+The sensor also supports a low power accelerometer which uses only the accelerometer at a configured frequency. This takes less current than typical usage, however is dependant on the sampling frequency of the accelerometer. This is done by putting the device into a cyclic sleep mode where it wakes up at the wake frequency to take a single set of readings from the accelerometer before going back to sleep.
+
