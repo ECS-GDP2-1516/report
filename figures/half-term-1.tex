@@ -14,22 +14,30 @@
             x unit=4mm,
             y unit chart=.7cm,
             time slot format=isodate
-        ]{2015-09-28}{2015-11-15}
+        ]{2015-09-28}{2015-12-11}
         \gantttitlecalendar{month=shortname, week, day} \\
 
-        \ganttbar{Agree Project Brief}{2015-09-30}{2015-10-08} \\
-        \ganttlinkedmilestone{Project Brief Due}{2015-10-09} \\
+        \ganttmilestone{Progress Seminars}{2015-10-26}
+        \ganttmilestone{}{2015-11-23} \ganttnewline[ultra thick, red]
 
-        \ganttbar{Seminar Preparation}{2015-10-19}{2015-10-25} \\
-        \ganttlinkedmilestone{Progress Seminar 1}{2015-10-26} \ganttnewline[ultra thick, red]
+        \ganttgroup{Hardware Work}{2015-10-02}{2015-11-01} \\
+        \ganttbar{Acquire FPGA Board}{2015-10-05}{2015-10-10} \\
+        \ganttbar{Obtain Cortex M0 verilog}{2015-10-05}{2015-10-10} \\
+        \ganttlinkedbar{Cortex M0 on FPGA}{2015-10-11}{2015-10-17} \\
+        \ganttbar{Design hardware schematic}{2015-10-05}{2015-10-15} \\
+        \ganttbar{Buy required components}{2015-10-12}{2015-10-24} \\
+        \ganttlinkedbar{Build hardware}{2015-10-15}{2015-11-01} \\
+        \ganttbar{Sensor Code}{2015-10-19}{2015-10-30} \ganttnewline[ultra thick, red]
 
         \ganttgroup{Movement Data Study}{2015-10-05}{2015-10-30} \\
-        \ganttbar{Search for Volunteers}{2015-10-12}{2015-10-23} \\
-        \ganttbar{Apply for Ethics Approval}{2015-10-05}{2015-10-23} \ganttnewline[ultra thick, red]
+        \ganttbar{Apply for Ethics Approval}{2015-10-05}{2015-10-23} \\
+        \ganttlinkedbar{Collect Movement Data}{2015-10-26}{2015-10-30} \ganttnewline[ultra thick, red]
 
-        \ganttgroup{Algorithm Work}{2015-10-05}{2015-11-15} \\
+        \ganttgroup{Algorithm Work}{2015-10-05}{2015-12-09} \\
         \ganttbar{Background Research}{2015-10-05}{2015-10-25} \\
         \ganttbar{Algorithm Design}{2015-10-19}{2015-11-15} \\
-        \ganttbar{Algorithm Implementation}{2015-11-02}{2015-11-15}
+        \ganttbar{Algorithm Implementation}{2015-11-02}{2015-11-29} \\
+        \ganttbar{Testing and Evaluation}{2015-11-16}{2015-12-09} \\
+        \ganttmilestone{Target Completion}{2015-12-09}
     \end{ganttchart}
 \end{document}
