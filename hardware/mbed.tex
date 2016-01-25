@@ -44,8 +44,6 @@ The libraries are written for use with the Atmel chipset which use different lib
 
 This can easily be rectified by re-writing the I2Cdev class to make it compatible with the ARM libraries, which would also make the MPU6050 compatible.
 
-\note{Talk more about this - i2c\_start, i2c\_stop}
-
 \subsection{Watchdog Oscillator}
 
 As mentioned before, one of the objectives of this project is to operate at a low operating frequency. It has already been seen that the Watchdog oscillator can operate in the desired frequency range using an analog clock as well as a divisor. 
@@ -192,7 +190,7 @@ There were a variety of issues that were encountered with the mBed. It was possi
 
 It was found that forgetting to power on the Watchdog oscillator before switching the system clock over to it left it in a state where it was unable to execute any code. This state, for unknown reasons, persisted even after a reset and reboot of the device. An eventual solution to this problem was found, which was to re-flash the mBed interface firmware.
 
-SPI communication was attempted to interface the mBed to a SD card allowing for data from the sensor to be stored within the SD card so it is possible to revisit collected data at a later point in time. This would be especially useful should the device not be connected to the host PC to send debug information to. Navigating the mBed site does show a library with functionality perfect for this aim, however attempting to compile the example code resulted in a error during compilation due to the fact the binary would have been larger than the flash capacity of the mBed. Switching over to the online compiler provided by mBed resulted in compilation however the binary would not execute upon the mBed. \todo{Did we find the downloaded binary to also be too big?}
+SPI communication was attempted to interface the mBed to a SD card allowing for data from the sensor to be stored within the SD card so it is possible to revisit collected data at a later point in time. This would be especially useful should the device not be connected to the host PC to send debug information to. Navigating the mBed site does show a library with functionality perfect for this aim, however attempting to compile the example code resulted in a error during compilation due to the fact the binary would have been larger than the flash capacity of the mBed. Switching over to the online compiler provided by mBed resulted in compilation however the binary would not execute upon the mBed.
 
 \note{Talk about little endian here}
 
