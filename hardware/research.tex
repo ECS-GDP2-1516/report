@@ -1,10 +1,33 @@
 \namedsection{Component Research}{Pasat}
 This section discusses the extensive analysis our team took in order to choose the most optimum and efficient components available on the market. The first step took before choosing suitable components for our design was the research on what sensors could be useful in detecting the type of movements described earlier in this project. The initial sensors our team agreed on were accelerometers, gyroscopes and altimeters, taking into consideration the possibility that it would detect if the user is aboard an aircraft or not.
 
-The main criteria on which we asserted the best component our design would need were: the working voltage, the current consumption, mounting type and if it was a multi-sensor component.
+The main criteria on which we asserted the best component our design would need were: the working voltage, the current consumption, mounting type and if it was a multi-sensor component. In table \ref{table: 1}, our top five selected components for this project can be seen. Each have advantages and disadvantages over the others, but only one of them can be used. Even i some of the sensors have a lower supply voltage and both sensors present, the fact that they are surface mount complicates the project too much, so the mounting type became the main selecting criteria. Only two of the proposed components have this type of mounting, but one of them does not contain both sensors.
 \begin{figure}
 \centering
 \includegraphics[scale=0.4]{figures/Xadow_IMU_6DOF.PNG}
 \caption{Xadox IMU 6DOF Motion Tracker \label{fig:xadox}}
 \end{figure}
-After comparing various products from different suppliers, the final decision taken was ordering a motion tracking module based on the MPU6050, the Xadox IMU 6DOF Motion Tracker, which can be seen in figure \ref{fig:xadox} on the next page. It combines a 3-axis gyroscope, a 3-axis accelerometer and a Digital Motion Processor. This device offered the best compromise between current consumption and working voltage and at the point when we decided to order it. The team agreed that even if the accelerometer would offer the lowest current consumption, the gyroscope might give more accurate data results, it would be best to have a module which incorporates both.
+
+\begin{table}[h]
+	\centering
+	\caption{Sensor options}
+	\label{table: 1}
+	\begin{tabular}{llllll}
+		\hline
+		$Name$ & $Voltagee$ & $Current(Acc+Gyro)$ & $Mounting$ & $Acc/Gyro$ \\
+		\hline
+		Breakout MPU-6050 & 2.3-3.4V & 3.6mA+500uA & Surface mount & Yes\\
+		\hline
+		 ADXL193 Board & 3.5-6V & N/A & Surface Mount & Acc \\
+		\hline
+		Xadow IMU 6DOF  & 3.3V &  3.6mA+500uA & Mount on & Yes \\
+		\hline
+		Xadow 3-Axis Acc &  3.3V & 500uA & Surface Mount & Acc \\
+		\hline
+		 L3G4200D &  2.7-6.5V & 6.1mA & Mount on  & Gyro \\
+		\hline
+		
+		\end{tabular}
+			
+\end{table}
+After comparing the various products from different suppliers, the final decision taken was ordering a motion tracking module based on the MPU6050, the Xadox IMU 6DOF Motion Tracker, which can be seen in figure \ref{fig:xadox} on the next page. It combines a 3-axis gyroscope, a 3-axis accelerometer and a Digital Motion Processor. This device offered the best compromise between current consumption and working voltage and at the point when we decided to order it. The team agreed that even if the accelerometer would offer the lowest current consumption, the gyroscope might give more accurate data results, it would be best to have a module which incorporates both.
