@@ -192,7 +192,7 @@ It was found that forgetting to power on the Watchdog oscillator before switchin
 
 SPI communication was attempted to interface the mBed to a SD card allowing for data from the sensor to be stored within the SD card so it is possible to revisit collected data at a later point in time. This would be especially useful should the device not be connected to the host PC to send debug information to. Navigating the mBed site does show a library with functionality perfect for this aim, however attempting to compile the example code resulted in a error during compilation due to the fact the binary would have been larger than the flash capacity of the mBed. Switching over to the online compiler provided by mBed resulted in compilation however the binary would not execute upon the mBed.
 
-\note{Talk about little endian here}
+An issue occurred when optimising multiple multiplication and division operations into a single bit shift however, the output of said optimisation caused the code to return different results compared against the unoptimised version upon the mBed however not on another machine. This was found to be due to the fact that the mBed stores its variables in a little endian format.
 
 \subsection{Measuring power}
 
