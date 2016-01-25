@@ -19,9 +19,6 @@ One of the frequently encountered problems is the curse of dimensionality \cite{
 % Could do with some cites, but I can't find any decent ones
 Another problem encountered in machine learning is that of overfitting, where the model for some algorithm is trained such that it specialises on the training set alone. This can be problematic where the model is introduced to new data, as such models have poor performance on unseen data. Overfitting can be prevented by reducing the complexity of the model, as if the model is not complex enough, it is not possible for it to overfit on the training data exactly. Additionally, testing should be performed on a data set other than the training set, which can be achieved with using some form of cross-validation, or even having a completely separate data set on which to test.
 
-\note{How exactly does the machine learning algorithm work? Reference papers that describe these methods.}
-
-\note{What experiments were conducted in order to determine machine learning feasibility?}
 \subsection{Initial Feasibility Assessment}
 %%%%%%%%%%%%%%%%%%%% * Okay 
 %%% INTRO TO IFA %%%
@@ -71,11 +68,12 @@ This data was run through a series of tools to build a model, as described in se
 	\caption{Feasibility assessment of collected data \label{fig:first-data}}
 \end{figure}
 
+
+\subsection{Tools \label{sec:tools}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% TOOLS USED / PRODUCED %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Could perhaps do with more content
-\subsection{Tools \label{sec:tools}}
 Weka, a machine learning library, was used extensively for machine learning aspects. It provides a vast multitude of implemented machine learning algorithms, including various methods of evaluating the performance of these trained models.
 
 %%%%%%%%%%%%%%%%%%%%%%% * Okay
@@ -98,6 +96,7 @@ As shown in figure \ref{fig:first-data}, activities of interest produce periodic
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The act of data classification occurred by viewing the plotted data from which the points of interest were noted. For the \textit{not exercise} class, points of interest were taken at frequent points throughout collected data files where subjects were not performing exercise, meaning that manual classification of the \textit{not exercise} class was not required. These points of interest are then ready to be passed to the script to generate the \texttt{.arff} file.
 
+\subsection{Evaluating Performance}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ASSESSING MODEL PERFORMANCE - WHY ACCURACY IS BAD %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,25 +121,24 @@ In some cases, it may be important to quantify the trade-off a classifier makes 
 	\end{gathered}
 \end{equation}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
-%%% 3 CLASSES OVER JUST 2 %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Maybe add transision figure
-The number of classes to classify was considered as a variable parameter for the classifier. A classifier with the 2 classes \textit{activity} and \textit{not activity}, would only allow for binary classification. Depending on the classifier behaviour and the nature of the exercise in question, it may be the case that when the window of classification lies between 2 classes, such a window could be classified as either class. This unpredictable behaviour would prevent further analysis of the subject's activity beyond how much time a given activity was detected for. However, by splitting the \textit{activity} class into 2 distinct classes, such that every activity performed will always be composed of these parts, it allows 3 classes to be used with the classifier. Such a change would allow counting of distinct activities, by ensuring that one type of \textit{activity} class is followed by the other type of \textit{activity} class. This would allow the number of exercises to be counted, as well as the amount of time exercised. Further to this, the additional information this provides may allow for heuristics to increase accuracy should the classifier ``bounce'' during a transition between classes. \todo{More on this in heuristics...} Other numbers of classes were also considered, such as some number of classes for the exercise, along with a class for each likely type of non-exercise activity, however this was ultimately rejected due to the increased complexity of the system, leading to further resource consumption for the constrained system, while the performance of the algorithm was already considered satisfactory. For the final machine learning algorithm, the subclasses for the activity were based on the peaks and troughs of the y-axis data. This data was determined to be quite clear for manual classification.
-
-\note{What classification algorithms were trialled? What kind of results were achieved with these. Explain and discuss the workings of each algorithm / type of algorithm.}
-
 \subsection{Considered Algorithms}
-\subsubsection{Multilayer Perceptrons}
-A Multilayer Perceptron (MLP) is a type of Neural Network, where the nodes, or perceptrons, are organised in layers. Each node accepts some number of inputs with some weight. The summation of these weighted inputs are computed and applied to some activation function, the result of which is the output of the node (equation \ref{eq:perceptron}).
+% This could do with an introduction, although I can't think of anything meaningful to put here
 
+\subsubsection{Multilayer Perceptrons}
+%%%%%%%%%%% * Okay
+%%% MLP %%%
+%%%%%%%%%%%
+A Multilayer Perceptron (MLP) is a type of Neural Network where the nodes, or perceptrons, are organised in layers. Each node accepts some number of inputs with some weight, and the summation of these weighted inputs are computed and applied to some activation function, the result of which is the output of the node (equation \ref{eq:perceptron}).
 
 \begin{equation}
 \label{eq:perceptron}
 \text{Output } o = activation\bigg(\sum_{i=1}^{d}{x_iw_i}\bigg) 
 \end{equation}
 
-Each perceptron affectively defines a plane in $d$-dimensional space. Instances on either side of this plane can then be classed, allowing a single perceptron to act as a simple classifier. By combining multiple perceptrons in a layer, it is possible to build up these planes in order to create more complex classifier made of these linear classifiers. The addition of layers, using previous layers as inputs allows a more complex classifier still by allowing the importance of these sub-classifiers to vary with the inputs. MLPs with enough inputs and layers can therefore replicate any function \cite{baum1988capabilities}.
+%%%%%%%%%%%%% * Not too bad
+%%% MLP 2 %%%
+%%%%%%%%%%%%%
+Each perceptron effectively defines a plane in $d$-dimensional space. Instances on either side of this plane can then be classed, allowing a single perceptron to act as a simple classifier. By combining multiple perceptrons in a layer, it is possible to build up these planes in order to create more complex classifier made of these linear classifiers. The addition of layers, using previous layers as inputs allows a more complex classifier still by allowing the importance of these sub-classifiers to vary with the inputs. MLPs with enough inputs and layers can therefore replicate any function \cite{baum1988capabilities}.
 
 \begin{figure}
 	\centering
@@ -180,9 +178,15 @@ Each perceptron affectively defines a plane in $d$-dimensional space. Instances 
 \end{figure}
 
 \subsubsection{Radial Basis Function Networks}
-A Radial Basis Function (RBF) network is a type of Neural Network that is composed of 2 layers, an input layer and an output layer. The activation functions for this output layer are RBFs. An RBF can be any function that is only dependent on the distance from some point. An example of a commonly used RBF is the Gaussian function. 
+%%%%%%%%%%% * Okay
+%%% RBF %%%
+%%%%%%%%%%%
+A Radial Basis Function (RBF) network is a type of Neural Network that is composed of 2 layers, an input layer and an output layer. The activation functions for this output layer are RBFs, where an RBF can be any function that is only dependent on the distance from some point. An example of a commonly used RBF is the Gaussian function. RBF networks are quite similar to MLPs, with the main difference being hidden layers and the activation function \cite{broomhead1988radial}.
 
-RBF networks are quite similar to MLPs, with the main difference being hidden layers and the activation function. For the RBF network, as a Gaussian function is typically used, this can be troublesome for constrained systems, as the need to compute the probability density function for each RBF can require significant resources. Equation \ref{eq:mvg} shows the formula for computing the probability density function for a multivariate Gaussian distribution, which for a large number of inputs to the machine learning algorithm will result in having to compute this formula in as many dimensions. An approximation of this formula can be made, but an implementation on a constrained device would prove challenging, as the approximation results in a higher memory usage.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
+%%% WHY RBF IS BAD FOR CONSTRAINED %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+For the RBF network, as a Gaussian function is typically used, this can be troublesome for constrained systems, as the need to compute the probability density function for each RBF can require significant resources. Equation \ref{eq:mvg} shows the formula for computing the probability density function for a multivariate Gaussian distribution, which for a large number of inputs to the machine learning algorithm will result in having to perform matrix operations in large dimensions. An approximation of this formula can be made, but an implementation on a constrained device would prove challenging, as the approximation results in a higher memory usage.
 
 \begin{equation}
 	pdf(\mathbf{x}) = (2\pi)^{-\frac{k}{2}}|\mathbf{\Sigma}^{-\frac{1}{2}}|e^{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu})'\mathbf{\Sigma^{-1}}(\mathbf{x}-\mathbf{\mu})}
@@ -190,24 +194,31 @@ RBF networks are quite similar to MLPs, with the main difference being hidden la
 \end{equation}
 
 \subsubsection{Instance-Based Learning}
+%%%%%%%%%%%%%%%%%%% *Okay
+%%% IBL GENERAL %%%
+%%%%%%%%%%%%%%%%%%%
 Instance-based learning is a type of machine learning algorithm that postpones model creation until an output for a problem instance is required. Some number of labelled instances are stored in memory, and these are used to label problem instances.
 
+%%%%%%%%%%%%%%%%%% *Okay
+%%% IBL UPDATE %%%
+%%%%%%%%%%%%%%%%%%
 Instance-based learning is advantageous over other machine learning methods in that adapting the model with new instances is trivial. This makes it attractive for simple systems where some adaptation of the model is required.
 
-As a number of labelled instanced must be kept in memory in order to compute the model, instance-based learning methods can require large amounts of memory to classify. Additionally, any problem instances must be compared against each labelled instance that is to be used for the model, meaning that time complexity for classification of any problem instance is linear in the number of labelled instances. This can present significant challenges when the size of the training data set become large with respect to the underlying device.
+%%%%%%%%%%%%%%%%%%%%%%%%%% *Okay
+%%% IBL LOTS OF MEMORY %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+As a number of labelled instances must be kept in memory in order to compute the model, instance-based learning methods can require large amounts of memory to classify. Additionally, any problem instances must be compared against each labelled instance that is to be used for the model, meaning that time complexity for classification of any problem instance is linear in the number of labelled instances. This can present significant challenges when the size of the training data set become large with respect to the underlying device.
 
-An example of instance-based learning is the k-nearest neighbours algorithm where any problem instance is compared to the k-nearest labelled instances. The class that the problem instance is most similar to is then given this classification. \todo{Reword}
-
-\note{What issues were faced as a result of implementing a machine learning algorithm on a constrained system? How were these problems overcome? \cite{anguita2012human}}
+%%%%%%%%%%% *Okay
+%%% kNN %%%
+%%%%%%%%%%%
+An example of instance-based learning is the k-nearest neighbours algorithm, where any problem instance is compared to the k-nearest labelled instances. The majority class of these nearest instances would be used as the class for the problem instance.
 
 \subsubsection{Trade-offs and Parameters}
-
-Each machine learning algorithm comes with its own memory-processing-accuracy trade-off, \todo{Finish}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ALGORITHM PARAMETERS %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\note{Selection of the algorithm - mention hidden layers  /frequency}
 There are many parameters that affect the performance of classifiers. In the case of the collected data, the sampling frequency for the kinematic sensor and the window with a number of samples over which the classifier classifies have a direct impact on the classifier's ability to perform. In the case of the model, most machine learning algorithms have some form parameters allowing their behaviour to change. 
 
 \begin{figure}
@@ -219,31 +230,43 @@ There are many parameters that affect the performance of classifiers. In the cas
 	\caption{MLP Parameter Performance Surface Plot \label{fig:mlp-multi}}
 \end{figure}
 
-For the MLP, the number of hidden layers is the most important parameter, so analysis on this and the sampling frequency was performed, as shown in figure \ref{fig:mlp-multi}, where the performance is plotted as a function of both of these parameters. Figure \ref{fig:mlp-multi-flat} shows that above 6 hidden layers while sampling at around 20Hz, performance roughly levels out. An interesting observation can be seen in figure \ref{fig:mlp-multi-3d}, where the performance for 1 hidden layer was significantly worse than 0 hidden layers.
+%%%%%%%%%%%%%%%%%% * Okay, maybe reword
+%%% MLP PARAMS %%%
+%%%%%%%%%%%%%%%%%%
+For the MLP, the number of hidden layers is the most important parameter, so analysis on this and the sampling frequency was performed, as shown in figure \ref{fig:mlp-multi}, where the performance is plotted as a function of both of these parameters. Figure \ref{fig:mlp-multi-flat} shows that above 6 hidden layers while sampling at around 20Hz, performance roughly levels out. An interesting observation can be made in figure \ref{fig:mlp-multi-3d}, where the performance for 1 hidden layer was significantly worse than 0 hidden layers.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
+%%% 3 CLASSES OVER JUST 2 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Maybe add transision figure
+The number of classes to classify was considered as a variable parameter for the classifier. A classifier with the 2 classes \textit{activity} and \textit{not activity}, would only allow for binary classification. Depending on the classifier behaviour and the nature of the exercise in question, it may be the case that when the window of classification lies between 2 classes, such a window could be classified as either class. This unpredictable behaviour would prevent further analysis of the subject's activity beyond how much time a given activity was detected for. However, by splitting the \textit{activity} class into 2 distinct classes, such that every activity performed will always be composed of these parts, it allows 3 classes to be used with the classifier. Such a change would allow counting of distinct activities, by ensuring that one type of \textit{activity} class is followed by the other type of \textit{activity} class. This would allow the number of exercises to be counted, as well as the amount of time exercised. Further to this, the additional information this provides may allow for heuristics to increase accuracy should the classifier ``bounce'' during a transition between classes. Other numbers of classes were also considered, such as some number of classes for the exercise, along with a class for each likely type of non-exercise activity, however this was ultimately rejected due to the increased complexity of the system, leading to further resource consumption for the constrained system, while the performance of the algorithm was already considered satisfactory. For the final machine learning algorithm, the subclasses for the activity were based on the peaks and troughs of the y-axis data. This data was determined to be quite clear for manual classification.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% USER STUDY RESULTS %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{User Study Results}
-\note{As a result of the user study, how did the results change? Note observed results due to the user study.}
-The user study was performed on a number \todo{How many?} subjects, where both accelerometer and gyroscope data was collected for multiple activities.
+%\note{As a result of the user study, how did the results change? Note observed results due to the user study.}
+%The user study was performed on a number subjects, where both accelerometer and gyroscope data was collected for multiple activities.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{subject-fold-results.pdf}
 	\caption{Subject Performance with Different Sensors and Algorithms \label{fig:subfold}}
 \end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% WHY CROSS-VALIDATION IS BAD %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-To evaluate the models on the user study data, cross-validation was considered, as this would allow training on some set of data and then testing on another set previously unseen to the model, although this would have the slightly undesirable effect of mixing data from subjects, whereas in practice, the device will be trained on a set of subjects and used by a subject not in that set. To replicate this kind of behaviour, a similar method to cross-validation was used, where the model was trained on all subjects, except for one. This one excluded subject was then tested on. This method is then repeated for all subjects. This subject-fold cross-validation method is also beneficial in allowing conclusions to be drawn about subject performance in relation to other subjects.
+To evaluate the models on the user study data, cross-validation was considered, as this would allow training on some set of data and then testing on another set previously unseen to the model, although this would have the slightly undesirable effect of mixing data from subjects, whereas in practice, the device will be trained on a set of subjects and used by a subject not in that set. To replicate this kind of behaviour, a similar method to cross-validation was used, where the model was trained on all subjects, except for one. This one excluded subject was then tested on. This method is then repeated for all subjects. This subject-fold cross-validation method is also beneficial in allowing conclusions to be drawn about subject performance in relation to other subjects, assisting in determine which subjects should be used to produce the final model.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% SUBJECT PERFORMANCE %%% Woo, statistics!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-Figure \ref{fig:subfold} shows the resultant performance, measured using the kappa statistic, for each of the subjects performing activities using different sensors sampling at 20Hz for the MLP and RBF classifiers. These results are collected using the subject-fold cross-validation technique as previously described. \todo{Could mention accl and gyro data collected independently.}. As the \textit{Accelerometer using MLP} result class is likely to require the most suitable for a low-power constrained device \todo{As mention in ...}, this shall be used as a base-line to compare performance against. The null hypothesis was the mean of other result classes were equal to the mean of \textit{Accelerometer using MLP}. The alternative hypothesis was that these means were different. These hypotheses were tested using a series of \textit{t}-tests with significance level, $\alpha = 0.01$. The resultant $p$-values from these $t$-tests are displayed in table \ref{tab:res-ttest}. Despite the \textit{Gyroscope using MLP} and \textit{Accelerometer using RBF} result classes having a higher mean performance than \textit{Accelerometer using MLP} class, these increases were not statistically significant and therefore the null hypothesis in these cases could not be rejected. For \textit{Gyroscope using RBF}, a statistically significant change in mean performance was observed, leading to acceptance of the alternative hypothesis.
+Figure \ref{fig:subfold} shows the resultant performance, measured using the kappa statistic, for each of the subjects performing activities using different sensors sampling at 20Hz for the MLP and RBF classifiers. These results are collected using the subject-fold cross-validation technique as previously described. As the \textit{Accelerometer using MLP} result class was likely to require the most suitable for a low-power constrained device, this was used as a base-line to compare performance against. The null hypothesis was the mean of other result classes were equal to the mean of \textit{Accelerometer using MLP}. The alternative hypothesis was that these means were different. These hypotheses were tested using a series of \textit{t}-tests with significance level, $\alpha = 0.01$. The resultant $p$-values from these $t$-tests are displayed in table \ref{tab:res-ttest}. Despite the \textit{Gyroscope using MLP} and \textit{Accelerometer using RBF} result classes having a higher mean performance than \textit{Accelerometer using MLP} class, these increases were not statistically significant and therefore the null hypothesis in these cases could not be rejected. For \textit{Gyroscope using RBF}, a statistically significant change in mean performance was observed, leading to acceptance of the alternative hypothesis.
 
-Further analysis of the subject performance results show a large difference in performance between subjects. This can quite likely be attributed to some subjects performing the activities unlike the majority of other subjects, resulting in lower performance when they are used as the test data. In this result set, a negative kappa statistic was observed, indicating that the performance was worse than guessing for this one case. However, generally, the performance for all result classes can be considered good.
+%%%%%%%%%%%%%%%%%%%%% * Okay
+%%% MORE ANALYSIS %%%
+%%%%%%%%%%%%%%%%%%%%%
+Further analysis of the subject performance results show a large difference in performance between subjects. This can quite likely be attributed to some subjects performing the activities unlike the majority of other subjects, resulting in lower performance when they are used as the test data. In this result set, a single negative kappa statistic was observed, indicating that the performance was worse than guessing for this one case. However, generally, the performance for all result classes can be considered good.
 
 \begin{table}
 	\centering
@@ -258,9 +281,13 @@ Further analysis of the subject performance results show a large difference in p
 	\caption{Result classes statistical significance \label{tab:res-ttest}}
 \end{table}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% *Okay
+%%% PERFORMANCE INCREASED WITH MORE PEOPLE %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 A noteworthy observation about the results was that after the first day of data collection, the performance of the model produced on this data was very poor. However, as the number of subjects increased after successive data collection days, so did the performance of the system. This would indicate that the algorithm was not able to fit properly on a small number of subjects, and that the introduction of more subjects was able to at least in part negate this.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% *Okay
 %%% ALGORITHM SELECTION %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-The main contenders for the algorithm were the MLP and RBF network due to high performance while having relatively low complexity, allowing them to be implemented without too much difficulty. Between these two algorithms, there was only a slight performance decrease in favour of the RBF network under some conditions, however, given the complexity of the RBF network's requirement for computing RBFs, this could create issues, especially given hardware constraints regarding floating point numbers. On the other hand, the MLP is very simple and approximations can be made such that only integers are required. For this reason, the MLP was selected to be used. As seen previously, 20Hz appeared to be the optimal sampling frequency, so this was selected to be used. The number of hidden layers is a trade-off between resources and performance, and it was decided that 2 hidden layers would provide sufficient performance while allowing for a reasonable demonstration of constrained machine learning.
+% Could cite that magic bullet paper here!
+The main contenders for the algorithm were the MLP and RBF network due to high performance while having relatively low complexity, allowing them to be implemented without too much difficulty. Between these two algorithms, there was only a slight performance decrease in favour of the RBF network under some conditions, however, given the complexity of the RBF network's requirement for computing RBFs, this could create issues, especially given hardware constraints regarding a floating point number implementation. On the other hand, the MLP is very simple and approximations can be made such that only integers are required. For this reason, the MLP was selected to be used. As seen previously, 20Hz appeared to be the optimal sampling frequency, so this was selected to be used. The number of hidden layers is a trade-off between resources and performance, and it was decided that 2 hidden layers would provide sufficient performance while allowing for a reasonable demonstration of constrained machine learning.
