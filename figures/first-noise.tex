@@ -9,7 +9,7 @@
 
 \begin{document}
 	\begin{tikzpicture}
-	\begin{axis}[xmin=5,xmax=8,xticklabels={,,}]
+	\begin{axis}[xmin=5,xmax=8,xticklabels={,,},xlabel=Time,ylabel={Angular Velocity / rad s$^{-1}$}, ylabel style={yshift=-0.4cm}, xlabel style={yshift=0.4cm}]
 	\addplot[] table [x=time, y=x, col sep=comma] {data/gyro-noise.csv};
 	\addplot[dashed] table [x=time, y=y, col sep=comma] {data/gyro-noise.csv};
 	\addplot[dotted] table [x=time, y=z, col sep=comma] {data/gyro-noise.csv};
