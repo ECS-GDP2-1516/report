@@ -33,17 +33,3 @@ The Wakeup Interrupt Controller (WIC) is important for this project because it i
 Floating point is the formulaic representation for a real number for approximating it in order to obtain a balance between precision and range. Basically, it refers to the fact that a number's decimal point can "float", meaning  that is can be placed anywhere relative to significant digit from the number. One of the major challenges which were encountered in the use of the Cortex M0+ is the absence of floating point arithmetic on the device. This was mitigated by scaling each double value by $2^{12}$ and taking the integer part. After each multiplication, the value is bit-shifted by 12 to keep the scale factor consistent. This will be described late in more detail in section \ref{sec:floating-point}.
 
 Real-time integer division supplied by ARM Libraries are faster then standard division routines for larger quotients, but slower for typical  quotients. Real time division is not available in the Cortex-M0+, so this was another issues that was overcome in our design. This was done by done by finding alternative methods to avoid division. More detail about this can also be found in \ref{sec:floating-point}.
-
-\subsection{Development}
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.7]{figures/test_bench_schematic.PNG}
-\caption{Cortex M0 test bench schematic} \label{fig:test_bench}
-\end{figure}
-
-Through ARM, we managed to gain access to a fixed configuration of the Cortex-M0 Processor known as Cortex-M0 DesignStart \cite{armdesignstart}. This simplified version offers us access to a Verilog version of the Cortex-M0 under the form of an obfuscated and preconfigured netlist, but it can be synthesized. This package offers us some Verilog codea test-bench which allow a simulation of the Cortex-M0 DesignStart module connected to a memory model and a clock and reset generator. It also include a basic C helloworld.c program. The schematic for the test-bench can be seen in figure \ref{fig:test_bench} and it connects the CORTEXM0DS to a memory model, a clock and a reset generators.
-
-The tool used for simulating the test-bench is ModelSim, which is a tool that offers the possibility of simulating hardware description languages such as Verilog and VHDL. A new project must be created in ModelSim to which we add the Verilog files provided in the package, the test-bench and another binary file provided, ram.bin, which is an example memory image for the processor. The file is loaded at the beginning of the simulation by the test-bench.  The memory image is used for the helloworld.c program, which is used by the test-bench to write a message to the simulator's console and after that end the simulation. The result of the simulation can be seen in
-
-Also, access was given to the CM0DS example design kit which contains various AHB-Lite peripherals and infrastructure components, useful to create complete systems. Before implementing the actual algorithm on the FPGA, a more basic simulation needs to be conducted on the platform to assure that it is compatible with the specific FPGA used. Next, the analysis of the sensors used for our project will be discussed. After that, discussions related to the about mBed platform which contains the Cortex M0+ and the Digilent Nexys4 FPGA board on which we aimed to implement the microprocessor as an extension will take place.
