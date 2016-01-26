@@ -12,7 +12,7 @@ Such a heuristic can be implemented very efficiently by using a circular array. 
 
 The size of N directly effects how much memory is needed but it should be based on the trade-off between storing enough values to average over and not storing too many that stale data is being used. In this system, the sensors are being sampled at 20Hz so that is 20 readings per second, and hence 20 classifications per second. Therefore, 20 was also selected as the number of readings to hold in memory as this is enough to average on and the oldest classification will only ever be 1 second old.
 
-\subsection{Alternative}
+\subsection{Alternative \label{sec:heuristics-alternative}}
 A slightly more sophisticated approach is to use the fact we are sub-classifying exercise as “peaks” and “troughs”. When the user is performing exercise, this will translate into a series of peaks and troughs in the output classification due to the periodic motion of the movement.
 
 As before, the last N classifications are kept in memory, but a check is done to make sure peaks and troughs are alternating consistently before classifying the activity as exercise. This uses the fact that peaks and troughs must alternate when exercise is being done and so would reduce the number of false positives caused by stray peak or trough classifications in a period of non-exercise. 

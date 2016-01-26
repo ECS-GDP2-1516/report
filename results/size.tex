@@ -4,7 +4,7 @@ In order to assess the overall size requirement of the completed algorithm, two 
 
 \subsection{Binary Size}
 
-Finding the overall size of the binary file is a trivial task, simply running \verb|du -b output.bin| on a Linux-like console gives the result of 3168 bytes, or 3.09KB. However, it is important to assess the contributing factors to this size. The sections which are included in the compiled binary are \verb|.text|, which contains the program code and constant values, \verb|.data|, non-zero initialisations for the heap and finally, \verb|.ARM.exidx| which is an 8 byte section required for stack unwinding.
+Finding the overall size of the binary file is a trivial task, simply running \verb|du -b output.bin| on a Linux-like console gives the result of 3168 bytes, or 3.09kB. However, it is important to assess the contributing factors to this size. The sections which are included in the compiled binary are \verb|.text|, which contains the program code and constant values, \verb|.data|, non-zero initialisations for the heap and finally, \verb|.ARM.exidx| which is an 8 byte section required for stack unwinding.
 
 The size of .data can be obtained by using arm's \verb|arm-none-eabi-size| command, which mirrors the functionality of GCC's \verb|size|; this gives a size of 108 for non zero heap initialisations. The majority of this is LibC values, with the exception of 4 bytes for an array index initialised to -1 which is used by multiple functions in the algorithm.
 
@@ -54,4 +54,4 @@ We must first determine each of the possible stack states and their respective s
 
 \subsubsection{Conclusion}
 
-The total required RAM size can be calculated the summation of the total binary size, the size of zero-initialised heap variables and the maximum stack size. This comes to 3456 bytes leaving 4736 bytes, or just over 4.6KB, free if deployed on an 8KB device. This space gives scope for providing support for a greater set of exercises, or storing data about the users' exercises for long flights.
+The total required RAM size can be calculated the summation of the total binary size, the size of zero-initialised heap variables and the maximum stack size. This comes to 3456 bytes leaving 4736 bytes, or just over 4.6kB, free if deployed on an 8kB device. This space gives scope for providing support for a greater set of exercises, or storing data about the users' exercises for long flights.

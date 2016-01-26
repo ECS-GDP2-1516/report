@@ -85,6 +85,4 @@ Weka is a very useful tool for generating and training machine learning algorith
 
 Once the algorithm was designed, it was decided to modify and improve the Java code such that it became a harness for our C code. In this manner, rather than simply outputting the node structure which would have to be manually copied and amended to go into the C implementation, the Java code was built to process the nodes prior to output, removing unused layers and returning the required data in a format and structure which could be immediately compiled into the C development repository.
 
-This proved very useful, as training the networks and trying various settings took time and was repeated many times during development. Using this harness allowed the team to quickly deploy updated models onto the device without the need to reprogram the C code for each test. \todo{This could be clearer}
-
-\note{This area could be expanded. Talk about developing on desktop and comparing the result accuracy?}
+This proved very useful, as training the networks and trying various settings took time and was repeated many times during development. Using this harness allowed the team to quickly deploy updated models onto the device without the need to reprogram the C code for each test.
