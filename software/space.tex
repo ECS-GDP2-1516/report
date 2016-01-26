@@ -1,6 +1,6 @@
 \namedsection{Space Restrictions \label{sec:space-restrictions}}{Shepherd}
 
-As described in \ref{section}\todo{REF}, the device has very little memory space availiable: 8kB for both program code and data. When the algorithm code was first compiled with the mBed's precompiled libraries, the total size of the binary was 12kB. The first step to solve this was to obtain the source code for the mBed libraries; compiling these directly along with the program code, offers further potencial for the compiler to optimise the link between the API and the algorithm, based on the specific usecase.
+As highlighted in section \ref{sec:cortex-limitations}, the device has very little memory space availiable: 8kB for both program code and data. When the algorithm code was first compiled with the mBed's precompiled libraries, the total size of the binary was 12kB. The first step to solve this was to obtain the source code for the mBed libraries; compiling these directly along with the program code, offers further potencial for the compiler to optimise the link between the API and the algorithm, based on the specific usecase.
 
 The method was successful at reducing the total binary size to 8kB. This was a substancial improvement, however it was clear that this would need to be decreased further as an 8kB binary leaves no room for heap or stack space when the code is run.
 
