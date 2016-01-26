@@ -4,9 +4,9 @@
 
 A FPGA (field-programmable gate array) is an semiconductor device which is has a matrix of CLBs (configurable logic blocks) connected through programmable interconnects. One main advantage of FPGAs is that the can be preprogrammed after they are manufactured in order to fit desired functionalities and requirements, such as the ones required by our team's project. Amazing projects have also been realized with this processor on a FPGA, such as advanced real traffic light controller.
 \note{add traffic light citation}
-\\\\
+
 The two devices we are using, the FPGA and the microcontroller, are two very different devices. The microcontroller has the chip already designed. The programmer simply writes the software in C or C++, then it is compiled into a hex file that is loaded on the microcontroller. The program is stored in the flash memory until is is replaced or erased.
-\\\\
+
 FPGAs are different in this sense. The circuit is completely designed by the programmer. The processor must be created and can be as simple as an and gate or can be our Cortex M0+. HDL is used to write the design, which is then synthesized into a bit file which configures the FPGA. One small problem with this is the fact that it stores the configuration in the RAM, so once the power is gone, the configuration is lost.
 \\\\\
 The board used for this project is the Xilinx Digilent Nexys4, which can be seen in figure \ref{fig:nexys4} above. It is based on the Artix-7 that has the lowest power consumption at 28nm and is optimized to give the design the highest performance. Implementations were also successful on low end FPGAs  We chose this board because it is a large, high-capacity FPGA board that would be sufficient for our project. Another reason is the fact that is has several built in peripherals, such as accelerometer, which would be useful for the exercise detection. 
@@ -83,7 +83,8 @@ This can be used to program the FPGA. Now, the implementation of the Cortex-M0+ 
 
 \subsection{System Implementation}
 
-ARM offers access to packs that makes the implementation of the Cortex M0+ on the FPGA is discussed. The components which will be used are: the ARM Cortex-M0 processor, the AHB-Lite system bus and two AHB peripherals: the program memory(which will be implemented using on-chip memory blocks) and a simple LED peripheral.
+ARM offers access to packs that makes the implementation of the Cortex M0+ on the FPGA is discussed. The components which will be used are: the ARM Cortex-M0 processor, the AHB-Lite system bus and two AHB peripherals: the program memory(which will be implemented using on-chip memory blocks) and a simple LED peripheral. Some of the steps are similar for implementing the Cortex M0 on a older FPGA, but since different modules and softwares are required, it is not a fully followable guide.
+\note{Add implementation reference} 
 
 The software used for this implementation is Vivado Design Suite. This software is produced by Xilinx and is used for synthesis and analysis of HDL designs and is a improved version of the Xilinx ISE which also allows features such as system on a chip development and a high-level synthesis. A new project must be created.
 
@@ -104,10 +105,7 @@ The AHBMUX.v contains the code for the slave multiplexor of the AHB bus. This us
 \label{fig:decoder_multiplexer}
 \end{figure}
 In figure \ref{fig:decoder_multiplexer} how two Address Decoder and Slave Multiplexor can bee seen. The HADRR[0:31] signal, sends the read data from multiplexer to master. The HREADY signal goes from the multiplexor to the master and slaves and when it is set to HIGH, it indicates that the previous transfer has been completed. The HRESP signal transfers the response sigal from multiplexor to master. Each of the slaves has its own select signal HSEL which indicates the current transfer intended for that specific slave. Before being able to respond to the current transfer, the status of HREADY must be known in order to know in order to ensure that the previous transfer has been completed. 
-
-//referece AMBA 3 AHB-Lite Protocol Specification
-http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ihi0033a/index.html	
-
+\note{add AMBA 3 AHB-Lite reference}
 The AHB2BRAM.v contains the on-chip memory peripheral (BRAM) 
 which is a configurable memory module that gives access to a variety of BRAM Interface Controllers. This is used for the program memory of the processor.
 
