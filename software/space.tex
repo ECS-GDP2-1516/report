@@ -90,7 +90,6 @@ main:
 Unfortunately, a similar technique is not used for the Pin Mappings. Instead, these are stored in an array within a C file which is specific to each target, as shown below. These values are worked upon in two separate files - one common across all devices, and one common to the device's family.
 
 \begin{lstlisting}[caption={PinMap Arrays}]
-/************UART***************/
 const PinMap PinMap_UART_TX[] = {
     {P0_19, UART_0, 1},
     {P1_13, UART_0, 3},
