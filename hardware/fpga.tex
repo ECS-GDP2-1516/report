@@ -2,13 +2,15 @@
 
 \subsection{Introduction}
 
-A FPGA (field-programmable gate array) is an semiconductor device which is has a matrix of CLBs (configurable logic blocks) connected through programmable interconnects. One main advantage of FPGAs is that the can be preprogrammed after they are manufactured in order to fit desired functionalities and requirements, such as the ones required by our team's project.
+A FPGA (field-programmable gate array) is an semiconductor device which is has a matrix of CLBs (configurable logic blocks) connected through programmable interconnects. One main advantage of FPGAs is that the can be preprogrammed after they are manufactured in order to fit desired functionalities and requirements, such as the ones required by our team's project. Amazing projects have also been realized with this processor on a FPGA, such as advanced real traffic light controller.
+\note{add traffic light citation}
 \\\\
 The two devices we are using, the FPGA and the microcontroller, are two very different devices. The microcontroller has the chip already designed. The programmer simply writes the software in C or C++, then it is compiled into a hex file that is loaded on the microcontroller. The program is stored in the flash memory until is is replaced or erased.
 \\\\
 FPGAs are different in this sense. The circuit is completely designed by the programmer. The processor must be created and can be as simple as an and gate or can be our Cortex M0+. HDL is used to write the design, which is then synthesized into a bit file which configures the FPGA. One small problem with this is the fact that it stores the configuration in the RAM, so once the power is gone, the configuration is lost.
 \\\\\
-The board used for this project is the Xilinx Digilent Nexys4, which can be seen in figure \ref{figure: nexys4} on the next page. It is based on the Artix-7 that has the lowest power consumption at 28nm and is optimized to give the design the highest performance. We chose this board because it is a large, high-capacity FPGA board that would be sufficient for our project. Another reason is the fact that is has several built in peripherals, such as accelerometer, which would be useful for the exercise detection. 
+The board used for this project is the Xilinx Digilent Nexys4, which can be seen in figure \ref{fig:nexys4} above. It is based on the Artix-7 that has the lowest power consumption at 28nm and is optimized to give the design the highest performance. Implementations were also successful on low end FPGAs  We chose this board because it is a large, high-capacity FPGA board that would be sufficient for our project. Another reason is the fact that is has several built in peripherals, such as accelerometer, which would be useful for the exercise detection. 
+\note{ADD nexys2 reference}
 \begin{figure}
 \centering
 \includegraphics[scale=0.7]{figures/nexys4.PNG}
@@ -20,7 +22,7 @@ Next,the implementation of the Cortex M0 DesignStart on the FPGA board will be d
 \subsection{Software development and simulation}
 In this section, a software program that will verify the memory fetches of some predefined constants. The program used for this will be ARM Keil μVision, which is a IDE(Integrated Development Environment) which allows quick and easy building of projects and includes other facilities such as: make facilities, source code debug, program debug and complete simulations.
 
-To start, a new project must be created in μVision. Next, the device must be selected device database so ARM-ARM Cortex M0 plus-ARMCM0P is selected which can be seen in figure \ref{armcm0p}.
+To start, a new project must be created in μVision. Next, the device must be selected device database so ARM-ARM Cortex M0 plus-ARMCM0P is selected which can be seen in figure \ref{fig:armcm0p} above.
 \begin{figure}
 \centering
 \includegraphics[scale=0.7]{figures/armcm0p.PNG}
@@ -48,9 +50,6 @@ After this is selected, the options menu is accessed for this device. Next, the 
 
 -under Utilities, the Use Target Driver for Flash Programming in the Configure Flash Menu Command is left checked.
 
-<<<<<<< 13d9485c8dd0b49c39ed7edc2ea690bf7d8be864
-After all of these steps have been done,it is now time to add assembly file provided by ARM, the cm0dasm.s to the source. Taking a look at the reset handler, which can be seen in \ref{lst:reset-handler},  the value 0x55 is written to the LED when a specific pattern is detected and 0xAA if another pattern is detected.
-
 \begin{lstlisting}[caption={Reset Handler},label={lst:reset-handler}]
 Reset_Handler	PROC
 		GLOBAL Reset_Handler
@@ -74,21 +73,13 @@ Loop1		SUBS	R0,R0,#1
 		BNE Loop1
 \end{lstlisting}
 
-=======
-After all of these steps have been done,it is now time to add assembly file provided by ARM, the cm0dasm.s to the source. Taking a look at the reset handler, which can be seen in \ref{reset_handler}, it turns on half of the 8-bit LEDs( for example 0, 2, 4 ,6), sets up a counter and uses it for a short time delay, then turns on the other half and delays another period.
-\begin{figure}
-\centering
-\includegraphics[scale=0.7]{figures/reset_handler.PNG}
-\caption{Reset handler} 
-\label{fig:armcm0p}
-\end{figure}
->>>>>>> Added more to system implementation section
+After all of these steps have been done,it is now time to add assembly file provided by ARM, the cm0dasm.s to the source. Taking a look at the reset handler, which can be seen in \ref{lst:reset-handler}, it turns on half of the 8-bit LEDs( for example 0, 2, 4 ,6), sets up a counter and uses it for a short time delay, then turns on the other half and delays another period.
 
-After the successful building of the code.hex should be created and converted into a .axf because it was set in the User section. The .axf file needs to be converted to a .bin in order to program the FPGA. The MDK/Keil offers a tool called "fromelf" which can do this conversion. It is called in the following way:
+After the successful building, the code.hex should be created and converted into a .axf because it was set in the User section. The .axf file needs to be converted to a .bin in order to program the FPGA. The MDK/Keil offers a tool called "fromelf" which can do this conversion. It is called in the following way:
 
 fromelf --bin --o code.bin code.axf
 
-This can be ued to program the FPGA. Now, the implementation of the Cortex-M0+ will be discussed.
+This can be used to program the FPGA. Now, the implementation of the Cortex-M0+ will be discussed.
 
 \subsection{System Implementation}
 
@@ -98,16 +89,24 @@ The software used for this implementation is Vivado Design Suite. This software 
 
 The ARM DesignStart  package which contains the logic of the ARM Cortex-M0 processor written in Verilog and can be synthesized and implemented on a FPGA platform. The Cortex-M0 DesignStart will be used, which is a simplified version of the industry Cortex-M0 processor, but has some features reduced which are not essential for this project such as in the number of interrupts(from 32 to 16). Two verilog files are included in this pack:  cortexm0ds\_logic.v and CORTEM0DS.v. The cortexm0ds\_logic.v contains the Cortex-M0 DesignStart processor logic level Verilog file, while the CORTEXM0DS.v includes the Cortex-M0 DesignStart processor macro cell level.
 
-<<<<<<< 13d9485c8dd0b49c39ed7edc2ea690bf7d8be864
-The software code needs to be compiled to machine code in order to program the processor.
-=======
-The software code needs to be compiled to machine code in order to program the processor. The program memory is the phyiscal memory used to store the instructions to which need to be executed by the processor. On-chip memory block are used in order to implement the program memory in SoC, for example the Block RAM(BRAM) which is present on this FPGA. The program image to be merged into the hardware design during synthesis to load the program on the on-chip memory of the FPGA.
+The software code needs to be compiled to machine code in order to program the processor. The program memory is the phyiscal memory used to store the instructions to which need to be executed by the processor. On-chip memory block are used in order to implement the program memory in SoC, for example the Block RAM(BRAM) which is present on this FPGA. The program image needs to be merged into the hardware design during synthesis to load the program on the on-chip memory of the FPGA.
 
 Now, in order to implement the Cortex M0+ on the FPGA, more then just the ARM DesignStart Verilog codes are necessary. The ARM Cortex-M System Design Kit (CMSDK) contains a set of AMBA AHB and APB components and examples for various Cortex-M systems processors, including the Cortex-M0. The  Verilog file  used from this package in order to reproduce the desired experiment will be discussed.
 
-The AHBDCD.v contains the code for the address decoder of the AHB bus. This uses a Multi-layer bus architecture having only one AHB master on each of the input layers and one AHB slave on each of the outputs, the entire system address decoding can be done within the decoder section.
+The AHBDCD.v contains the code for the address decoder of the AHB bus. This uses a Multi-layer bus architecture having only one AHB master on each of the input layers and one AHB slave on each of the outputs, the entire system address decoding can be done within the decoder section. It selects one of the slaves depending on where the address bus currently is and also is.
 
-The AHBMUX.v contains the code for the slave multiplexor of the AHB bus. This uses parameters in order to specify the slave port usage in order for the synthesis process to no generate extra logic which is not necessary for the project. The slave to master multiplexer controls the response signals and read data routing from the bus slaves to the bus masters. The address decoder presented earlier is used to determine the currently selected slave and generates the HSEL signal to the AHB slaves and slave multiplexer. The multiplexer creates the connection between the slave outputs and the inputs of the bus masters.
+The AHBMUX.v contains the code for the slave multiplexor of the AHB bus. This uses parameters in order to specify the slave port usage in order for the synthesis process to no generate extra logic which is not necessary for the project. The slave to master multiplexer controls the response signals and read data routing from the bus slaves to the bus masters. The address decoder presented earlier is used to determine the currently selected slave and generates the HSEL signal to the AHB slaves and slave multiplexer. The multiplexer creates the connection between the slave outputs and the inputs of the bus masters. 
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.7]{figures/decoder_and_multiplexer.PNG}
+\caption{Address Decoder and Slave Multiplexor } 
+\label{fig:decoder_multiplexer}
+\end{figure}
+In figure \ref{fig:decoder_multiplexer} how two Address Decoder and Slave Multiplexor can bee seen. The HADRR[0:31] signal, sends the read data from multiplexer to master. The HREADY signal goes from the multiplexor to the master and slaves and when it is set to HIGH, it indicates that the previous transfer has been completed. The HRESP signal transfers the response sigal from multiplexor to master. Each of the slaves has its own select signal HSEL which indicates the current transfer intended for that specific slave. Before being able to respond to the current transfer, the status of HREADY must be known in order to know in order to ensure that the previous transfer has been completed. 
+
+//referece AMBA 3 AHB-Lite Protocol Specification
+http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ihi0033a/index.html	
 
 The AHB2BRAM.v contains the on-chip memory peripheral (BRAM) 
 which is a configurable memory module that gives access to a variety of BRAM Interface Controllers. This is used for the program memory of the processor.
@@ -125,7 +124,7 @@ All of these files files need to be added to a Vivado project in order to create
 \caption{AHB Lite top-module } 
 \label{fig:ahblite_sys}
 \end{figure}
-After the project is created, the AHBALITE\_SYS.v is set as a top module since this creates the connection between all the components. This can be seen in \ref{fig:ahblite_sys} above. Because this is a Nexys4 board and the Clock Divider supplied in the package are not compatible due to the fact that it requires a Spartan 6 Series processor, a new IP needed to be created for this specific FPGA. In order to add this we need to go to Source-> New Source-> IP CORE(Generator and Architecture Wizard)-> Clocking-> Clocking Wizard. This is going to generate a system clock at 10MHz from the board's 50MHz external oscillator. In figure \ref{fig:clock}, the Input Clock Frequency is set 50 MHz and the Output Frequency to 10 MHz and it is named "uClockDIv".
+After the project is created, the AHBALITE\_SYS.v is set as a top module since this creates the connection between all the components. This can be seen in \ref{fig:ahblite_sys} above. Because this is a Nexys4 board and the Clock Divider supplied in the package are not compatible due to the fact that it requires a Spartan 6 Series processor, a new IP needed to be created for this specific FPGA. In order to add this we need to go to Source-> New Source-> IP CORE(Generator and Architecture Wizard)-> Clocking-> Clocking Wizard. This is going to generate a system clock at 10MHz from the board's 50MHz external oscillator. In figure \ref{fig:clock}, the Input Clock Frequency is set 50 MHz and the Output Frequency to 10 MHz and it is named "uClockDiv".
 \begin{figure}
 \centering
 \includegraphics[scale=0.7]{figures/clock_creation.PNG}
@@ -133,3 +132,19 @@ After the project is created, the AHBALITE\_SYS.v is set as a top module since t
 \label{fig:clock}
 \end{figure}
 >>>>>>> Added more to system implementation section
+
+Since the user constraint file supplied is meant to be used to a Spartan 6 Series FPGA board, the user constraint file needed modifications in order to fit the Artix-7 FPGA. The UCF can be seen in appendix. After this, the top module of the simulation can be implemented and translated int o a .bit file which is used to program the FPGA.
+
+\subsection{Functional Simulation}
+Due to some unplanned delays in acquiring certain documentations, delays in obtaining licenses for the various software used and difficulties encountered during the creation of a proper .bit file, a functional simulation was not properly conducted..A basic simulation of the Cortex M0 was presented in \ref{sec:cortex}.  The functional simulation of the system verifies if the signal in HRDATA are the ones expected and if it works as expected. Vivado Hardware Debug is the Vivado tool used for debugging. This is accessed by going to Design->View:Simulation. If a complete functional would have been performed, a run-time simulation needs to also be performed. On-chip debugging tools such as ChipScope are required in order to perform this sort of simulation. Inside the analysis, these AHB signals need to be evaluated to see if they work correspondingly: 
+HADDR[31:0] 
+HWDATA[31:0]
+HRDATA[31:0]
+HWRITE
+HREADY
+HSIZE[2:0]
+HTRANS[1:0]
+HRESP
+
+\subsection{Conclusion}
+The team decided that the mBed platform had a better progress and would be more suitable for our final design since it's small size will allow strapping it people, opposed to the FPGA board which was much greater in size. Because of this, I stopped attempting to implement the Cortex M0 and redirected my attention to other aspects of the project where is was more necessary. Next, the successful section prototype of our project which was implemented on the mBed will be discussed.
