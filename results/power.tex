@@ -4,4 +4,28 @@ The requirements for this project are that the processor operates at a low opera
 
 The device operates at a frequency of 166 kHz which is on the lower side of the range, this gives room for the frequency to increase whilst staying in the range giving room for more actions should they be required.
 
-With the sensor running at $861\mu W$, it can be considered as a low power device. \todo{maybe move how to get this value here}
+\subsection{Measuring power}
+
+It is required to measure the power of the system as a requirement is for it to be low powered as the sub threshold processor will be operating at a low power. It was deemed unnecessary to measure the power consumption of the mBed because of the various peripherals which are also powered which would not be there on the sub threshold version as well as the fact that this processor is not designed for sub threshold power and the method ARM implement to achieve this may leave a different power fingerprint than the Cortex M0. 
+
+The sensor however does not fall under the same conditions and thus, was analysed for its power usage. To do this a 100\ohm ~resistor was placed in series between the sensor and $V_{cc}$. Thus current would have to flow through the resistor to reach the sensor, allowing to measure the current by measuring the voltage across the resistor along with the relationship V=IR.
+
+The power consumption of the sensor is not constant over time due to the fact that the sensor alternates between sleep mode and being awake. It also will consume more power when communicating over I2C as opposed to not. To account for this, the current and voltage is measured over time which is then averaged thus, giving the average power consumed by the sensor.
+
+\begin{table}
+    \centering
+    \begin{tabular}{|l|r|r|}
+        \hline
+        Parameter & Mean Value & Standard Deviation \\
+        \hline
+        Resistor Voltage (V) & 0.0262 & 0.00198 \\
+        Sensor Voltage (V) & 3.29 & 0.00133 \\
+        Current (A) & 0.000262 & \\
+        Power (W) & 0.00086198 & \\
+        \hline
+    \end{tabular}
+    \caption{Power statistics for the sensor}
+    \label{tab:power}
+\end{table}
+
+As can be seen from Table~\ref{tab:power}, the sensor on average took $861\mu W$ which can be considered low power. However, there is the potential for a lower power consumption, within the configuration used, the current flowing through the sensor was $262\mu A$, but the data sheet for the sensor says for the sampling rate and configuration that is being used, the typical value is $70\mu A$. This decrease would reduce the power consumption by over a factor of 3 leaving a power usage of $230\mu W$. With the sensor running at $861\mu W$, it can be considered as a low power device.
