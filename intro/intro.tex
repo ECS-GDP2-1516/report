@@ -1,14 +1,14 @@
 \chapter{Introduction}
 
-Ultra-Low Power Processors, such as ARM's Cortex-M0+, are becoming an increasingly appealing area of research, particularly because they provide a platform for the Internet of Things. As our culture develops new ways for technology to aid our every-day lives, the devices which support these progressions are required to be less and less intrusive, forcing companies to search for new methods of making systems smaller and require lower power, especially as ``essentially all IoT sensor nodes will be powered by small batteries and to a lesser extent by energy harvesting'' \cite{iot_power}.
+Ultra-Low Power Processors, such as ARM’s Cortex-M0+, are becoming an increasingly appealing area of research, particularly because they provide a platform for the Internet of Things. As our culture develops new ways for technology to aid our every-day lives, the devices which support these progressions are required to be less and less intrusive, forcing companies to search for new methods of making systems smaller and require lower power, especially as ``essentially all IoT sensor nodes will be powered by small batteries and to a lesser extent by energy harvesting'' \cite{iot_power}.
 
-However, such processors clearly create very tight constraints for potential developers, as processing power is often limited, leading to the ever-continuing requirement for more efficient and optimised algorithms. As memory usage is also proportional to power consumption, the RAM available on such systems is extremely limiting. As we begin to rely on these systems more and more, these constraints make it a growing challenge to implement systems which are not only useful, but can be relied upon to function when needed. This is particularly important in cases in which a device is being used for safety-critical operations, which is becoming increasingly common \cite{iot_saftey} \cite{iot_saftey2}.
+However, such processors clearly create very tight constraints for potential developers, as processing power is often limited, leading to the ever-continuing requirement for more eﬃcient and optimised algorithms. As memory usage is also proportional to power consumption, the RAM available on such systems is extremely limiting. As we begin to rely on these systems more and more, these constraints make it a growing challenge to implement systems which are not only useful, but can be relied upon to function when needed. This is particularly important in cases in which a device is being used for safety-critical operations, which is becoming increasingly common \cite{iot_saftey} \cite{iot_saftey2}.
 
-ARM is currently investigating the concept of a sub threshold Cortex-M0+ \cite{arm_sub}, which attempts to push the extremes of these constraints further by providing just 8KB of memory for both program code and data, and running at just a few hundred cycles per second. This project aims to research and develop an algorithm which is capable of running on such a device, to act as a proof of concept that such a processor would be worthwhile.
+ARM is currently investigating the concept of a sub threshold Cortex-M0+ \cite{arm_sub}, which attempts to push the extremes of these constraints further by providing just 8 kB of memory for both program code and data, and running at just a few hundred kHz. This project aims to research and develop an algorithm which is capable of running on such a device, to act as a proof of concept that such a processor would be worthwhile.
 
-\namedsection{Project Specification}{Finch}
+\namedsection{Project Overview}{Finch}
 
-The particular algorithm that is to be developed is a way to identify and monitor exercises performed by a human wearer. These are specifically exercises which can be done on aeroplanes to reduce the risk of suffering from Deep Vein Thrombosis, a condition where a blood clot can form in one of the deep veins in the body, most commonly the legs. This can lead to further complications such as pulmonary embolism which occurs when part of the blood clot moves and blocks a blood vessel in the lungs \cite{dvt}. Long-haul flights can increase the risk of getting DVT because of the long periods of time sitting down and not moving which reduces circulation in the legs.
+The particular algorithm that is to be developed is a way to identify and monitor exercises performed by a human wearer. These are speciﬁcally exercises which can be done on aeroplanes to reduce the risk of suﬀering from Deep Vein Thrombosis, a condition where a blood clot can form in one of the deep veins in the body, most commonly the legs. This can lead to further complications such as pulmonary embolism which occurs when part of the blood clot moves and blocks a blood vessel in the lungs \cite{dvt}. Long-haul ﬂights can increase the risk of getting DVT because of the long periods of time sitting down and not moving which reduces circulation in the legs.
 
 \begin{figure}[h]
   \centering
@@ -17,25 +17,28 @@ The particular algorithm that is to be developed is a way to identify and monito
   \label{fig:exercises}
 \end{figure}
 
-Figure \ref{fig:exercises} shows some of the in-flight exercises which can be performed. We have looked into a few of them including the revolver, the ballerina and the shrug. These involve lifting both feet off the floor and rotating them in circles in clockwise and anticlockwise directions, pointing the feet up and down and rolling the shoulders backwards and forwards. These are all designed to help keep the circulation going in the limbs. However, a specific focus was made to the revolver exercise for the purpose of prototyping a system.
+Figure \ref{fig:exercises} shows some of the in-ﬂight exercises which can be performed. We have looked into a few of them including the revolver, the ballerina and the shrug. These involve lifting both feet oﬀ the ﬂoor and rotating them in circles in clockwise and anticlockwise directions, pointing the feet up and down and rolling the shoulders backwards and forwards. These are all designed to help keep the circulation going in the limbs. However, a speciﬁc focus was made to the revolver exercise for the purpose of prototyping a system.
 
-Possible uses of the algorithm would be to incorporate it into a device which could be given to passengers to strap to their legs. It would then monitor how much exercise each person was doing. This could help inform the passengers whether or not they are doing enough exercise to stay risk free. The device itself could make use of energy efficient technologies (for example the Cortex-M0+) so that its battery could easily last the entire duration of a long-haul flight.
+Possible uses of the algorithm would be to incorporate it into a device which could be given to passengers to strap to their legs. It would then monitor how much exercise each person was doing. This could help inform the passengers whether or not they are doing enough exercise to stay risk free. The device itself could make use of energy eﬃcient technologies (for example the Cortex-M0+) so that its battery could easily last the entire duration of a long-haul ﬂight.
 
-\namedsection{Report Overview}{Finch \& Shepherd}
+\namedsection{Project Requirements }{Finch \& Shepherd}
 
-This report first describes the research and analysis of the algorithms used for exercise detection which currently exist, specifically focusing on Machine Learning techniques. This includes a description of the tools and techniques used, and the methods by which the effectiveness of trained algorithms were evaluated.
+The main requirement of this project is to develop an algorithm which is capable of detecting and monitoring exercises on a sub threshold Cortex-M0+. This processor is clocked at 100 kHz, although it can increase to 3 MHz if required. However, the lower the clock speed the better as this would clearly require less power.
 
-As the proposed sub threshold Cortex-M0+ is still in development, it was not readily available for the group to use; consequently, the team have used a Cortex M0 to emulate the processor. The report next details the challenges involved in this, particularly discussing the research into components and a comparison between using the FPGA and mBed as a platform on which to develop, allowing the clock speeds to be adjusted based on the efficiency and requirements of the algorithm.
+Additionally, 8 kB is imposed as the memory limit for both program code and data in order for the algorithm to be capable of running on the sub threshold Cortex-M0+. Again, the lower this can be the better as it opens up the possibility for the system to require even less power.
 
-Following on from this, the next chapter discusses the details of the implementation of the chosen algorithm, specifically looking into the improvements that were made to further optimise existing versions of the algorithm. This also explores the heuristics that were added to raise the accuracy of the detection system for this project's specific use case, and the supporting software that was developed by the team to aid the process of development. The chapter concludes by assessing the trade-offs that were required to have the program code run on a low power device.
+As the proposed sub threshold Cortex-M0+ is still in development, it is not readily available for the group to use; consequently, the team will be required to investigate alternatives to emulate the processor. These alternatives must allow the clock speeds to be adjusted based on the eﬃciency and requirements of the algorithm. The challenges involved in this are discussed in the hardware chapter of this report.
 
-Another part of the project is the user study to collect movement data of the exercises; this data is needed in order to develop the algorithm and a user study is an ideal way to collect a range of data from a selection of different people because each individual is likely to perform the exercises with slight variations.
+Research and analysis of the algorithms used for exercise detection which currently exist, speciﬁcally focusing on Machine Learning techniques, must also be carried out. On top of this, an investigation into the tools and techniques which can be used, along with the methods by which the eﬀectiveness of trained algorithms can be evaluated is also necessary. This is documented in the research and design section of the report.
 
-Furthermore, as this project was such a large undertaking by the group, a detailed look is given to the project management including the planning and tools that were used throughout.
+Following on from this, the ways in which the algorithm can be optimised to run on a such constrained system must also be explored. The way this was done is examined in the software development chapter.
 
-This report concludes by evaluating the final developed algorithm in terms of its accuracy in detecting exercises and its power and resource requirements. This is then used as a basis for determining the suitability of using constrained sub threshold devices to compute complex problems.
+Another requirement of the project is to perform a user study to collect movement data of the exercises which can be used to develop the algorithm. This is so that a range of data from a selection of diﬀerent people can be used because each individual is likely to perform the exercises with slight variations. The details of this can be found in the user study chapter.
 
-\namedsection{Requirements}{Finch}
+Finally, the accuracy of the developed algorithm must be calculated. The specifics of this are outlined in the results chapter.
+Below, the requirements of this project are given in explicit detail.
+
+\namedsection{Detailed Requirements}{Finch}
 
 \begin{enumerate}
   \item The algorithm must be capable of detecting and monitoring exercises designed to combat deep vein thrombosis
@@ -54,9 +57,9 @@ This report concludes by evaluating the final developed algorithm in terms of it
     \item Memory usage should be kept to a minimum with a target of no more than 8 kB
     \item Therefore, the algorithm should be highly optimised to use as little memory and require as little processing power as possible
   \end{enumerate}
-  \item The Cortex-M0+ must be emulated in a test platform as working with an actual M0+ is not feasible
+  \item The sub threshold Cortex-M0+ must be emulated in a test platform as working with the actual M0+ is not feasible
   \begin{enumerate}[label*=\arabic*.]
-    \item The test platform should be capable of being clocked at frequencies ranging from only a few kHz to a few MHz
+    \item The test platform should be capable of being clocked at frequencies ranging from only a 100 kHz to 3 MHz
     \item The test platform should have at least 32 kB of memory to aid with testing and to act as a fall back if 8 kB cannot be achieved
     \item There must be an accelerometer sensor on the platform that readings can be taken from
   \end{enumerate}
@@ -65,6 +68,7 @@ This report concludes by evaluating the final developed algorithm in terms of it
     \item Machine learning approaches should be focussed on
     \item Algorithms which are used on unconstrained systems should be considered first
     \item The feasibility of constraining those algorithms should then be investigated
+    \item The methods of evaluating algorithm performance should also be examined
   \end{enumerate}
   \item Participant studies should be performed to gather movement data to train the algorithm
   \begin{enumerate}[label*=\arabic*.]
