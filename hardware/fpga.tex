@@ -48,6 +48,7 @@ After this is selected, the options menu is accessed for this device. Next, the 
 
 -under Utilities, the Use Target Driver for Flash Programming in the Configure Flash Menu Command is left checked.
 
+<<<<<<< 13d9485c8dd0b49c39ed7edc2ea690bf7d8be864
 After all of these steps have been done,it is now time to add assembly file provided by ARM, the cm0dasm.s to the source. Taking a look at the reset handler, which can be seen in \ref{lst:reset-handler},  the value 0x55 is written to the LED when a specific pattern is detected and 0xAA if another pattern is detected.
 
 \begin{lstlisting}[caption={Reset Handler},label={lst:reset-handler}]
@@ -73,6 +74,15 @@ Loop1		SUBS	R0,R0,#1
 		BNE Loop1
 \end{lstlisting}
 
+=======
+After all of these steps have been done,it is now time to add assembly file provided by ARM, the cm0dasm.s to the source. Taking a look at the reset handler, which can be seen in \ref{reset_handler}, it turns on half of the 8-bit LEDs( for example 0, 2, 4 ,6), sets up a counter and uses it for a short time delay, then turns on the other half and delays another period.
+\begin{figure}
+\centering
+\includegraphics[scale=0.7]{figures/reset_handler.PNG}
+\caption{Reset handler} 
+\label{fig:armcm0p}
+\end{figure}
+>>>>>>> Added more to system implementation section
 
 After the successful building of the code.hex should be created and converted into a .axf because it was set in the User section. The .axf file needs to be converted to a .bin in order to program the FPGA. The MDK/Keil offers a tool called "fromelf" which can do this conversion. It is called in the following way:
 
@@ -84,8 +94,42 @@ This can be ued to program the FPGA. Now, the implementation of the Cortex-M0+ w
 
 ARM offers access to packs that makes the implementation of the Cortex M0+ on the FPGA is discussed. The components which will be used are: the ARM Cortex-M0 processor, the AHB-Lite system bus and two AHB peripherals: the program memory(which will be implemented using on-chip memory blocks) and a simple LED peripheral.
 
-The software used for this implementation is Vivado Design Suite. This software is produced by Xilinx and is used for synthesis and analysis of HDL designs and is a improved version of the Xilinx ISE which also allows features such as system on a chip development and a high-level synthesis. A new project must be created
+The software used for this implementation is Vivado Design Suite. This software is produced by Xilinx and is used for synthesis and analysis of HDL designs and is a improved version of the Xilinx ISE which also allows features such as system on a chip development and a high-level synthesis. A new project must be created.
 
 The ARM DesignStart  package which contains the logic of the ARM Cortex-M0 processor written in Verilog and can be synthesized and implemented on a FPGA platform. The Cortex-M0 DesignStart will be used, which is a simplified version of the industry Cortex-M0 processor, but has some features reduced which are not essential for this project such as in the number of interrupts(from 32 to 16). Two verilog files are included in this pack:  cortexm0ds\_logic.v and CORTEM0DS.v. The cortexm0ds\_logic.v contains the Cortex-M0 DesignStart processor logic level Verilog file, while the CORTEXM0DS.v includes the Cortex-M0 DesignStart processor macro cell level.
 
+<<<<<<< 13d9485c8dd0b49c39ed7edc2ea690bf7d8be864
 The software code needs to be compiled to machine code in order to program the processor.
+=======
+The software code needs to be compiled to machine code in order to program the processor. The program memory is the phyiscal memory used to store the instructions to which need to be executed by the processor. On-chip memory block are used in order to implement the program memory in SoC, for example the Block RAM(BRAM) which is present on this FPGA. The program image to be merged into the hardware design during synthesis to load the program on the on-chip memory of the FPGA.
+
+Now, in order to implement the Cortex M0+ on the FPGA, more then just the ARM DesignStart Verilog codes are necessary. The ARM Cortex-M System Design Kit (CMSDK) contains a set of AMBA AHB and APB components and examples for various Cortex-M systems processors, including the Cortex-M0. The  Verilog file  used from this package in order to reproduce the desired experiment will be discussed.
+
+The AHBDCD.v contains the code for the address decoder of the AHB bus. This uses a Multi-layer bus architecture having only one AHB master on each of the input layers and one AHB slave on each of the outputs, the entire system address decoding can be done within the decoder section.
+
+The AHBMUX.v contains the code for the slave multiplexor of the AHB bus. This uses parameters in order to specify the slave port usage in order for the synthesis process to no generate extra logic which is not necessary for the project. The slave to master multiplexer controls the response signals and read data routing from the bus slaves to the bus masters. The address decoder presented earlier is used to determine the currently selected slave and generates the HSEL signal to the AHB slaves and slave multiplexer. The multiplexer creates the connection between the slave outputs and the inputs of the bus masters.
+
+The AHB2BRAM.v contains the on-chip memory peripheral (BRAM) 
+which is a configurable memory module that gives access to a variety of BRAM Interface Controllers. This is used for the program memory of the processor.
+
+The AHB2LED.v contained the LED peripheral module. Selected LED will light up when a specific generated patters will be detected and will turn off when another pattern is detected.
+
+The AHBLITE\_SYS.v contains the top-level module. The AHB-Lite is a subset of the full AHB specification which is used in designs where there is no more than one bus master used. This simplifies the AHB specification because it removes the unnecessary protocol used for more bus masters.
+
+The ARMSOC\_s6.ucf file is the user constraint file which creates the connecection between the assigned nets and FPGA pins.
+
+All of these files files need to be added to a Vivado project in order to create and download the bitstream file to the FPGA. A new project called CM0DS\_System is created, specifying that it is RTL project. A mixed implementation setting between Verilog/VHDL will be required for this project. The processor is described in Verilog while the additional modules are in VHDL. Next, in the list of Xilinx parts, the XC7A100T-1CSG324C needs to be selected because this is the part name for the Nexys4 board. 
+\begin{figure}
+\centering
+\includegraphics[scale=0.7]{figures/AHBLITE_SYS_modules_ISE_schematic.PNG}
+\caption{AHB Lite top-module } 
+\label{fig:ahblite_sys}
+\end{figure}
+After the project is created, the AHBALITE\_SYS.v is set as a top module since this creates the connection between all the components. This can be seen in \ref{fig:ahblite_sys} above. Because this is a Nexys4 board and the Clock Divider supplied in the package are not compatible due to the fact that it requires a Spartan 6 Series processor, a new IP needed to be created for this specific FPGA. In order to add this we need to go to Source-> New Source-> IP CORE(Generator and Architecture Wizard)-> Clocking-> Clocking Wizard. This is going to generate a system clock at 10MHz from the board's 50MHz external oscillator. In figure \ref{fig:clock}, the Input Clock Frequency is set 50 MHz and the Output Frequency to 10 MHz and it is named "uClockDIv".
+\begin{figure}
+\centering
+\includegraphics[scale=0.7]{figures/clock_creation.PNG}
+\caption{Clocking Wizard settings } 
+\label{fig:clock}
+\end{figure}
+>>>>>>> Added more to system implementation section
