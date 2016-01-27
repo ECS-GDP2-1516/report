@@ -11,7 +11,7 @@ Machine learning is a technique that takes some observations about a system in a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% CURSE OF DIMENSIONALITY %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-One of the frequently encountered problems is the curse of dimensionality \cite{bellman1957dynamic}, whereby having a high number of dimensions, often as a result of having a large number of inputs into a machine learning algorithm, can create the problem where the amount of instances required to sufficiently train the model increases as the amount of training of the model must have instances such that the input feature space must be explored sufficiently \cite{oommen2008objective}. Further to this effect, the time and space complexity of many machine learning algorithms are functions of the feature space's dimensionality. However, existing work has demonstrated that the curse of dimensionality is not necessarily applicable to time-series data as the nature of such data explores the feature space on the condition that the signal-to-noise ratio is sufficiently high \cite{bernecker2011quality}.
+One of the frequently encountered problems is the curse of dimensionality \cite{bellman1957dynamic}, whereby having a high number of dimensions, often as a result of having a large number of inputs into a machine learning algorithm. This can create the problem where the amount of instances required to sufficiently train the model increases as the amount of training of the model must have instances such that the input feature space must be explored sufficiently \cite{oommen2008objective}. Further to this effect, the time and space complexity of many machine learning algorithms are functions of the feature space's dimensionality. However, existing work has demonstrated that the curse of dimensionality is not necessarily applicable to time-series data as the nature of such data explores the feature space on the condition that the signal-to-noise ratio is sufficiently high \cite{bernecker2011quality}.
 
 %%%%%%%%%%%%%%%%%%% * Okay
 %%% OVERFITTING %%%
@@ -23,12 +23,12 @@ Another problem encountered in machine learning is that of overfitting, where th
 %%%%%%%%%%%%%%%%%%%% * Okay 
 %%% INTRO TO IFA %%%
 %%%%%%%%%%%%%%%%%%%%
-In order to initially determine the feasibility of applying machine learning for detecting exercise, a simple experiment was conducted with a single subject. The intent of the experiment was to implement a similar machine learning algorithm as is described in \cite{kwapisz2011activity} to ensure understanding of the problem at hand and identify any issues with such a set-up.
+In order to initially determine the feasibility of applying machine learning for detecting exercise, a simple experiment was conducted with a single subject. The intent of the experiment was to implement a similar machine learning algorithm as is described by Kwapisz to ensure understanding of the problem at hand and identify any issues with such a set-up \cite{kwapisz2011activity}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% IFA EXPERIMENTAL SETUP %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The collection device used came in the form of a Sony Z3 mobile phone, providing kinematic sensors, of which the gyroscope, measuring the angular velocity was used. The subject had the collection device attached to their foot while they performed activities including a foot rotation exercise; walking on a flat surface; and walking up and down stairs. Additionally, noise was collected by moving the collection device in indiscriminate directions. The collection device sampled data at 200Hz on each axis, so for the purpose of assessing feasibility, this value was carried through into machine learning, using a window size of 200 samples for a classification over 1 second intervals. In this machine learning technique, the window of samples is treated as a single instance of data to be classified. Each new classification will therefore shift the window forwards by a single time step to produce a new instance.
+The collection device used came in the form of a Sony Z3 mobile phone, providing kinematic sensors, of which the gyroscope, measuring the angular velocity, was used. The subject had the collection device attached to their foot while they performed activities including a foot rotation exercise, walking on a flat surface, and walking up and down stairs. Additionally, noise was collected by moving the collection device in indiscriminate directions. The collection device sampled data at 200Hz on each axis, so for the purpose of assessing feasibility, this value was carried through into machine learning, using a window size of 200 samples for a classification over 1 second intervals. In this machine learning technique, the window of samples is treated as a single instance of data to be classified. Each new classification will therefore shift the window forwards by a single time step to produce a new instance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% MORE ON IFA SETUP %%%
@@ -72,12 +72,12 @@ This data was run through a series of tools to build a model, as described in se
 %%% TOOLS USED / PRODUCED %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Could perhaps do with more content
-Weka, a machine learning library, was used extensively for machine learning aspects. It provides a vast multitude of implemented machine learning algorithms, including various methods of evaluating the performance of these trained models \cite{holmes1994weka}.
+Weka, a machine learning library, was used extensively, as it provides a large set of implemented algorithms, allowing the creation of models and including various methods of evaluating the performance of these trained models \cite{holmes1994weka}.
 
 %%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% THE ARFF SCRIPT %%%
 %%%%%%%%%%%%%%%%%%%%%%%
-Weka accepts instances in the form of an \texttt{.arff} file, this file specifies all the classes for the classifier to accept; the inputs for the classifier; and some number of instances and their actual class, if known. In order to produce this, it is first necessary to know the desired classification over given intervals for some time series data. This is achieved by mapping a single point of interest on some time series data to a class. This mapping, along with the number of samples for each window is then passed to a script that makes windows centered on these points of interest and creates the corresponding \texttt{.arff}.
+Weka accepts instances in the form of an \texttt{.arff} file; this file specifies all the classes for the classifier to accept, the inputs for the classifier, and some number of instances and their actual class, if known. In order to produce this, it is first necessary to know the desired classification over given intervals for some time series data. This is achieved by mapping a single point of interest on some time series data to a class. This mapping, along with the number of samples for each window is then passed to a script that makes windows centered on these points of interest and creates the corresponding \texttt{.arff}.
 
 %%%%%%%%%%%%%%%%%%%% * Okay
 %%% DOWNSAMPLING %%%
