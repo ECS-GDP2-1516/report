@@ -6,7 +6,7 @@ In order to assess the overall size requirement of the completed algorithm, two 
 
 Finding the overall size of the binary file is a trivial task, simply running \verb|du -b output.bin| on a Linux-like console gives the result of 3168 bytes, or 3.09kB. However, it is important to assess the contributing factors to this size. The sections which are included in the compiled binary are \verb|.text|, which contains the program code and constant values, \verb|.data|, non-zero initialisations for the heap and finally, \verb|.ARM.exidx| which is an 8 byte section required for stack unwinding.
 
-The size of \verb|.data| can be obtained by using arm's \verb|arm-none-eabi-size| command, which mirrors the functionality of GCC's \verb|size|; this gives a size of 108 for non zero heap initialisations. The majority of this is LibC values, with the exception of 4 bytes for an array index initialised to -1 which is used by multiple functions in the algorithm.
+The size of \verb|.data| can be obtained by using arm's \verb|arm-none-eabi-size| command, which mirrors the functionality of GCC's \verb|size|; this gives a size of 108 for non-zero heap initialisations. The majority of this is LibC values, with the exception of 4 bytes for an array index initialised to -1 which is used by multiple functions in the algorithm.
 
 Finally, the size of \verb|.data|, which is now plainly 3052 bytes, must be assessed; again it is more meaningful to look into this in further detail. Fortunately, this can be performed by viewing the annotated disassembly of the binary. Table \ref{tab:prog-size} shows the breakdown of the binary file, with the values discussed in this section and the code split into logical areas.
 

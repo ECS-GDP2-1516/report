@@ -31,7 +31,7 @@ class Node
 }
 \end{lstlisting}
 
-A side effect of this is that all nodes, other than the output nodes are visited multiple times. For example, for the network below, $o_1.output()$ will loop over $m_1$, $m_2$ and $m_3$, calling \verb|output()| on each, each of which will loop over $i_1$, $i_2$ and $i_3$, meaning the input nodes will be visited a total of 3 times each. This process must then be repeated for $o_2$, causing the middle layer nodes to each be revisited, and the input layers revisited another 3 times, and again for $o_3$. In total the each input node is accessed 9 times, the middle layer 3 times each.
+A side effect of this is that all nodes, other than the output nodes are visited multiple times. For example, for the network below, $o_1.output()$ will loop over $m_1$, $m_2$ and $m_3$, calling \verb|output()| on each, each of which will loop over $i_1$, $i_2$ and $i_3$, meaning the input nodes will be visited a total of 3 times each. This process must then be repeated for $o_2$, causing the middle layer nodes to each be revisited, and the input layers revisited another 3 times, and again for $o_3$. In total each input node is accessed 9 times, the middle layer 3 times each.
 
 \begin{figure}[!h]
     \centering
@@ -62,7 +62,7 @@ class Node
 
 While this does succeed in reducing the number of unnecessary node visits, it does not eliminate them; each node in the network, other than the output nodes, are visited three times each with this implementation. This scheme also adds two new node properties which must be stored and manipulated; the side effect of this is an increase in instructions and memory requirement, which is not ideal for sub-threshold development.
 
-The algorithm itself still relies on recursion - this is also suboptimal as this requires extensive use of the stack. This should be avoided due to the fact the memory availiable on the system is very limited.
+The algorithm itself still relies on recursion - this is also suboptimal as this requires extensive use of the stack. This should be avoided due to the fact the memory available on the system is very limited.
 
 \subsubsection{The Alternative: Forward Propagation}
 

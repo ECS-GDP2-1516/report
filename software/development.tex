@@ -1,7 +1,7 @@
 \namedsection{Developing for a Limited Environment}{Shepherd}
 % This section talks about the C development
 
-The Multilayer Perceptron is a good fit for a subthreshold Cortex M0+ as it does not require a great deal of complex mathematical computation. Unfortuneately, however, it does require the use of decimal numbers and uses the sigmoid function, which requires division and power operations. This section discusses some of the design decisions and sacrifices that were made in order to implement an MLP on such a constrained system.
+The Multilayer Perceptron is a good fit for a subthreshold Cortex M0+ as it does not require a great deal of complex mathematical computation. Unfortunately, however, it does require the use of decimal numbers and uses the sigmoid function, which requires division and power operations. This section discusses some of the design decisions and sacrifices that were made in order to implement an MLP on such a constrained system.
 
 \subsection{Sigmoid Function}
 The sigmoid function is applied to each node's output, after the summation of its weighted inputs is calculated, as discussed above in section \ref{sec:weka-code}; its graph and equation is shown below in figure \ref{fig:sigmoid}. Clearly, this equation causes two issues for the proposed device: firstly, it requires division, and secondly it requires the use of the constant \verb|e|, which is a non-integer; using this in an operation involving powers could potentially prove expensive.
