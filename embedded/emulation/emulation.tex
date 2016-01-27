@@ -1,5 +1,9 @@
 \section{Processor Emulation}
 
+To emulate the sub-threshold ARM Cortex M0+ two possible methods were considered. The first was to obtain verilog code of a similar processor and run it upon an FPGA. The verilog code could potentially then be altered to provide the same constraints as the sub-threshold device. The other method considered was to obtain a development board which uses a similar processor. Upon this, to emulate the sub-threshold device, the system clock frequency can be reduced and closer attention paid to the binary uploaded and the memory it would use.
+
+The two processors considered for this were the ARM Cortex M0 and M0+, however the M0+ was quickly dismissed due to the lack of accessibility to verilog code which was available for the M0 via ARMs Design Start. The accessibility of development boards was not found to be an issue, as boards were found containing both processors. 
+
 \input{embedded/emulation/cortex}
 \input{embedded/emulation/fpga}
 \input{embedded/emulation/mbed}
