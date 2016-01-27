@@ -42,7 +42,7 @@ The next four bits contains a value for \verb|FREQSEL|, where a value within the
 		0xF & 4.6 MHz \\
 		\hline
 	\end{tabular}
-	\caption{FREQSEL table for WDTOSCCTRL register}
+	\caption{FREQSEL table for WDTOSCCTRL register~\cite{mbed_datasheet}}
 	\label{tab:freqsel}
 \end{table}
 
@@ -64,7 +64,7 @@ The next register (\verb|MAINCLKSEL|) sets the system clock to the Watchdog osci
 		0x3 & PLL output \\
 		\hline
 	\end{tabular}
-	\caption{Sources for the system clock}
+	\caption{Sources for the system clock~\cite{mbed_datasheet}}
 	\label{tab:sysclocksource}
 \end{table}
 
@@ -104,7 +104,7 @@ Within the mBed datasheet \cite{mbed_datasheet}, a methodology for calculating t
 \begin{figure}
 	\centering
 	\includegraphics[scale=.85]{usart_algorithm.png}
-	\caption{Algorithm to calculate required values for Serial baud rate}
+	\caption{Algorithm to calculate required values for Serial baud rate~\cite{mbed_datasheet}}
 	\label{fig:serial_algo}
 \end{figure}
 
@@ -116,7 +116,7 @@ Using this information, the required registers are set to enable Serial communic
 
 \subsection{Getting Sensor Data}
 
-With \todo{Should this be moved to the I2C subsection?} the sensor libraries re-written, see section~\ref{sec:mbed:i2c:lib}, to be compatible with the ARM libraries, the sensor can be interfaced with the mBed. Upon the sensor, all pins used were on Junction 4. This pins connected between the mBed and sensor were the data line, pins 28 and 3 respectively, as well as the clock line, pins 27 and 2 respectively. These pins were also connected to pull-up resistors with values of 2.2k\ohm. Power was supplied to the sensor from the mBed from its 3.3V Regulated Output which went to pin 1 of the sensor along with a common ground between the Ground pin of the mBed and pin 6 of the sensor. 
+With the sensor libraries re-written, see section~\ref{sec:mbed:i2c:lib}, to be compatible with the ARM libraries, the sensor can be interfaced with the mBed. Upon the sensor, all pins used were on Junction 4. This pins connected between the mBed and sensor were the data line, pins 28 and 3 respectively, as well as the clock line, pins 27 and 2 respectively. These pins were also connected to pull-up resistors with values of 2.2k\ohm. Power was supplied to the sensor from the mBed from its 3.3V Regulated Output which went to pin 1 of the sensor along with a common ground between the Ground pin of the mBed and pin 6 of the sensor. 
 
 Once done, it was possible to extract sensor readings from the device, depending on what data is required a variety of different functions from the library can be used.
 
