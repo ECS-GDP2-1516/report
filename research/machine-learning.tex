@@ -28,8 +28,7 @@ In order to initially determine the feasibility of applying machine learning for
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% IFA EXPERIMENTAL SETUP %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Maybe reword "random", doesn't sound right
-The collection device used came in the form of a Sony Z3 mobile phone, providing kinematic sensors, of which the gyroscope, measuring the angular velocity was used. The subject had the collection device attached to their foot while they performed activities including a foot rotation exercise; walking on a flat surface; and walking up and down stairs. Additionally, noise was collected by moving the collection device in random directions. The collection device sampled data at 200Hz on each axis, so for the purpose of assessing feasibility, this value was carried through into machine learning, using a window size of 200 samples for a classification over 1 second intervals. In this machine learning technique, the window of samples is treated as a single instance of data to be classified. Each new classification will therefore shift the window forwards by a single time step to produce a new instance.
+The collection device used came in the form of a Sony Z3 mobile phone, providing kinematic sensors, of which the gyroscope, measuring the angular velocity was used. The subject had the collection device attached to their foot while they performed activities including a foot rotation exercise; walking on a flat surface; and walking up and down stairs. Additionally, noise was collected by moving the collection device in indiscriminate directions. The collection device sampled data at 200Hz on each axis, so for the purpose of assessing feasibility, this value was carried through into machine learning, using a window size of 200 samples for a classification over 1 second intervals. In this machine learning technique, the window of samples is treated as a single instance of data to be classified. Each new classification will therefore shift the window forwards by a single time step to produce a new instance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% MORE ON IFA SETUP %%%
@@ -58,7 +57,6 @@ This data was run through a series of tools to build a model, as described in se
 	\caption{Feasibility assessment confusion matrix \label{tab:first-confusion}}
 \end{table}
 
-% Axes labels!
 \begin{figure}
 	\centering
 	\subfigure[Exercise]{\label{fig:first-exercise}\includegraphics[width=70mm]{figures/first-exercise.pdf}}
