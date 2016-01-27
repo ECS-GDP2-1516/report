@@ -1,6 +1,6 @@
 \namedsection{Space Restrictions \label{sec:space-restrictions}}{Shepherd}
 
-As highlighted in section \ref{sec:cortex-limitations}, the device has very little memory space availiable: 8kB for both program code and data. When the algorithm code was first compiled with the mBed's precompiled libraries, the total size of the binary was 12kB. The first step to solve this was to obtain the source code for the mBed libraries; compiling these directly along with the program code, offers further potencial for the compiler to optimise the link between the API and the algorithm, based on the specific usecase.
+As highlighted in section \ref{sec:cortex-limitations}, the device has very little memory space availiable: 8kB for both program code and data. When the algorithm code was first compiled with the mBed's precompiled libraries, the total size of the binary was 12kB. The first step to solve this was to obtain the source code for the mBed libraries; compiling these directly along with the program code, offers further potential for the compiler to optimise the link between the API and the algorithm, based on the specific usecase.
 
 The method was successful at reducing the total binary size to 8kB. This was a substancial improvement, however it was clear that this would need to be decreased further as an 8kB binary leaves no room for heap or stack space when the code is run.
 
@@ -26,7 +26,7 @@ void gpio_init(gpio_t *obj, PinName pin)
 }
 \end{lstlisting}
 
-Again, such a check is appropriate for an API as incorrectly passing a null pin would cause an error should the code attempt to initialise it. However, in our program we can see which pins we are passing to this function, namely the LED pins, so we can be confident that we are not passing in the null \verb|NC| pin and as such it is safe to delete the check, reducing the number of instructions required.
+Again, such a check is appropriate for an API as incorrectly passing a null pin would cause an error should the code attempt to initialise it. However, within this project's code, it is known which pins are being passed to this function, namely the LED pins, and not the null \verb|NC| pin. As such it is safe to delete the check, reducing the number of instructions required.
 
 \subsection{Device-Specific Memory Mapping}
 
