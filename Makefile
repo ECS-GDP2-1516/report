@@ -15,7 +15,7 @@ report.pdf: report.tex $(FILES) .style/ecsgdp.cls $(PLOT_TARGETS) _aux/report.bb
 	@echo ""
 
 wordcount:
-	@./texcount.pl -inc -total report.tex
+	@./texcount.pl -inc -total intro/intro.tex study/study.tex research/research.tex embedded/embedded.tex software/software.tex results/results.tex management/management.tex conclusion/conclusion.tex
 
 %.pdf: %.tex 
 	cd figures/ && lualatex --output-directory=_aux $(notdir $<)
