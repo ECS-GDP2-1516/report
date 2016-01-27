@@ -122,6 +122,8 @@ In some cases, it may be important to quantify the trade-off a classifier makes 
 \subsection{Considered Algorithms}
 % This could do with an introduction, although I can't think of anything meaningful to put here
 
+Each algorithm has some form of trade-off between computation required, memory required, and performance. It is important to understand the internal workings of these algorithms in order to assess these trade-offs.
+
 \subsubsection{Multilayer Perceptrons}
 %%%%%%%%%%% * Okay
 %%% MLP %%%
@@ -179,7 +181,7 @@ Each perceptron effectively defines a plane in $d$-dimensional space. Instances 
 %%%%%%%%%%% * Okay
 %%% RBF %%%
 %%%%%%%%%%%
-A Radial Basis Function (RBF) network is a type of Neural Network that is composed of 2 layers, an input layer and an output layer. The activation functions for this output layer are RBFs, where an RBF can be any function that is only dependent on the distance from some point. An example of a commonly used RBF is the Gaussian function. RBF networks are quite similar to MLPs, with the main difference being hidden layers and the activation function \cite{broomhead1988radial}.
+A Radial Basis Function (RBF) network is a type of Neural Network that is composed of 2 layers, an input layer and an output layer. The activation functions for this output layer are RBFs, where an RBF can be any function that is only dependent on the distance from some point. An example of a commonly used RBF is the Gaussian function, due to its ability to model many systems. RBF networks are quite similar to MLPs, with the main difference being hidden layers and the activation function \cite{broomhead1988radial}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% WHY RBF IS BAD FOR CONSTRAINED %%%
