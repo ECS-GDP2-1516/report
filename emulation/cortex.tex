@@ -4,14 +4,14 @@ This section discusses one of the main requirements and one of the essential asp
 \begin{figure}
 \centering
 \includegraphics[scale=0.7]{figures/cortexm0ds_schematic.PNG}
-\caption{Cortex M0DS schematic \label{fig:cortexm0ds}}
+\caption{Cortex M0DS schematic \cite{armdesignstart}} \label{fig:cortexm0ds}
 \end{figure}
 \clearpage
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.7]{figures/arm_cortexm0_microprocessor.PNG}
-\caption{Cortex-M0 Block Diagram \label{fig:cortex_block}}
+\caption{Cortex-M0 Block Diagram \cite{armdesignstart}} \label{fig:cortex_block}
 \end{figure}
 
 The Cortex M0 has a 32-bit reduced instruction set computing (RISC) processor. It uses the ARMv6-M(Microcontroller), which is a subset of the ARMv7-M profile but includes fewer instructions. The Cortex M0 is based on a Von-Neumann architecture, having both data and instructions share a single bus interface. It provides a Debug Extension that includes some architectural extensions to support debugging. The ARMv6-M offers support for 56 instructions as a subset of  Thumb-1(16-bit) and Thumb-2(16/32b-bit) which are present in the ARMv6T2. The Cortex M0 block diagram can be seen above in figure \ref{fig:cortex_block}. 
@@ -31,3 +31,5 @@ The Wakeup Interrupt Controller (WIC) is important for this project because it i
 Floating point is the formulaic representation for a real number for approximating it in order to obtain a balance between precision and range. Basically, it refers to the fact that a number's decimal point can "float", meaning  that is can be placed anywhere relative to significant digit from the number. One of the major challenges which were encountered in the use of the Cortex M0+ is the absence of floating point arithmetic on the device. This was mitigated by scaling each double value by $2^{12}$ and taking the integer part. After each multiplication, the value is bit-shifted by 12 to keep the scale factor consistent. This will be described late in more detail in section \ref{sec:floating-point}.
 
 Real-time integer division supplied by ARM Libraries are faster then standard division routines for larger quotients, but slower for typical  quotients. Real time division is not available in the Cortex-M0+, so this was another issues that was overcome in our design. This was done by done by finding alternative methods to avoid division. More detail about this can also be found in \ref{sec:floating-point}.
+
+Since the Cortex M0 is such a low-power, lost-cost device, it comes with its limitations. The device only offers 32kB on-chip flash programming memory and only 8kB SRAM. Basic applications have been developed for this processor, but in order to allow the implementation of a more complex program, such as exercise recognition, the code and libraries need to be very well optimised. All the unnecessary functionalities available in libraries must be disposed in order to save memory on this constrained system.

@@ -6,7 +6,7 @@
 	\caption{Cortex M0 test bench schematic} \label{fig:test_bench}
 \end{figure}
 
-Through ARM, we managed to gain access to a fixed configuration of the Cortex-M0 Processor known as Cortex-M0 DesignStart \cite{armdesignstart}. This simplified version offers us access to a Verilog version of the Cortex-M0 under the form of an obfuscated and preconfigured netlist, but it can be synthesized. This package offers us some Verilog codea test-bench which allow a simulation of the Cortex-M0 DesignStart module connected to a memory model and a clock and reset generator. It also include a basic C helloworld.c program. The schematic for the test-bench can be seen in figure \ref{fig:test_bench} and it connects the CORTEXM0DS to a memory model, a clock and a reset generators.
+Through ARM, we managed to gain access to a fixed configuration of the Cortex-M0 Processor known as Cortex-M0 DesignStart \cite{armdesignstart}. This simplified version offers us access to a Verilog version of the Cortex-M0 under the form of an obfuscated and preconfigured netlist, but it can be synthesized. This package offers us some Verilog code, a test-bench which allows a simulation of the Cortex-M0 DesignStart module connected to a memory model and a clock and reset generator. It also include a basic C helloworld.c program. The schematic for the test-bench can be seen in figure \ref{fig:test_bench} and it connects the CORTEXM0DS to a memory model, a clock and a reset generators.
 
 The tool used for simulating the test-bench is ModelSim, which is a tool that offers the possibility of simulating hardware description languages such as Verilog and VHDL. A new project must be created in ModelSim to which we add the Verilog files provided in the package, the test-bench and another binary file provided, ram.bin, which is an example memory image for the processor. The file is loaded at the beginning of the simulation by the test-bench.  The memory image is used for the helloworld.c program, which is used by the test-bench to write a message to the simulator's console and after that end the simulation. The result of the simulation can be seen in
 
@@ -77,7 +77,7 @@ This can be used to program the FPGA. Now, the implementation of the Cortex-M0+ 
 
 \subsection{System Implementation}
 
-ARM offers access to packs that makes the implementation of the Cortex M0 on the FPGA is discussed. The components which will be used are: the ARM Cortex-M0 processor, the AHB-Lite system bus and two AHB peripherals: the program memory(which will be implemented using on-chip memory blocks) and a simple LED peripheral. Some of the steps are similar for implementing the Cortex M0 on a older FPGA, but since different modules and softwares are required, it is not a fully followable guide.\todo{Add implementation reference} 
+ARM offers access to packs that makes the implementation of the Cortex M0 on the FPGA is discussed. The components which will be used are: the ARM Cortex-M0 processor, the AHB-Lite system bus and two AHB peripherals: the program memory(which will be implemented using on-chip memory blocks) and a simple LED peripheral. Some of the steps are similar for implementing the Cortex M0 on a older FPGA\cite{implementationcortexm0onnexys2}, but since different modules and softwares are required, it is not a fully followable guide.
 
 The software used for this implementation is Vivado Design Suite. This software is produced by Xilinx and is used for synthesis and analysis of HDL designs and is a improved version of the Xilinx ISE which also allows features such as system on a chip development and a high-level synthesis. A new project must be created.
 
@@ -116,7 +116,7 @@ All of these files files need to be added to a Vivado project in order to create
 \label{fig:ahblite_sys}
 \end{figure}
 
-After the project is created, the AHBALITE\_SYS.v is set as a top module since this creates the connection between all the components. This can be seen in \ref{fig:ahblite_sys} above. Because this is a Nexys4 board and the Clock Divider supplied in the package are not compatible due to the fact that it requires a Spartan 6 Series processor, a new IP needed to be created for this specific FPGA. In order to add this we need to go to Source-> New Source-> IP CORE(Generator and Architecture Wizard)-> Clocking-> Clocking Wizard. This is going to generate a system clock at 10MHz from the board's 50MHz external oscillator. In figure \ref{fig:clock}, the Input Clock Frequency is set 50 MHz and the Output Frequency to 10 MHz and it is named "uClockDiv".
+After the project is created, the AHBALITE\_SYS.v is set as a top module since this creates the connection between all the components. This can be seen in \ref{fig:ahblite_sys} above. Because this is a Nexys4 board and the Clock Divider supplied in the package are not compatible due to the fact that it requires a Spartan 6 Series processor, a new IP needed to be created for this specific FPGA. In order to add this we need to go to Source-New Source-IP CORE(Generator and Architecture Wizard)-Clocking-Clocking Wizard. This is going to generate a system clock at 10MHz from the board's 50MHz external oscillator. In figure \ref{fig:clock}, the Input Clock Frequency is set 50 MHz and the Output Frequency to 10 MHz and it is named "uClockDiv".
 
 \begin{figure}
 \centering
@@ -128,7 +128,7 @@ After the project is created, the AHBALITE\_SYS.v is set as a top module since t
 Since the user constraint file supplied is meant to be used to a Spartan 6 Series FPGA board, the user constraint file needed modifications in order to fit the Artix-7 FPGA. The UCF can be seen in appendix. After this, the top module of the simulation can be implemented and translated int o a .bit file which is used to program the FPGA.
 
 \subsection{Functional Simulation}
-Due to some unplanned delays in acquiring certain documentations, delays in obtaining licenses for the various software used and difficulties encountered during the creation of a proper .bit file, a functional simulation was not properly conducted..A basic simulation of the Cortex M0 was presented in \ref{sec:cortex}.  The functional simulation of the system verifies if the signal in HRDATA are the ones expected and if it works as expected. Vivado Hardware Debug is the Vivado tool used for debugging. This is accessed by going to Design->View:Simulation. If a complete functional would have been performed, a run-time simulation needs to also be performed. On-chip debugging tools such as ChipScope are required in order to perform this sort of simulation. Inside the analysis, these AHB signals need to be evaluated to see if they work correspondingly: 
+Due to some unplanned delays in acquiring certain documentations, delays in obtaining licenses for the various software used and difficulties encountered during the creation of a proper .bit file, a full functional simulation was not properly conducted.A basic simulation of the Cortex M0 was presented in \ref{sec:cortex}.  The functional simulation of the system verifies if the signal in HRDATA are the ones expected and if it works as expected. Vivado Hardware Debug is the Vivado tool used for debugging. This is accessed by going to Design->View:Simulation. If a complete functional would have been performed, a run-time simulation needs to also be performed. On-chip debugging tools such as ChipScope are required in order to perform this sort of simulation. Inside the analysis, these AHB signals need to be evaluated to see if they work correspondingly: 
 HADDR[31:0] 
 HWDATA[31:0]
 HRDATA[31:0]
@@ -138,5 +138,5 @@ HSIZE[2:0]
 HTRANS[1:0]
 HRESP
 
-\subsection{Conclusion}
+\subsection{Decision on final prototype}
 The team decided that the mBed platform had a better progress and would be more suitable for our final design since it's small size will allow strapping it people, opposed to the FPGA board which was much greater in size. Because of this, I stopped attempting to implement the Cortex M0 and redirected my attention to other aspects of the project where is was more necessary. Next, the successful section prototype of our project which was implemented on the mBed will be discussed.
