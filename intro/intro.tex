@@ -8,7 +8,7 @@ ARM is currently investigating the concept of a sub threshold Cortex-M0+ \cite{a
 
 \namedsection{Project Overview}{Finch}
 
-The particular algorithm that is to be developed is a way to identify and monitor exercises performed by a human wearer. These are specifically exercises which can be done on aeroplanes to reduce the risk of suffering from Deep Vein Thrombosis, a condition where a blood clot can form in one of the deep veins in the body, most commonly the legs. This can lead to further complications such as pulmonary embolism which occurs when part of the blood clot moves and blocks a blood vessel in the lungs \cite{dvt}. Long-haul flights can increase the risk of getting DVT because of the long periods of time sitting down and not moving which reduces circulation in the legs.
+The particular algorithm that the group developed is a way to identify and monitor exercises performed by a human wearer. These are specifically exercises which can be done on aeroplanes to reduce the risk of suffering from Deep Vein Thrombosis, a condition where a blood clot can form in one of the deep veins in the body, most commonly the legs. This can lead to further complications such as pulmonary embolism which occurs when part of the blood clot moves and blocks a blood vessel in the lungs \cite{dvt}. Long-haul flights can increase the risk of getting DVT because of the long periods of time sitting down and not moving which reduces circulation in the legs.
 
 \begin{figure}[h]
   \centering
@@ -21,21 +21,21 @@ Figure \ref{fig:exercises} shows some of the in-flight exercises which can be pe
 
 Possible uses of the algorithm would be to incorporate it into a device which could be given to passengers to strap to their legs. It would then monitor how much exercise each person was doing. This could help inform the passengers whether or not they are doing enough exercise to stay risk free. The device itself could make use of energy efficient technologies (for example the Cortex-M0+) so that its battery could easily last the entire duration of a long-haul fight.
 
-\namedsection{Project Requirements }{Finch \& Shepherd}
+\namedsection{Project Requirements }{Finch}
 
 The main requirement of this project is to develop an algorithm which is capable of detecting and monitoring exercises on a sub threshold Cortex-M0+. This processor is clocked at 100 kHz, although it can increase to 3 MHz if required. However, the lower the clock speed the better as this would clearly require less power.
 
 Additionally, 8 kB is imposed as the memory limit for both program code and data in order for the algorithm to be capable of running on the sub threshold Cortex-M0+. Again, the lower this can be the better as it opens up the possibility for the system to require even less power.
 
-As the proposed sub threshold Cortex-M0+ is still in development, it is not readily available for the group to use; consequently, the team will be required to investigate alternatives to emulate the processor. These alternatives must allow the clock speeds to be adjusted based on the efficiency and requirements of the algorithm. The challenges involved in this are discussed in the hardware chapter of this report.
+As the proposed sub threshold Cortex-M0+ is still in development, it is not readily available for the group to use; consequently, the team was required to investigate alternatives to emulate the processor. These alternatives must allow the clock speeds to be adjusted based on the efficiency and requirements of the algorithm. The challenges involved in this are discussed in the Embedded Development chapter of this report.
 
-Research and analysis of the algorithms used for exercise detection which currently exist, specifically focusing on Machine Learning techniques, must also be carried out. On top of this, an investigation into the tools and techniques which can be used, along with the methods by which the effectiveness of trained algorithms can be evaluated is also necessary. This is documented in the research and design section of the report.
+Research and analysis of the algorithms used for exercise detection which currently exist, specifically focusing on Machine Learning techniques, was also carried out. On top of this, an investigation into the tools and techniques which can be used, along with the methods by which the effectiveness of trained algorithms can be evaluated was also necessary. This is documented in the research and design section of the report.
 
 Following on from this, the ways in which the algorithm can be optimised to run on a such constrained system must also be explored. The way this was done is examined in the software development chapter.
 
-Another requirement of the project is to perform a user study to collect movement data of the exercises which can be used to develop the algorithm. This is so that a range of data from a selection of different people can be used because each individual is likely to perform the exercises with slight variations. The details of this can be found in the user study chapter.
+Another requirement of the project was to perform a user study to collect movement data of the exercises which can be used to develop the algorithm. This is so that a range of data from a selection of different people can be used because each individual is likely to perform the exercises with slight variations. The details of this can be found in the user study chapter.
 
-Finally, the accuracy of the developed algorithm must be calculated. The specifics of this are outlined in the results chapter.
+Finally, the accuracy of the developed algorithm is calculated; the specifics of this are outlined in the results chapter.
 Below, the requirements of this project are given in explicit detail.
 
 \namedsection{Detailed Requirements}{Finch}
