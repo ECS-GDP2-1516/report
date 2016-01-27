@@ -249,6 +249,7 @@ The number of classes to classify was considered as a variable parameter for the
 %The user study was performed on a number subjects, where both accelerometer and gyroscope data was collected for multiple activities.
 
 \begin{figure}
+	\centering
 	\includegraphics[width=\linewidth]{subject-fold-results.pdf}
 	\caption{Subject Performance with Different Sensors and Algorithms \label{fig:subfold}}
 \end{figure}
@@ -286,10 +287,13 @@ Further analysis of the subject performance results show a large difference in p
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 A noteworthy observation about the results was that after the first day of data collection, the performance of the model produced on this data was very poor. However, as the number of subjects increased after successive data collection days, so did the performance of the system. This would indicate that the algorithm was not able to fit properly on a small number of subjects, and that the introduction of more subjects was able to at least in part negate this.
 
+\subsection{Algorithm Selection}
 %%%%%%%%%%%%%%%%%%%%%%%%%%% *Okay
 %%% ALGORITHM SELECTION %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-The main contenders for the algorithm were the MLP and RBF networks due to high performance while having relatively low complexity, allowing them to be implemented without too much difficulty. Between these two algorithms, there was only a slight performance decrease in favour of the RBF network under some conditions, however, given the complexity of the RBF network's requirement for computing RBFs, this could create issues, especially given hardware constraints regarding a floating point number implementation. On the other hand, the MLP is very simple and approximations can be made such that only integers are required. For this reason, the MLP was selected to be used. As seen previously, 20Hz appeared to be the optimal sampling frequency, so this was selected to be used. The number of hidden layers is a trade-off between resources and performance, and it was decided that 2 hidden layers would provide sufficient performance while allowing for a reasonable demonstration of constrained machine learning.
+A set of algorithms, including some that were not suitable for constrained device, were tested in an attempt to discern what performance would be available should there be no constraints, allowing the best available performance to be compared to achieved performance. The results for these algorithms are shown in figure \ref{fig:classifiers}. All these algorithms were tested using a sampling frequency of 20Hz, as this appeared to be a suitable trade-off between performance and constraints. These results show some slight parameter manipulation for the MLP and kNN algorithms, where h is the number of hidden layers and k is the number of nearest neighbours.
+
+The main contenders for the algorithm were the MLP and RBF networks due to high performance while having relatively low complexity, allowing them to be implemented without too much difficulty. Between these two algorithms, there was only a slight performance decrease in favour of the RBF network under some conditions, however, given the complexity of the RBF network's requirement for computing RBFs, this could create issues, especially given hardware constraints regarding a floating point number implementation. On the other hand, the MLP is very simple and approximations can be made such that only integers are required. For this reason, the MLP was selected to be used. The number of hidden layers is a trade-off between resources and performance, and it was decided that 2 hidden layers would provide sufficient performance while allowing for a reasonable demonstration of constrained machine learning.
 
 The model for this algorithm was trained on the data collected from the user study using the parameters aforementioned. The resultant confusion matrix (table \ref{tab:final-confusion}) shows good performance, with a $\kappa$ = 0.8003.
 
@@ -307,3 +311,9 @@ The model for this algorithm was trained on the data collected from the user stu
 	\end{tabular}
 	\caption{Final model confusion matrix \label{tab:final-confusion}}
 \end{table}
+
+\begin{figure}
+	\centering
+	\includegraphics{figures/classifiers.pdf}
+	\caption{Performance statistics for various classifiers \label{fig:classifiers}}
+\end{figure}
