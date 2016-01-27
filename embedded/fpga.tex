@@ -133,15 +133,14 @@ After the project is created, the \verb|AHBALITE_SYS.v| is set as a top module s
 Since the user constraint file supplied is meant to be used to a Spartan 6 Series FPGA board, the user constraint file needed modifications in order to fit the Artix-7 FPGA. The UCF can be seen in appendix \ref{ch:ucffile}. After this, the top module of the simulation can be implemented and translated int o a .bit file which is used to program the FPGA.
 
 \subsection{Functional Simulation}
-Due to some unplanned delays in acquiring certain documentations, delays in obtaining licenses for the various software used and difficulties encountered during the creation of a proper .bit file, a full functional simulation was not properly conducted. A basic simulation of the Cortex M0 was presented in \ref{sec:cortex}.  The functional simulation of the system verifies if the signal in HRDATA are the ones expected and if it works as expected. Vivado Hardware Debug is the Vivado tool used for debugging. This is accessed by going to Design-View:Simulation. If a complete functional would have been performed, a run-time simulation needs to also be performed. On-chip debugging tools such as ChipScope are required in order to perform this sort of simulation. Inside the analysis, these AHB signals need to be evaluated to see if they work correspondingly: 
-HADDR[31:0] 
-HWDATA[31:0]
-HRDATA[31:0]
-HWRITE
-HREADY
-HSIZE[2:0]
-HTRANS[1:0]
-HRESP
-
-\subsection{Decision on final prototype}
-The team decided that the mBed platform had a better progress and would be more suitable for our final design since it's small size will allow strapping it people, opposed to the FPGA board which was much greater in size. Because of this, I stopped attempting to implement the Cortex M0 and redirected my attention to other aspects of the project where is was more necessary. Next, the successful section prototype of our project which was implemented on the mBed will be discussed.
+Due to some unplanned delays in acquiring certain documentation, delays in obtaining licenses for the various software used, and difficulties encountered during the creation of a proper .bit file, a full functional simulation was not properly conducted. A basic simulation of the Cortex M0 was presented in section~\ref{sec:cortex}.  The functional simulation of the system verifies if the signal in \verb|HRDATA| are the ones expected and if it works as expected. This is accessed by going to Design-View:Simulation. If a complete functional would have been performed, a run-time simulation needs to also be performed. On-chip debugging tools such as ChipScope are required in order to perform this sort of simulation. Inside the analysis, these AHB signals need to be evaluated to see if they work correspondingly: 
+\begin{itemize}
+\item \verb|HADDR|[31:0] 
+\item \verb|HWDATA|[31:0]
+\item \verb|HRDATA|[31:0]
+\item \verb|HWRITE|
+\item \verb|HREADY|
+\item \verb|HSIZE|[2:0]
+\item \verb|HTRANS|[1:0]
+\item \verb|HRESP|
+\end{itemize}
