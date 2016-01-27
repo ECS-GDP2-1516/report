@@ -4,7 +4,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% * Rewritten
 %%% WHAT IS MACHINE LEARNING? %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Machine learning is a technique that takes some observations about a system in addition to some desired outputs, building a model around these parameters and uses this model to create predictions about the output for other observed data. There are typically three categories of machine learning algorithm: classification, where the output is in a finite set of classes; regression, where the output is continuous; and clustering, where the output of the algorithm are the groupings of observed data. In order to detect exercise, a supervised classifying machine learning algorithm will be most suitable, with the classes being types of activity observed.
+Machine learning is a technique that takes some observations about a system in addition to some desired outputs, builds a model around these parameters and uses this model to create predictions about the output for other observed data. There are typically three categories of machine learning algorithm: classification, where the output is in a finite set of classes; regression, where the output is continuous; and clustering, where the output of the algorithm are the groupings of observed data. In order to detect exercise, a supervised classifying machine learning algorithm will be most suitable, with the classes being types of activity observed.
 
 \subsection{Considered Issues}
 
@@ -84,7 +84,7 @@ Weka accepts instances in the form of an \texttt{.arff} file, this file specifie
 %%%%%%%%%%%%%%%%%%%% * Okay
 %%% DOWNSAMPLING %%%
 %%%%%%%%%%%%%%%%%%%%
-Data collection is already an expensive task in terms of time consumed. It was therefore deemed infeasible to sample at multiple frequencies on top of all the variables being explored during data collection. Further to this, the device being used for data collection was not flexible enough in terms of allowable sampling frequencies. To allow for analysis of multiple sampling frequencies at a later data, sampling was done at 200Hz, the fastest the collection device would allow. Any collected data could then be downsampled, which was achieved by taking the closest sample to $n/f$ where f is the frequency to downsample to.
+Data collection is already an expensive task in terms of time consumed. It was therefore deemed infeasible to sample at multiple frequencies on top of all the variables being explored during data collection. Further to this, the device being used for data collection was not flexible enough in terms of allowable sampling frequencies. To allow for analysis of multiple sampling frequencies at a later data, sampling was done at 200Hz, the fastest the collection device would allow. Any collected data could then be downsampled, which was achieved by taking the closest samples to $n/f$ where $f$ is the frequency to downsample to and $n$ is any natural number.
 
 %%%%%%%%%%%%%%%%%%%%%% * Okay
 %%% CLASSIFICATION %%%
