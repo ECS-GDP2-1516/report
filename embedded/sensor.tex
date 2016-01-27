@@ -6,7 +6,7 @@ The primary usage of the sensor to the project, are the 3-axis accelerometer and
 
 When reading values from the sensor, the raw value is received. This is a value in the range -32768 to 32767 which then needs to be translated to an actual value. The relationship between the raw value and the actual value is dependant on the sensitivity configured for the accelerometer or gyroscope. The typical values for the sensitivity are $\pm 2g$ and $\pm 250~\degree / sec$ respectively. The sensitivity can be considered the maximum value that the sensor will provide, ie the sensitivity values are also the values at either end of the raw value range. This leaves a linear scale in between allowing for easy calculation of the reading given the sensitivity and the raw value. For example, a range of $\pm 2g$ and a raw value of -32768, -16384 and 0 would give actual values of -2, -1 and 0 respectively. Thus, it can be inferred that the greater the sensitivity, the lower the resolution available. \cite{sensor_raw_explanation}
 
-An advantage of the MPU6050 is that it allows control of whether individual axes of the accelerometer or gyroscope is in standby or not. This allows to disable the axes which are not required, for example if only the accelerometer is required, all three axes of the gyroscope could be put into standby mode. This is controlled within Register 108 (Power Management 2) where the lowest six bits control the different axe,s as described in Table~\ref{tab:sensor:power}, and setting the corresponding bits to 1 sets that axis into standby mode.
+An advantage of the MPU6050 is that it allows control of whether individual axes of the accelerometer or gyroscope is in standby or not. This allows to disable the axes which are not required, for example if only the accelerometer is required, all three axes of the gyroscope could be put into standby mode. This is controlled within Register 108 (Power Management 2) where the lowest six bits control the different axe,s as described in table~\ref{tab:sensor:power}, and setting the corresponding bits to 1 sets that axis into standby mode.
 
 \begin{table}
 	\centering
@@ -28,7 +28,7 @@ An advantage of the MPU6050 is that it allows control of whether individual axes
 
 \subsection{Gyroscope}
 
-The gyroscope can operate at a variety of sensitivities, from $\pm 250$ to $\pm 2000~\degree / sec$ and while active draws $3.6mA$. The sensitivity can be configured within Register 27 (Gyroscope Configuration). Bits 4 and 3 contains a value telling the sensor what sensitivity to use, these values and corresponding sensitivities can be seen in Table~\ref{tab:gyro:range}. \cite{sensor_registers}
+The gyroscope can operate at a variety of sensitivities, from $\pm 250$ to $\pm 2000~\degree / sec$ and while active draws $3.6mA$. The sensitivity can be configured within Register 27 (Gyroscope Configuration). Bits 4 and 3 contains a value telling the sensor what sensitivity to use, these values and corresponding sensitivities can be seen in table~\ref{tab:gyro:range}. \cite{sensor_registers}
 
 \begin{table}
 	\centering
@@ -48,7 +48,7 @@ The gyroscope can operate at a variety of sensitivities, from $\pm 250$ to $\pm 
 
 \subsection{Accelerometer}
 
-The sensitivities that the accelerometer can operate at range between $\pm 2$ to $\pm 16g$ and typically under normal operation draws $500\mu A$. The sensitivity can be configured within Register 28 (Accelerometer configuration) in bits 4 and 3. Possible values within these two bits as well as corresponding sensitivities can be seen in Table~\ref{tab:accel:range}. \cite{sensor_registers}
+The sensitivities that the accelerometer can operate at range between $\pm 2$ to $\pm 16g$ and typically under normal operation draws $500\mu A$. The sensitivity can be configured within Register 28 (Accelerometer configuration) in bits 4 and 3. Possible values within these two bits as well as corresponding sensitivities can be seen in table~\ref{tab:accel:range}. \cite{sensor_registers}
 
 \begin{table}
 	\centering
@@ -66,9 +66,9 @@ The sensitivities that the accelerometer can operate at range between $\pm 2$ to
 	\label{tab:accel:range}
 \end{table}
 
-The sensor also supports a low power accelerometer which uses only the accelerometer at a configured frequency. This takes less current than typical usage, however is dependant on the sampling frequency of the accelerometer, see Table~\ref{tab:sensor:wake}. This is done by putting the device into a cyclic sleep mode where it wakes up at the wake frequency to take a single set of readings from the accelerometer before going back to sleep. 
+The sensor also supports a low power accelerometer which uses only the accelerometer at a configured frequency. This takes less current than typical usage, however is dependant on the sampling frequency of the accelerometer, see table~\ref{tab:sensor:wake}. This is done by putting the device into a cyclic sleep mode where it wakes up at the wake frequency to take a single set of readings from the accelerometer before going back to sleep. 
 
-To accomplish this, two registers need to be interacted with, Registers 107 and 108, which are Power Management 1 and 2 respectively. Within Register 108, all gyroscope axes need to put into standby mode as described earlier. Within Register 107, the \verb|CYCLE| bit needs to be set as 1 which enables cycle mode. It also requires the \verb|SLEEP| bit set to 0 for the cycle mode to be activated. The next bit is the \verb|TEMP_DIS| bit which disables the temperature sensor when set to 1. These three bits are bits 5, 6, and 3 respectively. Finally, within register 108, the \verb|LP_WAKE_CTRL| bits need to be set which controls the frequency of the device waking up, and hence the frequency of the accelerometer readings. These are bits 7 and 6, and are described in Table~\ref{tab:sensor:wake} along with typical current consumptions of each. 
+To accomplish this, two registers need to be interacted with, Registers 107 and 108, which are Power Management 1 and 2 respectively. Within Register 108, all gyroscope axes need to put into standby mode as described earlier. Within Register 107, the \verb|CYCLE| bit needs to be set as 1 which enables cycle mode. It also requires the \verb|SLEEP| bit set to 0 for the cycle mode to be activated. The next bit is the \verb|TEMP_DIS| bit which disables the temperature sensor when set to 1. These three bits are bits 5, 6, and 3 respectively. Finally, within register 108, the \verb|LP_WAKE_CTRL| bits need to be set which controls the frequency of the device waking up, and hence the frequency of the accelerometer readings. These are bits 7 and 6, and are described in table~\ref{tab:sensor:wake} along with typical current consumptions of each. 
 
 \begin{table}
 	\centering

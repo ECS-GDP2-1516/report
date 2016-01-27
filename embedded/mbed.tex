@@ -3,26 +3,21 @@
 \subsection{I2C Communication}
 
 \subsubsection{Sensor library}
+\label{sec:mbed:i2c:lib}
 
-The \todo{Go through all tables and add references where required} sensor used in this project, the MPU6050 within a Xadow board, has an online library available \cite{sensory_library}. It contains two separate classes, one called I2Cdev and the other MPU6050. 
+The \todo{Go through all tables and add references where required} sensor used in this project, the MPU6050 within a Xadow board, has an online library available \cite{sensory_library}. It contains two separate classes, one called I2Cdev and the other MPU6050. The I2Cdev class contains an interface to the processors I2C class expanding its functionality and allowing for more abstract functions for the MPU6050 class. For example, functionality for reading or writing multiple bytes or words were implemented within this class. The MPU6050 class contains the functionality for configuring the sensor itself as well as reading data that it collects. It uses the I2Cdev class for communicating with the sensor.
 
-The I2Cdev class contains an interface to the processors I2C class expanding its functionality and allowing for more abstract functions for the MPU6050 class. For example, functionality for reading or writing multiple bytes or words were implemented within this class.
-
-The MPU6050 class contains the functionality for configuring the sensor itself as well as reading data that it collects. It uses the I2Cdev class for communicating with the sensor.
-
-The libraries are written for use with the Atmel chipset which use different libraries than those used by the ARM chipset. This poses a small issue as this means that the I2Cdev class would be incompatible for the ARM chip in use. In turn, due to the reliance on this class by the MPU6050 class, it would also be incompatible. 
-
-This can easily be rectified by re-writing the I2Cdev class to make it compatible with the ARM libraries, which would also make the MPU6050 compatible.
+The libraries are written for use with the Atmel chipset which use different libraries than those used by the ARM chipset. This poses a small issue as this means that the I2Cdev class would be incompatible for the ARM chip in use. In turn, due to the reliance on this class by the MPU6050 class, it would also be incompatible. This can easily be rectified by re-writing the I2Cdev class to make it compatible with the ARM libraries, which would also make the MPU6050 compatible.
 
 \subsection{Watchdog Oscillator}
 
-As mentioned before, one of the objectives of this project is to operate at a low operating frequency. It has already been seen that the Watchdog oscillator can operate in the desired frequency range using an analog clock as well as a divisor. 
+As mentioned in section~\ref{sec:intro:req}, one of the objectives of this project is to operate at a low operating frequency. It has already been seen in section~\ref{sec:emu:mbed:why} that the Watchdog oscillator can operate in the desired frequency range using an analog clock as well as a divisor. 
 
-To configure the Watchdog oscillator, it needs to be configured, powered on and then switched to. To do this, there are four registers that need interaction with to complete. The first register is the Watchdog oscillator control register (\verb|WDTOSCCTRL|) which contains the \verb|DIVSEL| and \verb|FREQSEL| talked about earlier. 
+To use the Watchdog oscillator as the system clock, it had to be configured, powered on and then switched to. To do this, there are four registers that need interaction with to complete. The first register is the Watchdog oscillator control register (\verb|WDTOSCCTRL|) which contains the \verb|DIVSEL| and \verb|FREQSEL| talked about earlier. 
 
-The lowest five bits of the register contains the unsigned value of \verb|DIVSEL|, hence allowing it to be within the range $ 0 \leq $ \verb|DIVSEL| $ \leq 31$. Thus, allowing for the divisor being within the range $ 2 \leq $ divisor $ \leq 64$.
+The lowest five bits of the register contains the unsigned value of \verb|DIVSEL|, hence allowing it to be within the range $ 0 \leq $ \verb|DIVSEL| $ \leq 31$. Thus, allowing for the divisor being within the range $ 2 \leq $ divisor $ \leq 64$ from the equation~\ref{eq:wdt_osc_clk}.
 
-The next four bits contains a value for \verb|FREQSEL|, where a value within the register corresponds to a different frequency with the relationship that can be seen in Table~\ref{tab:freqsel}.
+The next four bits contains a value for \verb|FREQSEL|, where a value within the register corresponds to a different frequency with the relationship that can be seen in table~\ref{tab:freqsel}.
 
 \begin{table}
 	\centering
@@ -55,7 +50,7 @@ With the available frequency values and divisors, it confirms the range that the
 
 The next register is the Power configuration register (\verb|PDRUNCFG|), which controls the power distribution to various analog blocks. At reset, the Watchdog oscillator is not powered meaning that before switching the system clock to it, it requires to be powered on. The bit that controls this is the sixth bit within the register, and toggling that bit to a value of 0 powers up the Watchdog oscillator. 
 
-The next register (\verb|MAINCLKSEL|) sets the system clock to the Watchdog oscillator from the default IRC oscillator. This is stored in the lowest two bits of the register and potential values can be seen in Table~\ref{tab:sysclocksource}. As can be seen, for the system clock to use the Watchdog oscillator, the bottom two bits of the register need to be 0x2.
+The next register (\verb|MAINCLKSEL|) sets the system clock to the Watchdog oscillator from the default IRC oscillator. This is stored in the lowest two bits of the register and potential values can be seen in table~\ref{tab:sysclocksource}. As can be seen, for the system clock to use the Watchdog oscillator, the bottom two bits of the register need to be 0x2.
 
 \begin{table}
 	\centering
@@ -79,11 +74,11 @@ After all the register changes have taken effect, the system clock is configured
 
 \subsubsection{Analysing the error margin}
 
-It is known that the Watchdog oscillator has an error margin of $ \pm 40\%$, the actual impact this would have however is unknown. According to the data sheet \cite{mbed_not_datasheet}, the primary reason for this is temperature. Due to the conditions that the device is intended for, upon a plane, the ambient temperature can be assumed to not be at extreme temperatures in either direction, hence should not be an issue. There was a hypothesis that the power supply voltage could also affect the frequency of the oscillator. 
+Earlier it was mentioned that the Watchdog oscillator has an error margin of $ \pm 40\%$, the actual impact this would have however is unknown. According to the data sheet \cite{mbed_not_datasheet}, the primary reason for this is temperature. Due to the conditions that the device is intended for, upon a plane, the ambient temperature can be assumed to not be at extreme temperatures in either direction, hence should not be an issue.
 
-To test this, the supply voltage for the mBed is varied and the output frequency of the oscillator is checked. There was an issue due to the fact that the mBed does not provide a breakout pin for the CLKOUT pin. To get around this, the while loop is programmed to contain only toggling a pin. The act of toggling the pin should take a constant number of cycles each time, hence the frequency of that pin should be proportional to the frequency of the clock. Hence, can be used to measure deviations in the system clock.
+There was a hypothesis that the power supply voltage could also affect the frequency of the oscillator. To test this, the supply voltage for the mBed is varied and the output frequency of the oscillator was checked. There was an issue due to the fact that the mBed does not provide a breakout pin for the \verb|CLKOUT|. To get around this, the while loop within the \verb|main()| function was programmed to contain only toggling a pin. The act of toggling the pin should take a constant number of cycles each time, hence the frequency of that pin should be proportional to the frequency of the clock. Hence, this can be used to measure deviations in the system clock.
 
-Implementing this with the watchdog oscillator using a FCLKANA of 0x1 (0.6 MHz) and a DIVSEL of 2 (Divisor of 6), the Watchdog oscillator oscillates at 100 kHz. Measuring the frequency of the pin over a range of voltages shows no change in frequency, hence disproving the hypothesis that the voltage would also affect the operating frequency.
+Implementing this with the watchdog oscillator using a \verb|FCLKANA| of 0x1 (0.6 MHz) and a \verb|DIVSEL| of 2 (Divisor of 6), the Watchdog oscillator oscillates at 100 kHz. Measuring the frequency of the pin over a range of voltages shows no change in frequency, hence disproving the hypothesis that the voltage would also affect the operating frequency.
 
 \subsection{Serial Communication}
 
@@ -93,18 +88,18 @@ This communication was done when the device was operating at its default frequen
 
 \subsubsection{Serial Divisor}
 
-To enable the device to communicate with the desired baud rate when the system clock is set at a lower frequency, the divisor needs to be configured. There are multiple registers that need to be modified to achieve this. The first two are the DLL and DLM registers. These registers, within the lowest eight bits, contain the DLL and DLM bytes respectively, where DLL is the least significant byte of the Divisor Latch (DL) and DLM is the most significant byte.
+To enable the device to communicate with the desired baud rate when the system clock is set at a lower frequency, the divisor needs to be configured. There are multiple registers that need to be modified to achieve this. The first two are the \verb|DLL| and \verb|DLM| registers. These registers, within the lowest eight bits, contain the \verb|DLL| and \verb|DLM| bytes respectively, where \verb|DLL| is the least significant byte of the Divisor Latch (\verb|DL|) and \verb|DLM| is the most significant byte.
 
-For access to be granted to the DL, the Divisor Latch Access Bit (DLAB) needs to be set. This value is stored within the Line Control Register as the seventh bit. The final register is the Fractional Divide Register which contains the DIVADDVAL and MULVAL values. DIVADDVAL is stored within the lowest four bits, whilst MULVAL is stored within the next four lowest bits. 
+For access to be granted to the \verb|DL|, the Divisor Latch Access Bit (\verb|DLAB|) needs to be set. This value is stored within the Line Control Register as the seventh bit. The final register is the Fractional Divide Register which contains the \verb|DIVADDVAL| and \verb|MULVAL| values. \verb|DIVADDVAL| is stored within the lowest four bits, whilst \verb|MULVAL| is stored within the next four lowest bits. 
 
-Using these values, the baud rate can be calculated using Equation~\ref{eq:serial_baud_rate} where PCLK is the clock frequency\cite{mbed_datasheet}.
+Using these values, the baud rate can be calculated using equation~\ref{eq:serial_baud_rate} where \verb|PCLK| is the clock frequency\cite{mbed_datasheet}.
 
 \begin{equation}
 	\label{eq:serial_baud_rate}
 	UART_{baud rate} = \frac{PCLK}{16 * (256 * DLM + DLL) * (1 + \frac{DivAddVal}{MulVal})}
 \end{equation}
 
-Within the mBed datasheet \cite{mbed_datasheet}, a methodology for calculating these values is provided which can be seen in Figure~\ref{fig:serial_algo}. Along with the algorithm, a look up table is provided which can be used to translate a FR value to DIVADDVAL and MULVAL values. 
+Within the mBed datasheet \cite{mbed_datasheet}, a methodology for calculating these values is provided which can be seen in figure~\ref{fig:serial_algo}. Along with the algorithm, a look up table is provided which can be used to translate a \verb|FR|, from the method, value to \verb|DIVADDVAL| and \verb|MULVAL| values. 
 
 \begin{figure}
 	\centering
@@ -115,35 +110,21 @@ Within the mBed datasheet \cite{mbed_datasheet}, a methodology for calculating t
 
 \subsubsection{Auto-Baud}
 
-Another option to account for this is a feature provided within the processor called Auto-Baud\cite{mbed_datasheet}. This is where the device waits on receiving communication upon its RX pin and of the data coming in, it measures the baud rate between a falling edge and a subsequent rising or falling edge depending on the mode set within the registers.
+Another option to account for this is a feature provided within the processor called Auto-Baud~\cite{mbed_datasheet}. This is where the device waits on receiving communication upon its RX pin and, of the data coming in, it measures the baud rate between a falling edge and a subsequent rising or falling edge depending on the mode set within the registers.
 
-Using this information, the required registers are set to enable Serial communication such that the device can communicate at the required baud rate. To enable an effective method for enabling auto baud, a python script was created which can be used on the host PC. This script continuously sends the character 'g' whilst also receiving and printing bytes. The continuous stream of 'g's gives a signal for auto baud to configure itself and should the device be reset during communication it will be configured automatically after reset should the script be running.
+Using this information, the required registers are set to enable Serial communication such that the device can communicate at the required baud rate. To enable an effective method for enabling auto baud, a python script was created which can be used on the host PC. This script continuously sent the character 'g' whilst also receiving and printing bytes. The continuous stream of 'g's gives a signal for auto baud to configure itself and should the device be reset during communication it will be configured automatically after reset should the script be running.
 
 \subsection{Getting Sensor Data}
 
-With \todo{Should this be moved to the I2C subsection?} the sensor libraries re-written to be compatible with the ARM libraries, the sensor can be interfaced with the mBed. Upon the sensor, all pins used were on Junction 4. This pins connected between the mBed and sensor were the data line, pins 28 and 3 respectively, as well as the clock line, pins 27 and 2 respectively. These pins were also connected to pull-up resistors with values of 2.2k\ohm. Power was also supplied to the sensor from the mBed from its 3.3V Regulated Output which went to pin 1 of the sensor along with a common ground between the Ground pin of the mBed and pin 6 of the sensor. 
+With \todo{Should this be moved to the I2C subsection?} the sensor libraries re-written, see section~\ref{sec:mbed:i2c:lib}, to be compatible with the ARM libraries, the sensor can be interfaced with the mBed. Upon the sensor, all pins used were on Junction 4. This pins connected between the mBed and sensor were the data line, pins 28 and 3 respectively, as well as the clock line, pins 27 and 2 respectively. These pins were also connected to pull-up resistors with values of 2.2k\ohm. Power was supplied to the sensor from the mBed from its 3.3V Regulated Output which went to pin 1 of the sensor along with a common ground between the Ground pin of the mBed and pin 6 of the sensor. 
 
 Once done, it was possible to extract sensor readings from the device, depending on what data is required a variety of different functions from the library can be used.
-
-\begin{description}
-	\item[Accelerometer X axis] \hfill \\ getAccelerationX
-	\item[Accelorometer Y axis] \hfill \\ getAccelerationY
-	\item[Accelorometer Z axis] \hfill \\ getAccelerationZ
-	\item[Accelerometer all axis] \hfill \\ getAcceleration
-	\item[Gyroscope X axis] \hfill \\ getRotationX
-	\item[Gyroscope Y axis] \hfill \\ getRotationY
-	\item[Gyroscope Z axis] \hfill \\ getRotationZ
-	\item[Gyroscope all axis] \hfill \\ getRotation
-	\item[Accelerometer and Gryoscope all axis] \hfill \\ getMotion6
-\end{description}
-
-\todo{Do something about this}
 
 Thus allowing for a variety of possibilities for obtaining data from the sensor, as should only certain data be required, a function can be chosen which reduces the amount of data being received, hence reducing the communication time between the mBed and sensor.
 
 \subsection{Getting the desired sampling rate}
 
-The model employed requires a set sampling rate, and to minimise the communication between the mBed and device to minimise processing, the mBed should sample the sensor at the sampling rate required by the model. To achieve this, there a few different parameters tweaked, specifically the Watchdog \verb|FCLKANA| and \verb|DIVSEL| as well as SCLL and SCLH for the I2C clock. These values represent the number of clock cycles the I2C clock remain low and high respectively, where the lowest value they may have is four. Thus, can be used to speed up or slow down I2C communication. \cite{mbed_datasheet} This can be summed in Equation~\ref{eqn:i2c_clock}.
+The model employed requires a set sampling rate, and to minimise the communication between the mBed and device to minimise processing, the mBed should sample the sensor at the sampling rate required by the model. To achieve this, there were a few different parameters adjusted, specifically the Watchdog \verb|FCLKANA| and \verb|DIVSEL| as well as SCLL and SCLH for the I2C clock. These values represent the number of clock cycles the I2C clock remain low and high respectively, where the lowest value they may have is four. Thus, can be used to speed up or slow down I2C communication. \cite{mbed_datasheet} This can be summed in Equation~\ref{eqn:i2c_clock}.
 
 \begin{equation}
 	I2C_{clock} = \frac{CLK}{SCLH + SCLL}
@@ -158,17 +139,17 @@ There were a variety of issues that were encountered with the mBed. It was possi
 
 It was found that forgetting to power on the Watchdog oscillator before switching the system clock over to it left it in a state where it was unable to execute any code. This state, for unknown reasons, persisted even after a reset and reboot of the device. An eventual solution to this problem was found, which was to re-flash the mBed interface firmware.
 
-SPI communication was attempted to interface the mBed to a SD card allowing for data from the sensor to be stored within the SD card so it is possible to revisit collected data at a later point in time. This would be especially useful should the device not be connected to the host PC to send debug information to. Navigating the mBed site does show a library with functionality perfect for this aim, however attempting to compile the example code resulted in a error during compilation due to the fact the binary would have been larger than the flash capacity of the mBed. Switching over to the online compiler provided by mBed resulted in compilation however the binary would not execute upon the mBed.
+SPI communication was attempted to interface the mBed to a SD card allowing for data from the sensor to be stored within the SD card so it made it possible to revisit collected data at a later point in time. This would be especially useful should the device not be connected to the host PC to send debug information to. Navigating the mBed site does show a library with functionality perfect for this aim, however attempting to compile the example code resulted in a error during compilation due to the fact the binary would have been larger than the flash capacity of the mBed. Switching over to the online compiler provided by mBed resulted in compilation however the binary would not execute upon the mBed.
 
 An issue occurred when optimising multiple multiplication and division operations into a single bit shift however, the output of said optimisation caused the code to return different results compared against the unoptimised version upon the mBed however not on another machine. This was found to be due to the fact that the mBed stores its variables in a little endian format.
 
 \subsection{Prototyping}
 
-During development, breadboard was used to prototype the system with both the mBed and sensor placed upon. The power rails on the breadboard received power from the mBed which in turn received power from the host PC via USB. These conditions were acceptable when developing, however was impractical for moving the device to the foot for further testing. 
+During development, a breadboard was used to prototype the system with both the mBed and sensor placed upon. The power rails on the breadboard received power from the mBed which in turn received power from the host PC via USB. These conditions were acceptable when developing, however were impractical for moving the device to the foot for further testing. 
 
-It was decided to create a small board for this purpose using veroboard which would be powered with a few AA batteries. This is beneficial as the board can be made to a desired size with on-board power alleviating the requirement of having a cable trailing to a computer as well as being more comfortable on the foot over the breadboard.
+It was decided to create a small board for this purpose using veroboard which would be powered with a few AA batteries. This is beneficial as the board can be made to a desired size with on-board power alleviating the requirement of having a cable trailing to a computer as well as being more comfortable on the foot.
 
-A design was created using fritzing \cite{fritzing} which can be seen in Figure~\ref{fig:veroboard_schematic}. The mBed has a $V_{in}$ pin upon pin 2 which can take from 4.5V up to 9V which is supplied using four AA batteries within two AA battery holders. To prevent the mBed from constantly being powered, a jumper is added to control whether the mBed receives power or not enabling for the device to be switched on or off at will. Power to the sensor is provided via the 3.3V regulated output of the mBed, which also is used by the pull-up resistors to hold the I2C lines high when not in use. Extra space was added above and below the sensor due to the fact that the physical board is larger than that in the CAD software upon that axis, thus requires more space to avoid colliding with the mBed or hanging off the edge of board.
+A design was created using fritzing \cite{fritzing} which can be seen in figure~\ref{fig:veroboard_schematic}. The mBed has a $V_{in}$ pin upon pin 2 which can take from 4.5V up to 9V which was supplied using four AA batteries within two AA battery holders. To prevent the mBed from constantly being powered, a jumper was added to control whether the mBed receives power or not allowing for the device to be switched on or off at will. Power to the sensor was provided via the 3.3V regulated output of the mBed, which also was used by the pull-up resistors to hold the I2C lines high when not in use. Extra space was added above and below the sensor due to the fact that the physical board was larger than that in the CAD software upon that axis, thus requires more space to avoid colliding with the mBed or hanging off the edge of board.
 
 \begin{figure}
 	\centering
@@ -177,7 +158,7 @@ A design was created using fritzing \cite{fritzing} which can be seen in Figure~
 	\label{fig:veroboard_schematic}
 \end{figure}
 
-This was then built, as can be seen from Figure~\ref{fig:board}. To avoid having to solder on the actual mBed and sensor to the veroboard, female header pins are used in a manner similar to IC holders allowing for them to be placed and removed from the board as required. For compactness, the battery packs were attached to the underside of the board using velcro. 
+This was then built, as can be seen from figure~\ref{fig:board}. To avoid having to solder on the actual mBed and sensor to the veroboard, female header pins were used in a manner similar to IC holders allowing for them to be placed and removed from the board as required. For compactness, the battery packs were attached to the underside of the board using velcro. 
 
 \begin{figure}
 	\centering
@@ -186,7 +167,7 @@ This was then built, as can be seen from Figure~\ref{fig:board}. To avoid having
 	\label{fig:board}
 \end{figure}
 
-The board was now able to be placed upon a foot, however there was nothing to secure it in place. A similar approach was taken from the participant study of using velcro. Two pieces of velcro would be attached to the board, whilst another two to the foot. This would then allow the board to be placed on the foot with the velcro holding the board onto the foot. The reasoning for using two pieces of velcro over one is that it was found to allow for more stability when on the foot over one piece where it leaves room for the board to start rotating forwards and backwards. The board with the velcro can be seen in Figure~\ref{fig:board:velcro}.
+The board was now able to be placed upon a foot, however there was nothing to secure it in place. A similar approach was taken from the participant study of using velcro. Two pieces of velcro would be attached to the board, whilst another two to the foot. This would then allow the device to be placed on the foot with the velcro holding it onto the foot. The reasoning for using two pieces of velcro over one was that it was found to allow for more stability when on the foot over one piece where it leaves room for the board to start rotating forwards and backwards. The board with the velcro can be seen in figure~\ref{fig:board:velcro}.
 
 \begin{figure}
 	\centering
