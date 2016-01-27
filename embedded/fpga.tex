@@ -10,7 +10,7 @@ Through ARM, we managed to gain access to a fixed configuration of the Cortex-M0
 
 The tool used for simulating the test-bench is ModelSim, which is a tool that offers the possibility of simulating hardware description languages such as Verilog and VHDL. A new project must be created in ModelSim to which we add the Verilog files provided in the package, the test-bench and another binary file provided, ram.bin, which is an example memory image for the processor. The file is loaded at the beginning of the simulation by the test-bench.  The memory image is used for the helloworld.c program, which is used by the test-bench to write a message to the simulator's console and after that end the simulation. The result of the simulation can be seen in
 
-Also, access was given to the CM0DS example design kit which contains various AHB-Lite peripherals and infrastructure components, useful to create complete systems. Before implementing the actual algorithm on the FPGA, a more basic simulation needs to be conducted on the platform to assure that it is compatible with the specific FPGA used. Next, the analysis of the sensors used for our project will be discussed. After that, discussions related to the about mBed platform which contains the Cortex M0+ and the Digilent Nexys4 FPGA board on which we aimed to implement the microprocessor as an extension will take place.
+Also, access was given to the CM0DS example design kit which contains various AHB-Lite peripherals and infrastructure components, useful to create complete systems. Before implementing the actual algorithm on the FPGA, a more basic simulation needs to be conducted on the platform to assure that it is compatible with the specific FPGA used. Discussions related to the Digilent Nexys4 FPGA board on which we aimed to implement the microprocessor as an extension will take place and after that we will move on to the mBed platform which contains the Cortex M0+.
 
 
 \subsection{Software development and simulation}
@@ -34,9 +34,9 @@ After this is selected, the options menu is accessed for this device. Next, the 
 
 - under User section, in Run\#1:"fromelf -cvf code.axf --vhx --32x1 -o code.hex" and Run\#2:"fromelf -cvf code.axf -o disasm.txt" in Run User Programs After Build/Rebuild those code lines are inserted in order to create a .axf file from the .hex file;
 
-- under C/C++ section, the One ELF Section per Function is unticked and the Warnings are set to <unspecified> (here C/C++ specific tool options are set);
+- under C/C++ section, the One ELF Section per Function is unticked and the Warnings are set to "unspecified" (here C/C++ specific tool options are set);
 
--under Asm section, all the settings are kept to default also( this allows the setting of specific Assembler tool options);
+-under Asm section, all the settings are kept to default also(this allows the setting of specific Assembler tool options);
 
 -under Linker section, the R/W Base entry is deleted and only the R/O Base: 0x00000000 remains(linker settings are required in order to configure the physical memory location of the target). The location of memory classes and sections is defined here.
 
@@ -67,7 +67,7 @@ Loop1		SUBS	R0,R0,#1
 		BNE Loop1
 \end{lstlisting}
 
-After all of these steps have been done,it is now time to add assembly file provided by ARM, the cm0dasm.s to the source. Taking a look at the reset handler, which can be seen in \ref{lst:reset-handler}, it turns on half of the 8-bit LEDs( for example 0, 2, 4 ,6), sets up a counter and uses it for a short time delay, then turns on the other half and delays another period.
+After all of these steps have been done, it is now time to add assembly file provided by ARM, the cm0dasm.s to the source. Taking a look at the reset handler, which can be seen in \ref{lst:reset-handler}, it turns on half of the 8-bit LEDs( for example 0, 2, 4 ,6), sets up a counter and uses it for a short time delay, then turns on the other half and delays another period.
 
 After the successful building, the code.hex should be created and converted into a .axf because it was set in the User section. The .axf file needs to be converted to a .bin in order to program the FPGA. The MDK/Keil offers a tool called "fromelf" which can do this conversion. It is called in the following way:
 
@@ -85,7 +85,7 @@ The ARM DesignStart  package which contains the logic of the ARM Cortex-M0 proce
 
 The software code needs to be compiled to machine code in order to program the processor. The program memory is the phyiscal memory used to store the instructions to which need to be executed by the processor. On-chip memory block are used in order to implement the program memory in SoC, for example the Block RAM(BRAM) which is present on this FPGA. The program image needs to be merged into the hardware design during synthesis to load the program on the on-chip memory of the FPGA.
 
-Now, in order to implement the Cortex M0+ on the FPGA, more then just the ARM DesignStart Verilog codes are necessary. The ARM Cortex-M System Design Kit (CMSDK) contains a set of AMBA AHB and APB components and examples for various Cortex-M systems processors, including the Cortex-M0. The  Verilog file  used from this package in order to reproduce the desired experiment will be discussed.
+Now, in order to implement the Cortex M0+ on the FPGA, more than just the ARM DesignStart Verilog codes are necessary. The ARM Cortex-M System Design Kit (CMSDK) contains a set of AMBA AHB and APB components and examples for various Cortex-M systems processors, including the Cortex-M0. The  Verilog file  used from this package in order to reproduce the desired experiment will be discussed.
 
 The AHBDCD.v contains the code for the address decoder of the AHB bus. This uses a Multi-layer bus architecture having only one AHB master on each of the input layers and one AHB slave on each of the outputs, the entire system address decoding can be done within the decoder section. It selects one of the slaves depending on where the address bus currently is and also is.
 
@@ -94,10 +94,10 @@ The AHBMUX.v contains the code for the slave multiplexor of the AHB bus. This us
 \begin{figure}
 \centering
 \includegraphics[scale=0.7]{figures/decoder_and_multiplexer.PNG}
-\caption{Address Decoder and Slave Multiplexor } 
+\caption{Address Decoder and Slave Multiplexor\cite{ahblite} } 
 \label{fig:decoder_multiplexer}
 \end{figure}
-In figure \ref{fig:decoder_multiplexer} how two Address Decoder and Slave Multiplexor can bee seen. The HADRR[0:31] signal, sends the read data from multiplexer to master \cite{ahblite}. The HREADY signal goes from the multiplexor to the master and slaves and when it is set to HIGH, it indicates that the previous transfer has been completed. The HRESP signal transfers the response signal from multiplexor to master. Each of the slaves has its own select signal HSEL which indicates the current transfer intended for that specific slave. Before being able to respond to the current transfer, the status of HREADY must be known in order to ensure that the previous transfer has been completed. 
+In figure \ref{fig:decoder_multiplexer} the  Address Decoder and Slave Multiplexor can be seen. The HADRR[0:31] signal, sends the read data from multiplexer to master \cite{ahblite}. The HREADY signal goes from the multiplexor to the master and slaves and when it is set to HIGH, it indicates that the previous transfer has been completed. The HRESP signal transfers the response signal from multiplexor to master. Each of the slaves has its own select signal HSEL which indicates the current transfer intended for that specific slave. Before being able to respond to the current transfer, the status of HREADY must be known in order to ensure that the previous transfer has been completed. 
 
 The AHB2BRAM.v contains the on-chip memory peripheral (BRAM) 
 which is a configurable memory module that gives access to a variety of BRAM Interface Controllers. This is used for the program memory of the processor.
@@ -108,7 +108,7 @@ The AHBLITE\_SYS.v contains the top-level module. The AHB-Lite is a subset of th
 
 The ARMSOC\_s6.ucf file is the user constraint file which creates the connection between the assigned nets and FPGA pins.
 
-All of these files files need to be added to a Vivado project in order to create and download the bitstream file to the FPGA. A new project called CM0DS\_System is created, specifying that it is RTL project. A mixed implementation setting between Verilog/VHDL will be required for this project. The processor is described in Verilog while the additional modules are in VHDL. Next, in the list of Xilinx parts, the XC7A100T-1CSG324C needs to be selected because this is the part name for the Nexys4 board. 
+All of these files files need to be added to a Vivado project in order to create and download the bitstream file to the FPGA. A new project called CM0DS\_System is created, specifying that it is RTL project. A mixed implementation setting between Verilog/VHDL will be required for this project. The processor is described in Verilog while the additional modules are in VHDL. Next, in the list of Xilinx parts, the XC6SLX160-2CSG324 needs to be selected because this is the part name for the Nexys4 board. 
 \begin{figure}
 \centering
 \includegraphics[scale=0.7]{figures/AHBLITE_SYS_modules_ISE_schematic.PNG}
@@ -125,10 +125,10 @@ After the project is created, the AHBALITE\_SYS.v is set as a top module since t
 \label{fig:clock}
 \end{figure}
 
-Since the user constraint file supplied is meant to be used to a Spartan 6 Series FPGA board, the user constraint file needed modifications in order to fit the Artix-7 FPGA. The UCF can be seen in appendix. After this, the top module of the simulation can be implemented and translated int o a .bit file which is used to program the FPGA.
+Since the user constraint file supplied is meant to be used to a Spartan 6 Series FPGA board, the user constraint file needed modifications in order to fit the Artix-7 FPGA. The UCF can be seen in Appendix \ref{ch:ucffile}. After this, the top module of the simulation can be implemented and translated int o a .bit file which is used to program the FPGA.
 
 \subsection{Functional Simulation}
-Due to some unplanned delays in acquiring certain documentations, delays in obtaining licenses for the various software used and difficulties encountered during the creation of a proper .bit file, a full functional simulation was not properly conducted.A basic simulation of the Cortex M0 was presented in \ref{sec:cortex}.  The functional simulation of the system verifies if the signal in HRDATA are the ones expected and if it works as expected. Vivado Hardware Debug is the Vivado tool used for debugging. This is accessed by going to Design->View:Simulation. If a complete functional would have been performed, a run-time simulation needs to also be performed. On-chip debugging tools such as ChipScope are required in order to perform this sort of simulation. Inside the analysis, these AHB signals need to be evaluated to see if they work correspondingly: 
+Due to some unplanned delays in acquiring certain documentations, delays in obtaining licenses for the various software used and difficulties encountered during the creation of a proper .bit file, a full functional simulation was not properly conducted. A basic simulation of the Cortex M0 was presented in \ref{sec:cortex}.  The functional simulation of the system verifies if the signal in HRDATA are the ones expected and if it works as expected. Vivado Hardware Debug is the Vivado tool used for debugging. This is accessed by going to Design-View:Simulation. If a complete functional would have been performed, a run-time simulation needs to also be performed. On-chip debugging tools such as ChipScope are required in order to perform this sort of simulation. Inside the analysis, these AHB signals need to be evaluated to see if they work correspondingly: 
 HADDR[31:0] 
 HWDATA[31:0]
 HRDATA[31:0]
