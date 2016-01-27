@@ -74,11 +74,11 @@ Signed numbers treat the highest bit of an integer as negative, and the remainin
 
 For example, a value of $-10$ would be encoded as $11110110$ if stored as a signed byte. In the method described in the sections above, a bit shift to the right by 1 would be used to roughly equate to a division of $-5$, which is encoded as $11111011$. Unfortuneately, this is \textit{not} the result of such a shift on $-10$; instead this shifted becomes $01111011$ which is $123$. The error has been introduced as a zero has been added into the MSB, as is convention with logical right shifts.
 
-To avoid this, many processors, including the Cortex M0, contain an instruction known as an `Arithmatic Shift Right' (ASR) which, instead of adding a zero into the place of the MSB, it leaves whatever value was in that bit, as well as copying it to the right to perform the shift. As a result of this, positive numbers remain positive and negative numbers remain negative.
+To avoid this, many processors, including the Cortex M0, contain an instruction known as an `Arithmetic Shift Right' (ASR) which, instead of adding a zero into the place of the MSB, it leaves whatever value was in that bit, as well as copying it to the right to perform the shift. As a result of this, positive numbers remain positive and negative numbers remain negative.
 
 While the team's emulation platform, the Cortex M0, contains support for the ASR operation, it was unknown if the sub-threshold device would do so. As such, it was decided to implement a software alternative to support this operation, should the underlying hardware not be capable. This is shown in listing \ref{lst:asr} and can be turned on by passing \verb|-DNO_ASR| when compiling, otherwise a regular shift is used.
 
-\begin{lstlisting}[caption={Software Arthmatic Shift Right Support},label={lst:asr}]
+\begin{lstlisting}[caption={Software Arithmetic Shift Right Support},label={lst:asr}]
 static void asr(int32_t val, uint8_t shift)
 {
     int32_t msb = val & 0x80;     // Store the value of just the MSB
