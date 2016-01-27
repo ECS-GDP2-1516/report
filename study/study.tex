@@ -30,7 +30,7 @@ Initially, the plan was to record both accelerometer and gyroscope sensor data a
 \begin{figure}
 	\centering
 	\includegraphics[width=70mm]{figures/data-jump.pdf}
-	\caption{Poor data collection showing unstable sampling frequency\label{fig:bad-data}}
+	\caption{Poor data collection showing an inconsistent sampling frequency\label{fig:bad-data}}
 \end{figure}
 
 This is a result of unstable sampling from the phone as it was not powerful enough to sample data from both sensors at the same time at the highest frequency. Unfortunately, these sets of data were unusable to train the algorithm so the problem had to be rectified immediately before the next participant. The solution was to record from each sensor separately. The downside of this is that it doubled the time it took to collect the data.
