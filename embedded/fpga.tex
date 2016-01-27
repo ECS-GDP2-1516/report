@@ -136,7 +136,7 @@ After the project is created, the \verb|AHBALITE_SYS.v| is set as a top module s
 \label{fig:clock}
 \end{figure}
 
-Since the user constraint file supplied is meant to be used to a Spartan 6 Series FPGA board, the user constraint file needed modifications in order to fit the Artix-7 FPGA. The UCF can be seen in appendix \ref{ch:ucffile}. After this, the top module of the simulation can be implemented and translated int o a .bit file which is used to program the FPGA.
+Since the user constraint file supplied is meant to be used to a Spartan 6 Series FPGA board, the user constraint file needed modifications in order to fit the Artix-7 FPGA. After this, the top module of the simulation can be implemented and translated int o a .bit file which is used to program the FPGA.
 
 \subsection{Functional Simulation}
 Due to some unplanned delays in acquiring certain documentation, delays in obtaining licenses for the various software used, and difficulties encountered during the creation of a proper .bit file, a full functional simulation was not properly conducted. A basic simulation of the Cortex M0 was presented in section~\ref{sec:cortex}.  The functional simulation of the system verifies if the signal in \verb|HRDATA| are the ones expected and if it works as expected. This is accessed by going to Design-View:Simulation. If a complete functional would have been performed, a run-time simulation needs to also be performed. On-chip debugging tools such as ChipScope are required in order to perform this sort of simulation. Inside the analysis, these AHB signals need to be evaluated to see if they work correspondingly: 
