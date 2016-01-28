@@ -79,7 +79,7 @@ To avoid this, many processors, including the Cortex M0, contain an instruction 
 While the team's emulation platform, the Cortex M0, contains support for the ASR operation, it was unknown if the sub-threshold device would do so. As such, it was decided to implement a software alternative to support this operation, should the underlying hardware not be capable. This is shown in listing \ref{lst:asr} and can be turned on by passing \verb|-DNO_ASR| when compiling, otherwise a regular shift is used.
 
 \begin{lstlisting}[caption={Software Arithmetic Shift Right Support},label={lst:asr}]
-static void asr(int32_t val, uint8_t shift)
+static int32_t asr(int32_t val, uint8_t shift)
 {
     int32_t msb = val & 0x80;     // Store the value of just the MSB
 
