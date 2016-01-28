@@ -8,7 +8,7 @@ The sigmoid function is applied to each node's output, after the summation of it
 
 The first area of note in this graph is that the value of $f(t)$ quickly starts to tend towards 0 in the negative direction, and 1 in the positive direction. It is not uncommon, therefore, to approximate the value of the function at these extremes \cite{sigmoid_approx}. Figure \ref{fig:sigmoid-ends} shows this approximation highlighted in bold for \verb|t| values outside of the range between 5 and -5; it is plain to see that the error introduced here is minimal.
 
-\begin{figure}[!h]
+\begin{figure}
     \centering
     \subfigure[Normal Sigmoid Function]{\label{fig:sigmoid}\includegraphics[width=70mm]{figures/sigmoid.pdf}}
     \subfigure[Approximated Ends]{\label{fig:sigmoid-ends}\includegraphics[width=70mm]{figures/sigmoid-ends.pdf}}

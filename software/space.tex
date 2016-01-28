@@ -34,9 +34,9 @@ The mBed library is designed to be general purpose across multiple platforms. As
 
 \subsubsection{Ideal Memory Mapping}\label{section:constant-memory-map}
 
-For memory addresses, this abstraction is achieved using macros in device-specific header files, which allows optimisation to can happen at compile time:
+For memory addresses, this abstraction is achieved using macros in device-specific header files, which allows optimisation to can happen at compile time. This is demonstrated in listing \ref{lst:gpio-constants}.
 
-\begin{lstlisting}[caption={Memory spaces mapped in LPC11Uxx.h}]
+\begin{lstlisting}[caption={Memory spaces mapped in LPC11Uxx.h},label={lst:gpio-constants}]
 typedef struct {                 /*!< GPIO_GROUP_INT0 Structure */
     __IO uint32_t CTRL;          /*!< GPIO grouped interrupt control register */
     __I  uint32_t RESERVED0[7];

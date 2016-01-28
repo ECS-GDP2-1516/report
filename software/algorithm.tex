@@ -8,7 +8,7 @@ As Weka had been used to determine and train the best algorithm, it was decided 
 
 \subsubsection{Backward Propagation}
 
-Weka's implementation of the Multilayer Perception uses ``backward propagation'', which recursively works backwards in a depth-first manner from each output node towards the input layer. The function which calculates a node's output does so by taking the summation of each of its input values multiplied by their respective input weights. Each input value, however, is requested on the fly from the inputting node by calculating its output which in turn causes it to perform the same loop over its input nodes:
+Weka's implementation of the Multilayer Perception uses ``backward propagation'', which recursively works backwards in a depth-first manner from each output node towards the input layer. The function which calculates a node's output does so by taking the summation of each of its input values multiplied by their respective input weights. Each input value, however, is requested on the fly from the inputting node by calculating its output which in turn causes it to perform the same loop over its input nodes.
 
 \begin{lstlisting}[language=Java,caption={Weka's method of calculating a node's output}]
 class Node
@@ -33,16 +33,17 @@ class Node
 
 A side effect of this is that all nodes, other than the output nodes are visited multiple times. For example, for the network below, $o_1.output()$ will loop over $m_1$, $m_2$ and $m_3$, calling \verb|output()| on each, each of which will loop over $i_1$, $i_2$ and $i_3$, meaning the input nodes will be visited a total of 3 times each. This process must then be repeated for $o_2$, causing the middle layer nodes to each be revisited, and the input layers revisited another 3 times, and again for $o_3$. In total each input node is accessed 9 times, the middle layer 3 times each.
 
-\begin{figure}[!h]
+\begin{figure}
     \centering
     \includegraphics{eg-ml}
     \caption{Example Multilayer Perception Network}
     \label{fig:eg-ml}
 \end{figure}
 
-Weka reduces this by storing a node's value after an \verb|output()| call. When \verb|output()| is called on a node again, it checks if it has already been called and returns the cached value if it has:
+Weka reduces this by storing a node's value after an \verb|output()| call. When \verb|output()| is called on a node again, it checks if it has already been called and returns the cached value if it has, as shown in listing \ref{lst:weka-cached}.
 
-\begin{lstlisting}[language=Java,caption={Weka's method of preventing repeated calculations}]
+\clearpage
+\begin{lstlisting}[language=Java,caption={Weka's method of preventing repeated calculations},label={lst:weka-cached}]
 class Node
 {
     boolean visited = false;
@@ -69,6 +70,8 @@ The algorithm itself still relies on recursion - this is also suboptimal as this
 As a result of the inerrant inefficiencies in a Backward Propagation implementation, it was decided instead to redesign the algorithm, employing Forwards Propagation. This technique, in contrast to the one described above, starts from the input layer nodes and works forward in a breadth first manner.
 
 For the example in figure \ref{fig:eg-ml}, this means the algorithm would first write the outputs of $i_1$, $i_2$ and $i_3$ into three memory spaces. Following this, three new memory spaces are reserved, in which the base values of $m_1$, $m_2$ and $m_3$ are placed. The algorithm then loops over the input nodes and, for each one, adds the multiplication of its value by its parent weight to the parent's memory space. Once complete, the outputs for all three middle layer nodes have been completed so the process can be shifted one layer to the right and repeated. An added benefit here is that the input layers are now no longer required, so their memory can be freed and reused if desired.
+
+\clearpage
 
 This method requires no stack usage and can operate in a small memory space, shown in equation \ref{eq:algo-size}. For our algorithm, which has the same number of layers as the example above, this results in only 5 32bit memory spaces: 20 bytes.
 
