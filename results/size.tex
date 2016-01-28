@@ -58,4 +58,4 @@ The total required RAM size can be calculated by the summation of the total bina
 
 \subsubsection{A Note About Arithmetic Shift Right Support}
 
-Section \ref{sec:asr} mentioned the possibility that ASR hardware support may not be available on the sub-threshold device. The values above assume that the device will have such support. If this is not the case, and the classifier is built with \verb|-DNO_ASR|, the size of \verb|.text| raises by 36 bytes, bringing the size of the binary to 3204 bytes. As this change does not affect the heap or stack usage of the system, the RAM requirement only need raise by 36 bytes also, bringing this to 3492.
+Section \ref{sec:asr} mentioned the possibility that ASR hardware support may not be available on the sub-threshold device. The values above assume that the device will have such support. If this is not the case, and the classifier is built with \verb|-DNO_ASR|, the size of \verb|.text| raises by 36 bytes, bringing the size of the binary to 3204 bytes. As this change does not affect the heap or stack usage of the system, the RAM requirement only need raise by 36 bytes also, bringing this to 3492 bytes.
