@@ -1,5 +1,9 @@
 \chapter{Conclusion}
 
-The algorithm that the team developed is successful at providing a proof of concept that there is scope to run complex code on a system matching the specification of ARM's new sub-threshold Cortex M0+ processor. With such low power memory usage, this project has proved that devices with extremely high constraints may still be relied upon for important functions.
+This project set out to investigate the feasibility of applying complex algorithms to the proposed sub-threshold Cortex-M0+ which is being researched at ARM. This is a highly constrained processor, so it was of interest to explore the possibility of using it in a range of environments where the tasks required can be very demanding. Specifically, exercise detection and monitoring was used as an example of such a task to provide a prototype device.
 
-The team is satisfied that they acted effectively as a group, particularly in respect to separating tasks in a sensible manner. The communication between members was very strong, in part because the morale between the individuals. 
+The findings indicate that it is possible to create an algorithm capable of achieving this by performing a variety of optimisations. These include several methods of reducing the overall binary size, such as the removal of unnecessary overheads in libraries, to allow the code to fit in the limited memory space. On top of this, reducing the amount of processing required was also accomplished by writing efficient approximations of complex functions and removing the need of floating point arithmetic.
+
+The team is satisﬁed that they acted eﬀectively as a group, particularly in respect to separating tasks in a sensible manner. The communication between members was very strong, in part because the morale between the individuals. 
+
+To conclude, the team feel that this project successfully demonstrates that extremely constrained devices such as the sub-threshold Cortex-M0+ can still be relied upon for important functions.
