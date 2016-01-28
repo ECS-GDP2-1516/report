@@ -68,11 +68,11 @@ B<\lfloor\log_{2}\left\{\frac{2^{16}}{|x|}\right\}\rfloor
 
 \subsubsection{Dealing with signed integers \label{sec:asr}}
 
-While the process of using simple bit shifts to act as a scale factor is acceptable if all values are known to be positive, and are as such stored unsigned. However, as the algorithm makes use of negative weights, and the gyroscope is capable of producing negative readings, the numbers used in the team's immplentation are required to be signed.
+While the process of using simple bit shifts to act as a scale factor is acceptable if all values are known to be positive, and are as such stored unsigned. However, as the algorithm makes use of negative weights, and the gyroscope is capable of producing negative readings, the numbers used in the team's implementation are required to be signed.
 
 Signed numbers treat the highest bit of an integer as negative, and the remaining bits as positive. This effectively shifts the range of values is able to hold, down by 50\%. Performing a naive bit shift on a negative number in this format would drastically corrupt its value by unsetting the MSB incorrectly.
 
-For example, a value of $-10$ would be encoded as $11110110$ if stored as a signed byte. In the method described in the sections above, a bit shift to the right by 1 would be used to roughly equate to a division of $-5$, which is encoded as $11111011$. Unfortuneately, this is \textit{not} the result of such a shift on $-10$; instead this shifted becomes $01111011$ which is $123$. The error has been introduced as a zero has been added into the MSB, as is convention with logical right shifts.
+For example, a value of $-10$ would be encoded as $11110110$ if stored as a signed byte. In the method described in the sections above, a bit shift to the right by 1 would be used to roughly equate to a division of $-5$, which is encoded as $11111011$. Unfortunately, this is \textit{not} the result of such a shift on $-10$; instead this shifted becomes $01111011$ which is $123$. The error has been introduced as a zero has been added into the MSB, as is convention with logical right shifts.
 
 To avoid this, many processors, including the Cortex M0, contain an instruction known as an `Arithmetic Shift Right' (ASR) which, instead of adding a zero into the place of the MSB, it leaves whatever value was in that bit, as well as copying it to the right to perform the shift. As a result of this, positive numbers remain positive and negative numbers remain negative.
 
