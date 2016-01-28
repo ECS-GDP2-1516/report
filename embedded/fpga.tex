@@ -2,7 +2,7 @@
 
 The FPGA was initially designed to have a Cortex-M0\_DS processor, a block of memory with a program that fetches constants from that block at regular intervals, a reset and a pattern detector attached to the bus so when a specific pattern appears on the data bus, the LED turns on and when another patters appears it will turn off. The Cortex-M0\_DS  includes only the processor and a non-synthesisable testbench. Other parts will need to be implemented in order to create a synthesisable system: a software executable image, a system clock, a detector module for the command LED and a reset synchroniser. This section will be divided into: software development and simulation, system implementation and functional simulation. All of these sections will be discussed in detail in what follows.
 
-\begin{figure}
+\begin{figure}[!h]
 	\centering
 	\includegraphics[scale=0.7]{figures/test_bench_schematic.PNG}
 	\caption{Cortex M0 test bench schematic} \label{fig:test_bench}
@@ -20,7 +20,7 @@ In this section, a software program that will verify the memory fetches of some 
 
 To start, a new project must be created in $\mu$Vision. Next, the device must be selected device database so ARM-ARM Cortex M0 plus-ARMCM0P is selected which can be seen in figure \ref{fig:armcm0p}.
 
-\begin{figure}
+\begin{figure}[b]
 \centering
 \includegraphics[scale=0.7]{figures/armcm0p.PNG}
 \caption{Selection of the Cortex M0+ for the μVision project} 
@@ -51,6 +51,7 @@ After this is selected, the options menu is accessed for this device. Next, the 
 
 \end{itemize}
 
+\clearpage
 \begin{lstlisting}[caption={Reset Handler},label={lst:reset-handler}]
 Reset_Handler	PROC
 		GLOBAL Reset_Handler
