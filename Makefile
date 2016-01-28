@@ -1,5 +1,5 @@
 
-FILES := $(wildcard appendices/*.tex) $(wildcard conclusion/*.tex) $(wildcard hardware/*.tex) $(wildcard intro/*.tex) $(wildcard management/*.tex) $(wildcard results/*.tex) $(wildcard software/*.tex) $(wildcard study/*.tex)
+FILES := $(wildcard appendices/*.tex) $(wildcard conclusion/*.tex) $(wildcard embedded/*.tex) $(wildcard embedded/emulation/*.tex) $(wildcard intro/*.tex) $(wildcard management/*.tex) $(wildcard results/*.tex) $(wildcard software/*.tex) $(wildcard study/*.tex) $(wildcard research/*.tex)
 PLOTS := $(wildcard figures/*.tex)
 PLOT_TARGETS := $(PLOTS:.tex=.pdf)
 
